@@ -1,3 +1,4 @@
+*.tfplan
 
 # Created by https://www.toptal.com/developers/gitignore/api/vscode,terraform
 # Edit at https://www.toptal.com/developers/gitignore?templates=vscode,terraform
