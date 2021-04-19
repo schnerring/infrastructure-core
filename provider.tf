@@ -16,6 +16,11 @@ terraform {
       source  = "random"
       version = "=3.1.0"
     }
+
+    time = {
+      source  = "time"
+      version = "=0.7.0"
+    }
   }
 }
 
