@@ -11,7 +11,7 @@ Initialize the [Terraform azurerm backend](https://www.terraform.io/docs/languag
 ```shell
 terraform init \
   -backend-config="resource_group_name=terraform-rg" \
-  -backend-config="storage_account_name=tfinfrastructure242" \
+  -backend-config="storage_account_name=tfinfrastructurest37" \
   -backend-config="container_name=infrastructure-stctn" \
   -backend-config="key=infrastructure.tfstate"
 ```

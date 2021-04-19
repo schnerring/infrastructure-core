@@ -10,17 +10,17 @@ resource "random_id" "tf_st_id" {
   byte_length = 1
 }
 
-resource "azurerm_storage_account" "infrastructure_tf_st" {
-  name                     = "tfinfrastructure${random_id.tf_st_id.dec}"
-  resource_group_name      = azurerm_resource_group.tf_rg.name
-  location                 = var.location
+resource "azurerm_storage_account" "tf_infrastructure_st" {
+  name                = "tfinfrastructurest${random_id.tf_st_id.dec}"
+  resource_group_name = azurerm_resource_group.tf_rg.name
+  location            = var.location
+  tags                = var.tags
+
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
-  tags = var.tags
 }
 
-resource "azurerm_storage_container" "infrastructure_tf_stctn" {
+resource "azurerm_storage_container" "tf_infrastructure_stctn" {
   name                 = "infrastructure-stctn"
-  storage_account_name = azurerm_storage_account.infrastructure_tf_st.name
+  storage_account_name = azurerm_storage_account.tf_infrastructure_st.name
 }
