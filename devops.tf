@@ -30,3 +30,28 @@ resource "azurerm_role_assignment" "devops_infrastructure_owner_role_assignment"
   role_definition_name = "Owner"
   principal_id         = azuread_service_principal.devops_infrastructure_sp.id
 }
+
+# Export credentials as GitHub Actions secrets
+resource "github_actions_secret" "gh_secret_az_sp_client_id" {
+  repository      = "infrastructure"
+  secret_name     = "AZ_SP_CLIENT_ID"
+  plaintext_value = azuread_application.devops_infrastructure_sp_app.application_id
+}
+
+resource "github_actions_secret" "gh_secret_az_sp_client_secret" {
+  repository      = "infrastructure"
+  secret_name     = "AZ_SP_CLIENT_SECRET"
+  plaintext_value = azuread_service_principal_password.devops_infrastructure_sp_password.value
+}
+
+resource "github_actions_secret" "gh_secret_az_subscription_id" {
+  repository      = "infrastructure"
+  secret_name     = "AZ_SUBSCRIPTION_ID"
+  plaintext_value = data.azurerm_subscription.subscription.subscription_id
+}
+
+resource "github_actions_secret" "gh_secret_az_tenant_id" {
+  repository      = "infrastructure"
+  secret_name     = "AZ_TENANT_ID"
+  plaintext_value = data.azurerm_subscription.subscription.tenant_id
+}

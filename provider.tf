@@ -12,6 +12,11 @@ terraform {
       version = "=2.56.0"
     }
 
+    github = {
+      source  = "integrations/github"
+      version = "=4.9.2"
+    }
+
     random = {
       source  = "random"
       version = "=3.1.0"
