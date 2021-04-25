@@ -12,6 +12,11 @@ terraform {
       version = "=2.56.0"
     }
 
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "=2.20.0"
+    }
+
     github = {
       source  = "integrations/github"
       version = "=4.9.2"
@@ -51,6 +56,8 @@ provider "azurerm" {
     }
   }
 }
+
+provider "cloudflare" {}
 
 provider "helm" {
   kubernetes {
