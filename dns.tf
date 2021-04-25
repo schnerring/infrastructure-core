@@ -88,6 +88,39 @@ resource "cloudflare_record" "gh_pages_www" {
   proxied = true
 }
 
+resource "cloudflare_page_rule" "gh_pages_rule_forward_www_to_apex" {
+  zone_id  = cloudflare_zone.schnerring_net_zone.id
+  target   = "https://www.schnerring.net/"
+  priority = 3
+
+  actions {
+    forwarding_url {
+      url         = "https://schnerring.net/"
+      status_code = 301
+    }
+  }
+}
+
+resource "cloudflare_page_rule" "gh_pages_rule_always_use_https" {
+  zone_id  = cloudflare_zone.schnerring_net_zone.id
+  target   = "http://schnerring.net/*"
+  priority = 2
+
+  actions {
+    always_use_https = true
+  }
+}
+
+resource "cloudflare_page_rule" "gh_pages_rule_cache_everything" {
+  zone_id  = cloudflare_zone.schnerring_net_zone.id
+  target   = "https://schnerring.net/*"
+  priority = 1
+
+  actions {
+    cache_level = "cache_everything"
+  }
+}
+
 # Azure Active Directory domain verification
 
 resource "cloudflare_record" "azure_verification" {
