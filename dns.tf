@@ -77,6 +77,7 @@ resource "cloudflare_record" "gh_pages_apex" {
   name    = "@"
   type    = "CNAME"
   value   = "schnerring.github.io"
+  proxied = true
 }
 
 resource "cloudflare_record" "gh_pages_www" {
@@ -84,6 +85,7 @@ resource "cloudflare_record" "gh_pages_www" {
   name    = "www"
   type    = "CNAME"
   value   = "schnerring.github.io"
+  proxied = true
 }
 
 # Azure Active Directory domain verification
