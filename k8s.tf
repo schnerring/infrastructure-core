@@ -3,10 +3,6 @@ resource "azurerm_resource_group" "k8s_rg" {
   location = var.location
 }
 
-resource "random_id" "random" {
-  byte_length = 2
-}
-
 resource "azurerm_kubernetes_cluster" "k8s_aks" {
   name                = "k8s-aks"
   resource_group_name = azurerm_resource_group.k8s_rg.name
