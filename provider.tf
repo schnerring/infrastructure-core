@@ -17,6 +17,11 @@ terraform {
       version = "=4.9.2"
     }
 
+    helm = {
+      source  = "helm"
+      version = "=2.1.1"
+    }
+
     random = {
       source  = "random"
       version = "=3.1.0"
@@ -34,5 +39,14 @@ provider "azurerm" {
     key_vault {
       purge_soft_delete_on_destroy = true
     }
+  }
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = azurerm_kubernetes_cluster.k8s_aks.kube_config.0.host
+    client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s_aks.kube_config.0.client_certificate)
+    client_key             = base64decode(azurerm_kubernetes_cluster.k8s_aks.kube_config.0.client_key)
+    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s_aks.kube_config.0.cluster_ca_certificate)
   }
 }
