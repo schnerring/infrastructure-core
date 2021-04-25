@@ -72,16 +72,25 @@ resource "cloudflare_record" "protonmail_dmarc" {
 
 # GitHub Pages
 
-resource "cloudflare_record" "gh_pages_cname_apex" {
+resource "cloudflare_record" "gh_pages_apex" {
   zone_id = cloudflare_zone.schnerring_net_zone.id
   name    = "@"
   type    = "CNAME"
   value   = "schnerring.github.io"
 }
 
-resource "cloudflare_record" "gh_pages_cname_www" {
+resource "cloudflare_record" "gh_pages_www" {
   zone_id = cloudflare_zone.schnerring_net_zone.id
   name    = "www"
   type    = "CNAME"
   value   = "schnerring.github.io"
+}
+
+# Azure Active Directory domain verification
+
+resource "cloudflare_record" "azure_verification" {
+  zone_id = cloudflare_zone.schnerring_net_zone.id
+  name    = "@"
+  type    = "TXT"
+  value   = "MS=ms51347144"
 }
