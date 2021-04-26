@@ -36,6 +36,11 @@ resource "helm_release" "k8s_cert_manager_helm" {
   chart      = "cert-manager"
   version    = "1.3.1"
   namespace  = kubernetes_namespace.k8s_cert_manager_ns.metadata[0].name
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
 }
 
 # Traefik v2
