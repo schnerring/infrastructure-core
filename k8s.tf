@@ -73,13 +73,13 @@ resource "kubernetes_manifest" "letsencrypt_issuer_staging" {
   depends_on = [helm_release.cert_manager]
 }
 
-resource "kubernetes_manifest" "letsencrypt_issuer_prod" {
+resource "kubernetes_manifest" "letsencrypt_issuer_production" {
   provider = kubernetes-alpha
 
   manifest = yamldecode(templatefile(
     "${path.module}/letsencrypt-issuer.tpl.yaml",
     {
-      "name"                      = "letsencrypt-prod"
+      "name"                      = "letsencrypt-production"
       "email"                     = var.letsencrypt_email
       "server"                    = "https://acme-v02.api.letsencrypt.org/directory"
       "api_token_secret_name"     = kubernetes_secret.letsencrypt_cloudflare_api_token_secret.metadata[0].name
@@ -109,6 +109,12 @@ resource "helm_release" "traefik" {
     name  = "ports.web.redirectTo"
     value = "websecure"
   }
+
+  # Trust private AKS IP range
+  set {
+    name  = "additionalArguments"
+    value = "{--entryPoints.websecure.forwardedHeaders.trustedIPs=10.0.0.0/8}"
+  }
 }
 
 data "kubernetes_service" "traefik" {
@@ -120,7 +126,8 @@ data "kubernetes_service" "traefik" {
 
 resource "cloudflare_record" "traefik" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "*.k8s"
+  name    = "k8s"
   type    = "A"
   value   = data.kubernetes_service.traefik.status.0.load_balancer.0.ingress.0.ip
+  proxied = true
 }
