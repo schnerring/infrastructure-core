@@ -109,3 +109,23 @@ resource "kubernetes_deployment" "remark42" {
     }
   }
 }
+
+resource "kubernetes_service" "remark42" {
+  metadata {
+    name      = "remark42-svc"
+    namespace = "remark42"
+  }
+
+  spec {
+    selector = {
+      "app" = "remark42"
+    }
+
+    port {
+      name        = "http"
+      port        = 80
+      target_port = 8080
+      protocol    = "TCP"
+    }
+  }
+}
