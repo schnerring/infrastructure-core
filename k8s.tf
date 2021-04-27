@@ -1,11 +1,11 @@
-resource "azurerm_resource_group" "k8s_rg" {
+resource "azurerm_resource_group" "k8s" {
   name     = "k8s-rg"
   location = var.location
 }
 
-resource "azurerm_kubernetes_cluster" "k8s_aks" {
+resource "azurerm_kubernetes_cluster" "k8s" {
   name                = "k8s-aks"
-  resource_group_name = azurerm_resource_group.k8s_rg.name
+  resource_group_name = azurerm_resource_group.k8s.name
   location            = var.location
   tags                = var.tags
 
@@ -24,18 +24,18 @@ resource "azurerm_kubernetes_cluster" "k8s_aks" {
 
 # cert-manager
 
-resource "kubernetes_namespace" "k8s_cert_manager_ns" {
+resource "kubernetes_namespace" "cert_manager" {
   metadata {
     name = "cert-manager"
   }
 }
 
-resource "helm_release" "k8s_cert_manager_helm" {
+resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
   version    = "1.3.1"
-  namespace  = kubernetes_namespace.k8s_cert_manager_ns.metadata[0].name
+  namespace  = kubernetes_namespace.cert_manager.metadata[0].name
 
   set {
     name  = "installCRDs"
@@ -43,32 +43,84 @@ resource "helm_release" "k8s_cert_manager_helm" {
   }
 }
 
+# Let's Encrypt
+
+resource "kubernetes_secret" "letsencrypt_cloudflare_api_token_secret" {
+  metadata {
+    name      = "letsencrypt-cloudflare-api-token-secret"
+    namespace = "cert-manager"
+  }
+
+  data = {
+    "api-token" = var.letsencrypt_cloudflare_api_token
+  }
+}
+
+resource "kubernetes_manifest" "letsencrypt_issuer_staging" {
+  provider = kubernetes-alpha
+
+  manifest = yamldecode(templatefile(
+    "${path.module}/letsencrypt-issuer.tpl.yaml",
+    {
+      "name"                      = "letsencrypt-staging"
+      "email"                     = var.letsencrypt_email
+      "server"                    = "https://acme-staging-v02.api.letsencrypt.org/directory"
+      "api_token_secret_name"     = kubernetes_secret.letsencrypt_cloudflare_api_token_secret.metadata[0].name
+      "api_token_secret_data_key" = keys(kubernetes_secret.letsencrypt_cloudflare_api_token_secret.data)[0]
+    }
+  ))
+
+  depends_on = [helm_release.cert_manager]
+}
+
+resource "kubernetes_manifest" "letsencrypt_issuer_prod" {
+  provider = kubernetes-alpha
+
+  manifest = yamldecode(templatefile(
+    "${path.module}/letsencrypt-issuer.tpl.yaml",
+    {
+      "name"                      = "letsencrypt-prod"
+      "email"                     = var.letsencrypt_email
+      "server"                    = "https://acme-v02.api.letsencrypt.org/directory"
+      "api_token_secret_name"     = kubernetes_secret.letsencrypt_cloudflare_api_token_secret.metadata[0].name
+      "api_token_secret_data_key" = keys(kubernetes_secret.letsencrypt_cloudflare_api_token_secret.data)[0]
+    }
+  ))
+
+  depends_on = [helm_release.cert_manager]
+}
+
 # Traefik v2
 
-resource "kubernetes_namespace" "traefik_ns" {
+resource "kubernetes_namespace" "traefik" {
   metadata {
     name = "traefik"
   }
 }
 
-resource "helm_release" "traefik_helm" {
+resource "helm_release" "traefik" {
   name       = "traefik"
   repository = "https://helm.traefik.io/traefik"
   chart      = "traefik"
   version    = "9.18.2"
-  namespace  = kubernetes_namespace.traefik_ns.metadata[0].name
+  namespace  = kubernetes_namespace.traefik.metadata[0].name
+
+  set {
+    name  = "ports.web.redirectTo"
+    value = "websecure"
+  }
 }
 
-data "kubernetes_service" "traefik_svc" {
+data "kubernetes_service" "traefik" {
   metadata {
-    name      = helm_release.traefik_helm.name
-    namespace = helm_release.traefik_helm.namespace
+    name      = helm_release.traefik.name
+    namespace = helm_release.traefik.namespace
   }
 }
 
 resource "cloudflare_record" "traefik" {
-  zone_id = cloudflare_zone.schnerring_net_zone.id
-  name    = "*.traefik"
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "*.k8s"
   type    = "A"
-  value   = data.kubernetes_service.traefik_svc.status.0.load_balancer.0.ingress.0.ip
+  value   = data.kubernetes_service.traefik.status.0.load_balancer.0.ingress.0.ip
 }
