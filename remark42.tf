@@ -129,3 +129,36 @@ resource "kubernetes_service" "remark42" {
     }
   }
 }
+
+resource "kubernetes_ingress" "remark42" {
+  metadata {
+    name      = "remark42-ing"
+    namespace = "remark42"
+    annotations = {
+      "cert-manager.io/cluster-issuer"           = "letsencrypt-production"
+      "traefik.ingress.kubernetes.io/router.tls" = "true"
+    }
+  }
+
+  spec {
+    rule {
+      host = "remark42.k8s.schnerring.net"
+
+      http {
+        path {
+          path = "/"
+
+          backend {
+            service_name = "remark42-svc"
+            service_port = 80
+          }
+        }
+      }
+    }
+
+    tls {
+      hosts       = ["remark42.k8s.schnerring.net"]
+      secret_name = "remark42-tls-secret"
+    }
+  }
+}
