@@ -6,7 +6,7 @@ resource "cloudflare_zone" "schnerring_net" {
 
 resource "cloudflare_record" "protonmail_verification" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "@"
+  name    = "schnerring.net"
   type    = "TXT"
   value   = "protonmail-verification=15dc53d4ac7f44c8c021a551bf61ed21410beab5"
   ttl     = 86400
@@ -14,7 +14,7 @@ resource "cloudflare_record" "protonmail_verification" {
 
 resource "cloudflare_record" "protonmail_mx_1" {
   zone_id  = cloudflare_zone.schnerring_net.id
-  name     = "@"
+  name     = "schnerring.net"
   type     = "MX"
   value    = "mail.protonmail.ch"
   ttl      = 86400
@@ -23,7 +23,7 @@ resource "cloudflare_record" "protonmail_mx_1" {
 
 resource "cloudflare_record" "protonmail_mx_2" {
   zone_id  = cloudflare_zone.schnerring_net.id
-  name     = "@"
+  name     = "schnerring.net"
   type     = "MX"
   value    = "mailsec.protonmail.ch"
   ttl      = 86400
@@ -32,7 +32,7 @@ resource "cloudflare_record" "protonmail_mx_2" {
 
 resource "cloudflare_record" "protonmail_spf" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "@"
+  name    = "schnerring.net"
   type    = "TXT"
   value   = "v=spf1 include:_spf.protonmail.ch mx ~all"
   ttl     = 86400
@@ -70,11 +70,29 @@ resource "cloudflare_record" "protonmail_dmarc" {
   ttl     = 86400
 }
 
+# Mailgun
+
+resource "cloudflare_record" "mailgun_spf" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "schnerring.net"
+  type    = "TXT"
+  value   = "v=spf1 include:mailgun.org ~all"
+  ttl     = 86400
+}
+
+resource "cloudflare_record" "mailgun_dkim" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "email._domainkey"
+  type    = "TXT"
+  value   = "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7ayPkPghq2agA/MInpj6zrOzfNzRlC+vUHVzKn7oKBu8EMBZnfv+xeA4gtqAZD5iymZL8p+wcovfDIrxIR2hIMQCsfuVP1vml96jJTXSf721SzfgD68ET97wCun6yi7GDtI5itkgk58nqlxAohF7u6fztBDHTGLaFZ0QXG8hlmN6qrgbxd3QWMcOgpQEeocU6zzQZsb0VNFJxWZR58n4DBEkY3OWd3Jui5BRioBRC3NQ4gtQparskkjIuTx/+kmksOzfGe4+BcG/NjJRNKcKYpLOMq83G5DSIyf3ql46kQPA3eqRUrST7FEpiF5kAJovGTAs/ryH+DmuLVa5dIX4iQIDAQAB"
+  ttl     = 86400
+}
+
 # GitHub Pages
 
 resource "cloudflare_record" "gh_pages_apex" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "@"
+  name    = "schnerring.net"
   type    = "CNAME"
   value   = "schnerring.github.io"
   proxied = true
@@ -125,7 +143,8 @@ resource "cloudflare_page_rule" "gh_pages_rule_cache_everything" {
 
 resource "cloudflare_record" "azure_verification" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "@"
+  name    = "schnerring.net"
   type    = "TXT"
   value   = "MS=ms51347144"
+  ttl     = 86400
 }
