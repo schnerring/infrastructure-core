@@ -7,14 +7,14 @@ resource "kubernetes_namespace" "remark42" {
 resource "kubernetes_persistent_volume_claim" "remark42" {
   metadata {
     name      = "remark42-pvc"
-    namespace = "remark42"
+    namespace = kubernetes_namespace.remark42.metadata.0.name
     labels = {
       "app" = "remark42-pvc"
     }
   }
 
   spec {
-    access_modes = ["ReadWriteOnce"]
+    access_modes = ["ReadWriteOnce"] # TODO azurefile / ReadWriteMany?
 
     resources {
       requests = {
@@ -35,7 +35,7 @@ resource "random_password" "remark42_secret" {
 resource "kubernetes_deployment" "remark42" {
   metadata {
     name      = "remark42-deploy"
-    namespace = "remark42"
+    namespace = kubernetes_namespace.remark42.metadata.0.name
     labels = {
       "app" = "remark42"
     }
@@ -68,11 +68,6 @@ resource "kubernetes_deployment" "remark42" {
           name  = "remark42"
           image = "umputun/remark42:${local.remark42_image_version}"
 
-          volume_mount {
-            mount_path = "/srv/var"
-            name       = "remark42-vol"
-          }
-
           port {
             container_port = 8080
           }
@@ -96,6 +91,11 @@ resource "kubernetes_deployment" "remark42" {
             name  = "AUTH_ANON"
             value = "true"
           }
+
+          volume_mount {
+            mount_path = "/srv/var"
+            name       = "remark42-vol"
+          }
         }
 
         volume {
@@ -113,7 +113,7 @@ resource "kubernetes_deployment" "remark42" {
 resource "kubernetes_service" "remark42" {
   metadata {
     name      = "remark42-svc"
-    namespace = "remark42"
+    namespace = kubernetes_namespace.remark42.metadata.0.name
   }
 
   spec {
@@ -125,7 +125,6 @@ resource "kubernetes_service" "remark42" {
       name        = "http"
       port        = 80
       target_port = 8080
-      protocol    = "TCP"
     }
   }
 }
@@ -133,7 +132,7 @@ resource "kubernetes_service" "remark42" {
 resource "kubernetes_ingress" "remark42" {
   metadata {
     name      = "remark42-ing"
-    namespace = "remark42"
+    namespace = kubernetes_namespace.remark42.metadata.0.name
     annotations = {
       "cert-manager.io/cluster-issuer"           = "letsencrypt-production"
       "traefik.ingress.kubernetes.io/router.tls" = "true"

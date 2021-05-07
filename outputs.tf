@@ -8,3 +8,9 @@ output "kube_config" {
   description = "kubeconfig for kubectl access."
   sensitive   = true
 }
+
+output "plausible_admin_password" {
+  value       = random_password.plausible_admin_pwd.result
+  description = "Terraform-generated Plausible administrator password."
+  sensitive   = true
+}

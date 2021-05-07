@@ -48,7 +48,7 @@ resource "helm_release" "cert_manager" {
 resource "kubernetes_secret" "letsencrypt_cloudflare_api_token_secret" {
   metadata {
     name      = "letsencrypt-cloudflare-api-token-secret"
-    namespace = "cert-manager"
+    namespace = kubernetes_namespace.cert_manager.metadata.0.name
   }
 
   data = {
