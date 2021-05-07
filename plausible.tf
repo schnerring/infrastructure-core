@@ -15,7 +15,7 @@ resource "kubernetes_persistent_volume_claim" "event_data" {
 
     resources {
       requests = {
-        "storage" = "500Mi"
+        "storage" = "1Gi"
       }
     }
   }
@@ -160,6 +160,10 @@ resource "random_password" "plausible_secret_key_base" {
   length = 128
 }
 
+locals {
+  plausible_db_name = "plausible"
+}
+
 resource "kubernetes_secret" "plausible" {
   metadata {
     name      = "plausible-secret"
@@ -179,8 +183,8 @@ resource "kubernetes_secret" "plausible" {
     "DISABLE_REGISTRATION" = "true"
 
     # Database
-    "DATABASE_URL"            = "postgres://postgres:${urlencode(random_password.postgres.result)}@postgres-postgresql-headless.postgres:5432/plausible?ssl=false" # TODO
-    "CLICKHOUSE_DATABASE_URL" = "http://event-data-svc:8123/plausible"
+    "DATABASE_URL"            = "postgres://${var.postgres_username}:${urlencode(random_password.postgres.result)}@${var.postgres_service_name}-headless.${kubernetes_namespace.postgres.metadata.0.name}:${var.postgres_service_port}/${local.plausible_db_name}?ssl=false"
+    "CLICKHOUSE_DATABASE_URL" = "http://event-data-svc:8123/${local.plausible_db_name}"
 
     # SMTP
     "MAILER_EMAIL"          = var.plausible_mailer_email

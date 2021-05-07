@@ -27,12 +27,27 @@ resource "helm_release" "postgres" {
   namespace  = kubernetes_namespace.postgres.metadata.0.name
 
   set {
+    name  = "postgresqlUsername"
+    value = var.postgres_username
+  }
+
+  set {
+    name  = "fullnameOverride"
+    value = var.postgres_service_name
+  }
+
+  set {
     name  = "existingSecret"
     value = kubernetes_secret.postgres.metadata.0.name
   }
 
   set {
+    name  = "service.port"
+    value = var.postgres_service_port
+  }
+
+  set {
     name  = "persistence.size"
-    value = "500Mi"
+    value = "1Gi"
   }
 }
