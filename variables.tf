@@ -121,3 +121,49 @@ variable "remark42_auth_github_csec" {
   description = "GitHub OAuth client secret."
   sensitive   = true
 }
+
+variable "synapse_image_version" {
+  type        = string
+  description = "Synapse image version."
+  default     = "v1.33.1"
+}
+
+variable "synapse_image_version" {
+  type        = string
+  description = "Synapse image version."
+  default     = "v1.33.1"
+}
+
+variable "synapse_server_name" {
+  type        = string
+  description = "Public Synapse hostname."
+}
+
+variable "synapse_report_stats" {
+  type        = bool
+  description = "Enable anonymous statistics reporting."
+}
+
+variable "synapse_signing_key" {
+  type        = string
+  description = "Signing key Synapse signs messages with."
+  sensitive   = true
+}
+
+variable "synapse_registration_shared_secret" {
+  type        = string
+  description = "Allows registration of standard or admin accounts by anyone who has the shared secret."
+  sensitive   = true
+}
+
+variable "synapse_macaroon_secret_key" {
+  type        = string
+  description = "Secret which is used to sign access tokens."
+  sensitive   = true
+}
+
+variable "synapse_form_secret" {
+  type        = string
+  description = "Secret which is used to calculate HMACs for form values."
+  sensitive   = true
+}
