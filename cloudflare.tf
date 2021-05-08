@@ -2,6 +2,16 @@ resource "cloudflare_zone" "schnerring_net" {
   zone = "schnerring.net"
 }
 
+# Email SPF
+
+resource "cloudflare_record" "spf" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "schnerring.net"
+  type    = "TXT"
+  value   = "v=spf1 include:_spf.protonmail.ch include:mailgun.org mx ~all"
+  ttl     = 86400
+}
+
 # ProtonMail
 
 resource "cloudflare_record" "protonmail_verification" {
@@ -28,14 +38,6 @@ resource "cloudflare_record" "protonmail_mx_2" {
   value    = "mailsec.protonmail.ch"
   ttl      = 86400
   priority = 20
-}
-
-resource "cloudflare_record" "protonmail_spf" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "schnerring.net"
-  type    = "TXT"
-  value   = "v=spf1 include:_spf.protonmail.ch mx ~all"
-  ttl     = 86400
 }
 
 resource "cloudflare_record" "protonmail_dkim_1" {
@@ -71,14 +73,6 @@ resource "cloudflare_record" "protonmail_dmarc" {
 }
 
 # Mailgun
-
-resource "cloudflare_record" "mailgun_spf" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "schnerring.net"
-  type    = "TXT"
-  value   = "v=spf1 include:mailgun.org ~all"
-  ttl     = 86400
-}
 
 resource "cloudflare_record" "mailgun_dkim" {
   zone_id = cloudflare_zone.schnerring_net.id
