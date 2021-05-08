@@ -31,6 +31,23 @@ resource "cloudflare_record" "matrix" {
   ttl     = 86400
 }
 
+resource "cloudflare_record" "matrix_delegation" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "_matrix._tcp.schnerring.net"
+  type    = "SRV"
+  ttl     = 3600
+
+  data = {
+    service  = "_matrix"
+    proto    = "_tcp"
+    name     = "matrix-srv"
+    priority = 0
+    weight   = 0
+    port     = 443
+    target   = "matrix.schnerring.net"
+  }
+}
+
 resource "kubernetes_ingress" "matrix" {
   metadata {
     name      = "matrix-ing"
