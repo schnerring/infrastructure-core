@@ -80,25 +80,25 @@ variable "plausible_mailer_email" {
   sensitive   = true
 }
 
-variable "plausible_smtp_host_addr" {
+variable "smtp_host" {
   type        = string
   description = "SMTP server address."
   sensitive   = true
 }
 
-variable "plausible_smtp_host_port" {
+variable "smtp_port" {
   type        = string
   description = "SMTP server port (implicit TLS)."
   sensitive   = true
 }
 
-variable "plausible_smtp_user_name" {
+variable "smtp_username" {
   type        = string
   description = "SMTP authentication username."
   sensitive   = true
 }
 
-variable "plausible_smtp_user_pwd" {
+variable "smtp_password" {
   type        = string
   description = "SMTP authentication password."
   sensitive   = true

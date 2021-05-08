@@ -32,6 +32,28 @@ resource "random_password" "remark42_secret" {
   length = 64
 }
 
+resource "kubernetes_secret" "remark42" {
+  metadata {
+    name      = "remark42-secret"
+    namespace = kubernetes_namespace.remark42.metadata.0.name
+  }
+
+  # See also: https://github.com/umputun/remark42#parameters
+  data = {
+    "REMARK_URL" = "https://remark42.k8s.schnerring.net"
+    "SECRET"     = random_password.remark42_secret.result
+    "SITE"       = "schnerring.net"
+    "AUTH_ANON"  = "true"
+
+    # SMTP
+    "SMTP_HOST"     = var.smtp_host
+    "SMTP_PORT"     = var.smtp_port
+    "SMTP_USERNAME" = var.smtp_username
+    "SMTP_PASSWORD" = var.smtp_port
+    "SMTP_TLS"      = "true"
+  }
+}
+
 resource "kubernetes_deployment" "remark42" {
   metadata {
     name      = "remark42-deploy"
@@ -73,23 +95,102 @@ resource "kubernetes_deployment" "remark42" {
           }
 
           env {
-            name  = "REMARK_URL"
-            value = "https://remark42.k8s.schnerring.net"
+            name = "REMARK_URL"
+
+            value_from {
+              secret_key_ref {
+                key  = "REMARK_URL"
+                name = "remark42-secret"
+              }
+            }
           }
 
           env {
-            name  = "SITE"
-            value = "schnerring.net"
+            name = "SECRET"
+
+            value_from {
+              secret_key_ref {
+                key  = "SECRET"
+                name = "remark42-secret"
+              }
+            }
           }
 
           env {
-            name  = "SECRET"
-            value = random_password.remark42_secret.result
+            name = "SITE"
+
+            value_from {
+              secret_key_ref {
+                key  = "SITE"
+                name = "remark42-secret"
+              }
+            }
           }
 
           env {
-            name  = "AUTH_ANON"
-            value = "true"
+            name = "AUTH_ANON"
+
+            value_from {
+              secret_key_ref {
+                key  = "AUTH_ANON"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "SMTP_HOST"
+
+            value_from {
+              secret_key_ref {
+                key  = "SMTP_HOST"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "SMTP_PORT"
+
+            value_from {
+              secret_key_ref {
+                key  = "SMTP_PORT"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "SMTP_USERNAME"
+
+            value_from {
+              secret_key_ref {
+                key  = "SMTP_USERNAME"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "SMTP_PASSWORD"
+
+            value_from {
+              secret_key_ref {
+                key  = "SMTP_PASSWORD"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "SMTP_TLS"
+
+            value_from {
+              secret_key_ref {
+                key  = "SMTP_TLS"
+                name = "remark42-secret"
+              }
+            }
           }
 
           volume_mount {

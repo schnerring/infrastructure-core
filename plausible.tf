@@ -188,10 +188,10 @@ resource "kubernetes_secret" "plausible" {
 
     # SMTP
     "MAILER_EMAIL"          = var.plausible_mailer_email
-    "SMTP_HOST_ADDR"        = var.plausible_smtp_host_addr
-    "SMTP_HOST_PORT"        = var.plausible_smtp_host_port
-    "SMTP_USER_NAME"        = var.plausible_smtp_user_name
-    "SMTP_USER_PWD"         = var.plausible_smtp_user_pwd
+    "SMTP_HOST_ADDR"        = var.smtp_host
+    "SMTP_HOST_PORT"        = var.smtp_port
+    "SMTP_USER_NAME"        = var.smtp_username
+    "SMTP_USER_PWD"         = var.smtp_password
     "SMTP_HOST_SSL_ENABLED" = "true"
     "SMTP_RETRIES"          = "2"
   }
