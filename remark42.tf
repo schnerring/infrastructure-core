@@ -14,7 +14,8 @@ resource "kubernetes_persistent_volume_claim" "remark42" {
   }
 
   spec {
-    access_modes = ["ReadWriteOnce"] # TODO azurefile / ReadWriteMany?
+    access_modes       = ["ReadWriteOnce"]
+    storage_class_name = "azurefile"
 
     resources {
       requests = {
@@ -22,10 +23,6 @@ resource "kubernetes_persistent_volume_claim" "remark42" {
       }
     }
   }
-}
-
-locals {
-  remark42_image_version = "v1.7.1"
 }
 
 resource "random_password" "remark42_secret" {
@@ -92,7 +89,7 @@ resource "kubernetes_deployment" "remark42" {
 
         container {
           name  = "remark42"
-          image = "umputun/remark42:${local.remark42_image_version}"
+          image = "umputun/remark42:${var.remark42_image_version}"
 
           port {
             container_port = 8080

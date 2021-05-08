@@ -32,6 +32,12 @@ variable "clickhouse_image_version" {
   default     = "21.3.9.83" # LTS release: https://github.com/ClickHouse/ClickHouse/releases/tag/v21.3.9.83-lts
 }
 
+variable "postgres_helm_chart_version" {
+  type        = string
+  description = "bitnami/postgresql Helm Chart version"
+  default     = "10.4.2"
+}
+
 variable "postgres_username" {
   type        = string
   description = "Postgres username."
@@ -48,12 +54,6 @@ variable "postgres_service_port" {
   type        = string
   description = "Postgres service port."
   default     = "5432"
-}
-
-variable "postgres_helm_chart_version" {
-  type        = string
-  description = "bitnami/postgresql Helm Chart version"
-  default     = "10.4.2"
 }
 
 variable "plausible_image_version" {
@@ -102,6 +102,12 @@ variable "smtp_password" {
   type        = string
   description = "SMTP authentication password."
   sensitive   = true
+}
+
+variable "remark42_image_version" {
+  type        = string
+  description = "Remark42 image version"
+  default     = "v1.7.1"
 }
 
 variable "remark42_auth_github_cid" {
