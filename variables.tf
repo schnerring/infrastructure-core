@@ -103,3 +103,15 @@ variable "smtp_password" {
   description = "SMTP authentication password."
   sensitive   = true
 }
+
+variable "remark42_auth_github_cid" {
+  type        = string
+  description = "GitHub OAuth client ID."
+  sensitive   = true
+}
+
+variable "remark42_auth_github_csec" {
+  type        = string
+  description = "GitHub OAuth client secret."
+  sensitive   = true
+}

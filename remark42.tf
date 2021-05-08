@@ -40,10 +40,9 @@ resource "kubernetes_secret" "remark42" {
 
   # See also: https://github.com/umputun/remark42#parameters
   data = {
-    "REMARK_URL" = "https://remark42.k8s.schnerring.net"
+    "REMARK_URL" = "https://${cloudflare_record.remark42.hostname}"
     "SECRET"     = random_password.remark42_secret.result
     "SITE"       = "schnerring.net"
-    "AUTH_ANON"  = "true"
 
     # SMTP
     "SMTP_HOST"     = var.smtp_host
@@ -51,6 +50,11 @@ resource "kubernetes_secret" "remark42" {
     "SMTP_USERNAME" = var.smtp_username
     "SMTP_PASSWORD" = var.smtp_port
     "SMTP_TLS"      = "true"
+
+    # Authentication
+    "AUTH_ANON"        = "false"
+    "AUTH_GITHUB_CID"  = var.remark42_auth_github_cid
+    "AUTH_GITHUB_CSEC" = var.remark42_auth_github_csec
   }
 }
 
@@ -133,6 +137,28 @@ resource "kubernetes_deployment" "remark42" {
             value_from {
               secret_key_ref {
                 key  = "AUTH_ANON"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "AUTH_GITHUB_CID"
+
+            value_from {
+              secret_key_ref {
+                key  = "AUTH_GITHUB_CID"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "AUTH_GITHUB_CSEC"
+
+            value_from {
+              secret_key_ref {
+                key  = "AUTH_GITHUB_CSEC"
                 name = "remark42-secret"
               }
             }
@@ -230,6 +256,14 @@ resource "kubernetes_service" "remark42" {
   }
 }
 
+resource "cloudflare_record" "remark42" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "remark42.schnerring.net"
+  type    = "CNAME"
+  value   = "remark42.k8s.schnerring.net"
+  ttl     = 86400
+}
+
 resource "kubernetes_ingress" "remark42" {
   metadata {
     name      = "remark42-ing"
@@ -242,7 +276,7 @@ resource "kubernetes_ingress" "remark42" {
 
   spec {
     rule {
-      host = "remark42.k8s.schnerring.net"
+      host = cloudflare_record.remark42.hostname
 
       http {
         path {
@@ -257,7 +291,7 @@ resource "kubernetes_ingress" "remark42" {
     }
 
     tls {
-      hosts       = ["remark42.k8s.schnerring.net"]
+      hosts       = [cloudflare_record.remark42.hostname]
       secret_name = "remark42-tls-secret"
     }
   }

@@ -178,7 +178,7 @@ resource "kubernetes_secret" "plausible" {
     "ADMIN_USER_PWD"   = random_password.plausible_admin_pwd.result
 
     # Server
-    "BASE_URL"             = "https://plausible.k8s.schnerring.net" # TODO
+    "BASE_URL"             = "https://${cloudflare_record.plausible.hostname}"
     "SECRET_KEY_BASE"      = base64encode(random_password.plausible_secret_key_base.result)
     "DISABLE_REGISTRATION" = "true"
 
@@ -607,6 +607,14 @@ resource "kubernetes_service" "plausible" {
   }
 }
 
+resource "cloudflare_record" "plausible" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "plausible.schnerring.net"
+  type    = "CNAME"
+  value   = "plausible.k8s.schnerring.net"
+  ttl     = 86400
+}
+
 resource "kubernetes_ingress" "plausible" {
   metadata {
     name      = "plausible-ing"
@@ -619,7 +627,7 @@ resource "kubernetes_ingress" "plausible" {
 
   spec {
     rule {
-      host = "plausible.k8s.schnerring.net"
+      host = cloudflare_record.plausible.hostname
 
       http {
         path {
@@ -634,7 +642,7 @@ resource "kubernetes_ingress" "plausible" {
     }
 
     tls {
-      hosts       = ["plausible.k8s.schnerring.net"]
+      hosts       = [cloudflare_record.plausible.hostname]
       secret_name = "plausible-tls-secret"
     }
   }
