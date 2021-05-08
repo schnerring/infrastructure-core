@@ -21,7 +21,7 @@ resource "kubernetes_secret" "postgres" {
 
 resource "helm_release" "postgres" {
   name       = "postgres"
-  repository = "https://marketplace.azurecr.io/helm/v1/repo"
+  repository = "https://charts.bitnami.com/bitnami"
   chart      = "postgresql"
   version    = var.postgres_helm_chart_version
   namespace  = kubernetes_namespace.postgres.metadata.0.name

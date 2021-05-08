@@ -53,7 +53,7 @@ variable "postgres_service_port" {
 variable "postgres_helm_chart_version" {
   type        = string
   description = "bitnami/postgresql Helm Chart version"
-  default     = "10.3.17"
+  default     = "10.4.2"
 }
 
 variable "plausible_image_version" {
