@@ -4,6 +4,25 @@ resource "kubernetes_namespace" "matrix" {
   }
 }
 
+resource "kubernetes_service" "matrix" {
+  metadata {
+    name      = "matrix-svc"
+    namespace = kubernetes_namespace.matrix.metadata.0.name
+  }
+
+  spec {
+    selector = {
+      "app" = "matrix"
+    }
+
+    port {
+      name        = "http"
+      port        = 8448
+      target_port = 8448
+    }
+  }
+}
+
 resource "cloudflare_record" "matrix" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "matrix.schnerring.net"
@@ -32,7 +51,7 @@ resource "kubernetes_ingress" "matrix" {
 
           backend {
             service_name = "matrix-svc"
-            service_port = 8000
+            service_port = 8448
           }
         }
       }
