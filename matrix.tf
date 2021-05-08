@@ -229,7 +229,16 @@ resource "kubernetes_ingress" "matrix" {
 
       http {
         path {
-          path = "/"
+          path = "/_matrix"
+
+          backend {
+            service_name = "matrix-svc"
+            service_port = 8008
+          }
+        }
+
+        path {
+          path = "/_synapse/client"
 
           backend {
             service_name = "matrix-svc"
@@ -240,8 +249,12 @@ resource "kubernetes_ingress" "matrix" {
     }
 
     tls {
-      hosts       = [cloudflare_record.matrix.hostname]
       secret_name = "matrix-tls-secret"
+
+      hosts = [
+        cloudflare_record.matrix.hostname,
+        var.synapse_server_name
+      ]
     }
   }
 }
