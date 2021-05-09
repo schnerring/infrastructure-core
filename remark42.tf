@@ -19,7 +19,7 @@ resource "kubernetes_persistent_volume_claim" "remark42" {
 
     resources {
       requests = {
-        "storage" = "100Mi"
+        "storage" = "1Gi"
       }
     }
   }
@@ -29,29 +29,42 @@ resource "random_password" "remark42_secret" {
   length = 64
 }
 
+
+# See also: https://github.com/umputun/remark42#parameters
+resource "kubernetes_config_map" "remark42" {
+  metadata {
+    name      = "remark42-cm"
+    namespace = kubernetes_namespace.remark42.metadata.0.name
+  }
+
+  data = {
+    "REMARK_URL"        = "https://${cloudflare_record.remark42.hostname}"
+    "SITE"              = "schnerring.net"
+    "NOTIFY_TYPE"       = "email"
+    "AUTH_EMAIL_ENABLE" = "true"
+  }
+}
+
 resource "kubernetes_secret" "remark42" {
   metadata {
     name      = "remark42-secret"
     namespace = kubernetes_namespace.remark42.metadata.0.name
   }
 
-  # See also: https://github.com/umputun/remark42#parameters
   data = {
-    "REMARK_URL" = "https://${cloudflare_record.remark42.hostname}"
-    "SECRET"     = random_password.remark42_secret.result
-    "SITE"       = "schnerring.net"
+    "SECRET" = random_password.remark42_secret.result
 
-    # SMTP
     "SMTP_HOST"     = var.smtp_host
     "SMTP_PORT"     = var.smtp_port
     "SMTP_USERNAME" = var.smtp_username
     "SMTP_PASSWORD" = var.smtp_port
     "SMTP_TLS"      = "true"
 
-    # Authentication
-    "AUTH_ANON"        = "false"
     "AUTH_GITHUB_CID"  = var.remark42_auth_github_cid
     "AUTH_GITHUB_CSEC" = var.remark42_auth_github_csec
+
+    "AUTH_EMAIL_FROM"   = var.remark42_mailer_email
+    "NOTIFY_EMAIL_FROM" = var.remark42_mailer_email
   }
 }
 
@@ -99,9 +112,9 @@ resource "kubernetes_deployment" "remark42" {
             name = "REMARK_URL"
 
             value_from {
-              secret_key_ref {
+              config_map_key_ref {
                 key  = "REMARK_URL"
-                name = "remark42-secret"
+                name = "remark42-cm"
               }
             }
           }
@@ -121,20 +134,31 @@ resource "kubernetes_deployment" "remark42" {
             name = "SITE"
 
             value_from {
-              secret_key_ref {
+              config_map_key_ref {
                 key  = "SITE"
+                name = "remark42-cm"
+              }
+            }
+          }
+
+          env {
+            name = "AUTH_EMAIL_FROM"
+
+            value_from {
+              secret_key_ref {
+                key  = "AUTH_EMAIL_FROM"
                 name = "remark42-secret"
               }
             }
           }
 
           env {
-            name = "AUTH_ANON"
+            name = "AUTH_EMAIL_ENABLE"
 
             value_from {
-              secret_key_ref {
-                key  = "AUTH_ANON"
-                name = "remark42-secret"
+              config_map_key_ref {
+                key  = "AUTH_EMAIL_ENABLE"
+                name = "remark42-cm"
               }
             }
           }
@@ -156,6 +180,28 @@ resource "kubernetes_deployment" "remark42" {
             value_from {
               secret_key_ref {
                 key  = "AUTH_GITHUB_CSEC"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
+            name = "NOTIFY_TYPE"
+
+            value_from {
+              config_map_key_ref {
+                key  = "NOTIFY_TYPE"
+                name = "remark42-cm"
+              }
+            }
+          }
+
+          env {
+            name = "NOTIFY_EMAIL_FROM"
+
+            value_from {
+              secret_key_ref {
+                key  = "NOTIFY_EMAIL_FROM"
                 name = "remark42-secret"
               }
             }

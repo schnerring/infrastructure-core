@@ -110,6 +110,11 @@ variable "remark42_image_version" {
   default     = "v1.7.1"
 }
 
+variable "remark42_mailer_email" {
+  type        = string
+  description = "Email address to use as FROM address of all communications from Remark42."
+}
+
 variable "remark42_auth_github_cid" {
   type        = string
   description = "GitHub OAuth client ID."
