@@ -113,16 +113,6 @@ resource "cloudflare_page_rule" "gh_pages_rule_forward_www_to_apex" {
   }
 }
 
-resource "cloudflare_page_rule" "gh_pages_rule_always_use_https" {
-  zone_id  = cloudflare_zone.schnerring_net.id
-  target   = "http://schnerring.net/*"
-  priority = 2
-
-  actions {
-    always_use_https = true
-  }
-}
-
 resource "cloudflare_page_rule" "gh_pages_rule_cache_everything" {
   zone_id  = cloudflare_zone.schnerring_net.id
   target   = "https://schnerring.net/*"

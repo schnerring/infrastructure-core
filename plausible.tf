@@ -611,8 +611,8 @@ resource "cloudflare_record" "plausible" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "plausible"
   type    = "CNAME"
-  value   = "plausible.k8s.schnerring.net"
-  ttl     = 86400
+  value   = cloudflare_record.traefik.hostname
+  proxied = true
 }
 
 resource "kubernetes_ingress" "plausible" {

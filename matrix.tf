@@ -193,7 +193,7 @@ resource "cloudflare_record" "matrix" {
   name    = "matrix"
   type    = "A"
   value   = cloudflare_record.traefik.value
-  ttl     = 86400
+  proxied = true
 }
 
 resource "cloudflare_record" "matrix_delegation" {

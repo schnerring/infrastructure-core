@@ -257,8 +257,8 @@ resource "cloudflare_record" "remark42" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "remark42"
   type    = "CNAME"
-  value   = "remark42.k8s.schnerring.net"
-  ttl     = 86400
+  value   = cloudflare_record.traefik.hostname
+  proxied = true
 }
 
 resource "kubernetes_ingress" "remark42" {
