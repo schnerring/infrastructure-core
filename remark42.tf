@@ -4,6 +4,14 @@ resource "kubernetes_namespace" "remark42" {
   }
 }
 
+resource "cloudflare_record" "remark42" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "remark42"
+  type    = "CNAME"
+  value   = cloudflare_record.traefik.hostname
+  proxied = true
+}
+
 resource "kubernetes_persistent_volume_claim" "remark42" {
   metadata {
     name      = "remark42-pvc"
@@ -25,12 +33,8 @@ resource "kubernetes_persistent_volume_claim" "remark42" {
   }
 }
 
-resource "random_password" "remark42_secret" {
-  length = 64
-}
-
-
 # See also: https://github.com/umputun/remark42#parameters
+
 resource "kubernetes_config_map" "remark42" {
   metadata {
     name      = "remark42-cm"
@@ -38,11 +42,17 @@ resource "kubernetes_config_map" "remark42" {
   }
 
   data = {
-    "REMARK_URL"        = "https://${cloudflare_record.remark42.hostname}"
-    "SITE"              = "schnerring.net"
-    "NOTIFY_TYPE"       = "email"
-    "AUTH_EMAIL_ENABLE" = "true"
+    "REMARK_URL"         = "https://${cloudflare_record.remark42.hostname}"
+    "SITE"               = "schnerring.net"
+    "ADMIN_SHARED_ID"    = join(",", var.remark42_admin_shared_ids)
+    "NOTIFY_TYPE"        = "email"
+    "NOTIFY_EMAIL_ADMIN" = "true"
+    "AUTH_EMAIL_ENABLE"  = "true"
   }
+}
+
+resource "random_password" "remark42_secret" {
+  length = 64
 }
 
 resource "kubernetes_secret" "remark42" {
@@ -57,14 +67,15 @@ resource "kubernetes_secret" "remark42" {
     "SMTP_HOST"     = var.smtp_host
     "SMTP_PORT"     = var.smtp_port
     "SMTP_USERNAME" = var.smtp_username
-    "SMTP_PASSWORD" = var.smtp_port
+    "SMTP_PASSWORD" = var.smtp_password
     "SMTP_TLS"      = "true"
 
     "AUTH_GITHUB_CID"  = var.remark42_auth_github_cid
     "AUTH_GITHUB_CSEC" = var.remark42_auth_github_csec
 
-    "AUTH_EMAIL_FROM"   = var.remark42_mailer_email
-    "NOTIFY_EMAIL_FROM" = var.remark42_mailer_email
+    "ADMIN_SHARED_EMAIL" = join(",", var.remark42_admin_shared_emails)
+    "AUTH_EMAIL_FROM"    = var.remark42_email_from
+    "NOTIFY_EMAIL_FROM"  = var.remark42_email_from
   }
 }
 
@@ -186,11 +197,44 @@ resource "kubernetes_deployment" "remark42" {
           }
 
           env {
+            name = "ADMIN_SHARED_ID"
+
+            value_from {
+              config_map_key_ref {
+                key  = "ADMIN_SHARED_ID"
+                name = "remark42-cm"
+              }
+            }
+          }
+
+          env {
+            name = "ADMIN_SHARED_EMAIL"
+
+            value_from {
+              secret_key_ref {
+                key  = "ADMIN_SHARED_EMAIL"
+                name = "remark42-secret"
+              }
+            }
+          }
+
+          env {
             name = "NOTIFY_TYPE"
 
             value_from {
               config_map_key_ref {
                 key  = "NOTIFY_TYPE"
+                name = "remark42-cm"
+              }
+            }
+          }
+
+          env {
+            name = "NOTIFY_EMAIL_ADMIN"
+
+            value_from {
+              config_map_key_ref {
+                key  = "NOTIFY_EMAIL_ADMIN"
                 name = "remark42-cm"
               }
             }
@@ -297,14 +341,6 @@ resource "kubernetes_service" "remark42" {
       target_port = 8080
     }
   }
-}
-
-resource "cloudflare_record" "remark42" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "remark42"
-  type    = "CNAME"
-  value   = cloudflare_record.traefik.hostname
-  proxied = true
 }
 
 resource "kubernetes_ingress" "remark42" {

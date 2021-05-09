@@ -42,6 +42,7 @@ variable "postgres_username" {
   type        = string
   description = "Postgres username."
   default     = "postgres"
+  sensitive   = true
 }
 
 variable "postgres_service_name" {
@@ -110,9 +111,21 @@ variable "remark42_image_version" {
   default     = "v1.7.1"
 }
 
-variable "remark42_mailer_email" {
+variable "remark42_email_from" {
   type        = string
   description = "Email address to use as FROM address of all communications from Remark42."
+  sensitive   = true
+}
+
+variable "remark42_admin_shared_ids" {
+  type        = set(string)
+  description = "Admin IDs."
+}
+
+variable "remark42_admin_shared_emails" {
+  type        = set(string)
+  description = "Email addresses that Remark42 will send notifications to."
+  sensitive   = true
 }
 
 variable "remark42_auth_github_cid" {
