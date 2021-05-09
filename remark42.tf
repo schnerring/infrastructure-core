@@ -255,7 +255,7 @@ resource "kubernetes_service" "remark42" {
 
 resource "cloudflare_record" "remark42" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "remark42.schnerring.net"
+  name    = "remark42"
   type    = "CNAME"
   value   = "remark42.k8s.schnerring.net"
   ttl     = 86400

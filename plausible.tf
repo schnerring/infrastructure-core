@@ -609,7 +609,7 @@ resource "kubernetes_service" "plausible" {
 
 resource "cloudflare_record" "plausible" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "plausible.schnerring.net"
+  name    = "plausible"
   type    = "CNAME"
   value   = "plausible.k8s.schnerring.net"
   ttl     = 86400

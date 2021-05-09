@@ -190,26 +190,26 @@ resource "kubernetes_deployment" "matrix" {
 
 resource "cloudflare_record" "matrix" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "matrix.schnerring.net"
-  type    = "CNAME"
-  value   = "matrix.k8s.schnerring.net"
+  name    = "matrix"
+  type    = "A"
+  value   = cloudflare_record.traefik.value
   ttl     = 86400
 }
 
 resource "cloudflare_record" "matrix_delegation" {
   zone_id = cloudflare_zone.schnerring_net.id
-  name    = "_matrix._tcp.schnerring.net"
+  name    = "_matrix._tcp"
   type    = "SRV"
-  ttl     = 3600
+  ttl     = 86400
 
   data = {
     service  = "_matrix"
     proto    = "_tcp"
-    name     = "matrix-srv"
+    name     = var.synapse_server_name
     priority = 0
     weight   = 0
     port     = 443
-    target   = "matrix.schnerring.net"
+    target   = cloudflare_record.matrix.hostname
   }
 }
 
@@ -218,12 +218,36 @@ resource "kubernetes_ingress" "matrix" {
     name      = "matrix-ing"
     namespace = kubernetes_namespace.matrix.metadata.0.name
     annotations = {
-      "cert-manager.io/cluster-issuer"           = "letsencrypt-staging"
+      "cert-manager.io/cluster-issuer"           = "letsencrypt-production"
       "traefik.ingress.kubernetes.io/router.tls" = "true"
     }
   }
 
   spec {
+    rule {
+      host = var.synapse_server_name
+
+      http {
+        path {
+          path = "/_matrix"
+
+          backend {
+            service_name = "matrix-svc"
+            service_port = 8008
+          }
+        }
+
+        path {
+          path = "/_synapse/client"
+
+          backend {
+            service_name = "matrix-svc"
+            service_port = 8008
+          }
+        }
+      }
+    }
+
     rule {
       host = cloudflare_record.matrix.hostname
 
@@ -252,8 +276,8 @@ resource "kubernetes_ingress" "matrix" {
       secret_name = "matrix-tls-secret"
 
       hosts = [
-        cloudflare_record.matrix.hostname,
-        var.synapse_server_name
+        var.synapse_server_name,
+        cloudflare_record.matrix.hostname
       ]
     }
   }
