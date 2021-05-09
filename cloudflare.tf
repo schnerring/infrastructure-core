@@ -8,7 +8,7 @@ resource "cloudflare_record" "spf" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "schnerring.net"
   type    = "TXT"
-  value   = "v=spf1 include:_spf.protonmail.ch include:mailgun.org mx ~all"
+  value   = "v=spf1 include:mailgun.org include:_spf.protonmail.ch mx ~all"
   ttl     = 86400
 }
 
