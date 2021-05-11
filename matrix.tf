@@ -217,6 +217,7 @@ resource "kubernetes_ingress" "matrix" {
   metadata {
     name      = "matrix-ing"
     namespace = kubernetes_namespace.matrix.metadata.0.name
+
     annotations = {
       "cert-manager.io/cluster-issuer"           = "letsencrypt-production"
       "traefik.ingress.kubernetes.io/router.tls" = "true"
@@ -230,15 +231,6 @@ resource "kubernetes_ingress" "matrix" {
       http {
         path {
           path = "/_matrix"
-
-          backend {
-            service_name = "matrix-svc"
-            service_port = 8008
-          }
-        }
-
-        path {
-          path = "/_synapse/client"
 
           backend {
             service_name = "matrix-svc"
@@ -269,6 +261,15 @@ resource "kubernetes_ingress" "matrix" {
             service_port = 8008
           }
         }
+
+        path {
+          path = "/"
+
+          backend {
+            service_name = "matrix-admin-svc"
+            service_port = 8080
+          }
+        }
       }
     }
 
@@ -279,6 +280,69 @@ resource "kubernetes_ingress" "matrix" {
         var.synapse_server_name,
         cloudflare_record.matrix.hostname
       ]
+    }
+  }
+}
+
+resource "kubernetes_deployment" "matrix_admin" {
+  metadata {
+    name      = "matrix-admin-deploy"
+    namespace = kubernetes_namespace.matrix.metadata.0.name
+    labels = {
+      "app" = "matrix-admin"
+    }
+  }
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        "app" = "matrix-admin"
+      }
+    }
+
+    strategy {
+      type = "Recreate"
+    }
+
+    template {
+      metadata {
+        labels = {
+          "app" = "matrix-admin"
+        }
+      }
+
+      spec {
+        hostname       = "matrix-admin"
+        restart_policy = "Always"
+
+        container {
+          name  = "synapse-admin"
+          image = "awesometechnologies/synapse-admin:latest"
+
+          port {
+            container_port = 80
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "matrix_admin" {
+  metadata {
+    name      = "matrix-admin-svc"
+    namespace = kubernetes_namespace.matrix.metadata.0.name
+  }
+
+  spec {
+    selector = {
+      "app" = "matrix-admin"
+    }
+
+    port {
+      port        = 8080
+      target_port = 80
     }
   }
 }
