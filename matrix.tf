@@ -39,6 +39,11 @@ resource "kubernetes_persistent_volume_claim" "matrix" {
   }
 }
 
+locals {
+  synapse_log_config       = "/data/${var.synapse_server_name}.log.config"
+  synapse_signing_key_path = "/data/${var.synapse_server_name}.signing.key"
+}
+
 resource "kubernetes_secret" "matrix" {
   metadata {
     name      = "matrix-secret"
@@ -48,22 +53,26 @@ resource "kubernetes_secret" "matrix" {
   # See also: https://github.com/matrix-org/synapse/blob/master/docker/README.md#generating-a-configuration-file
   data = {
     "homeserver.yaml" = templatefile(
-      "${path.module}/synapse-config/homeserver.tpl.yaml", {
+      "${path.module}/synapse-config/homeserver.tpl.yaml",
+      {
         "server_name"                = var.synapse_server_name
         "report_stats"               = var.synapse_report_stats
-        "log_config"                 = "/data/${var.synapse_server_name}.log.config"
+        "log_config"                 = local.synapse_log_config
+        "signing_key_path"           = local.synapse_signing_key_path
         "registration_shared_secret" = var.synapse_registration_shared_secret
         "macaroon_secret_key"        = var.synapse_macaroon_secret_key
         "form_secret"                = var.synapse_form_secret
-        "signing_key_path"           = "/data/${var.synapse_server_name}.signing.key"
       }
     )
-    "log.config" = file("${path.module}/synapse-config/log.tpl.config",
+
+    "log.config" = templatefile(
+      "${path.module}/synapse-config/log.tpl.config",
       {
-        "synapse_log_file_path" = "/data/homeserver.log"
-        "synapse_log_level"     = "INFO"
+        "log_filename" = "/data/homeserver.log"
+        "log_level"    = "INFO"
       }
     )
+
     "signing.key" = var.synapse_signing_key
   }
 }
@@ -100,46 +109,6 @@ resource "kubernetes_deployment" "matrix" {
         hostname       = "matrix"
         restart_policy = "Always"
 
-        init_container {
-          args  = ["generate"]
-          name  = "synapse-init"
-          image = "matrixdotorg/synapse:${var.synapse_image_version}"
-
-          env {
-            name  = "SYNAPSE_SERVER_NAME"
-            value = var.synapse_server_name
-          }
-
-          env {
-            name  = "SYNAPSE_REPORT_STATS"
-            value = var.synapse_report_stats ? "yes" : "no"
-          }
-
-          env {
-            name  = "LOG_FILE_PATH"
-            value = local.synapse_log_file_path
-          }
-
-          volume_mount {
-            mount_path = "/data"
-            name       = "data-vol"
-          }
-
-          volume_mount {
-            name       = "config-vol"
-            mount_path = "/data/homeserver.yaml"
-            sub_path   = "homeserver.yaml"
-            read_only  = true
-          }
-
-          volume_mount {
-            name       = "config-vol"
-            mount_path = "/data/${var.synapse_server_name}.log.config"
-            sub_path   = "log.config"
-            read_only  = true
-          }
-        }
-
         container {
           name  = "synapse"
           image = "matrixdotorg/synapse:${var.synapse_image_version}"
@@ -154,16 +123,23 @@ resource "kubernetes_deployment" "matrix" {
           }
 
           volume_mount {
-            name       = "config-vol"
+            name       = "secret-vol"
             mount_path = "/data/homeserver.yaml"
             sub_path   = "homeserver.yaml"
             read_only  = true
           }
 
           volume_mount {
-            name       = "config-vol"
-            mount_path = "/data/${var.synapse_server_name}.log.config"
+            name       = "secret-vol"
+            mount_path = local.synapse_log_config
             sub_path   = "log.config"
+            read_only  = true
+          }
+
+          volume_mount {
+            name       = "secret-vol"
+            mount_path = local.synapse_signing_key_path
+            sub_path   = "signing.key"
             read_only  = true
           }
         }
@@ -177,7 +153,7 @@ resource "kubernetes_deployment" "matrix" {
         }
 
         volume {
-          name = "config-vol"
+          name = "secret-vol"
 
           secret {
             secret_name = "matrix-secret"

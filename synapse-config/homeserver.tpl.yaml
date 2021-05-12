@@ -26,7 +26,7 @@
 # lowercase and may contain an explicit port.
 # Examples: matrix.org, localhost:8080
 #
-server_name: ${server_name}
+server_name: "${server_name}"
 
 # When running as a daemon, the file to store the pid in
 #
@@ -794,7 +794,7 @@ database:
 # A yaml python logging config file as described by
 # https://docs.python.org/3.7/library/logging.config.html#configuration-dictionary-schema
 #
-log_config: ${log_config}
+log_config: "${log_config}"
 
 ## Ratelimiting ##
 
@@ -1177,7 +1177,7 @@ url_preview_accept_language:
 # If set, allows registration of standard or admin accounts by anyone who
 # has the shared secret, even if registration is otherwise disabled.
 #
-registration_shared_secret: ${registration_shared_secret}
+registration_shared_secret: "${registration_shared_secret}"
 
 # Set the number of bcrypt rounds used to generate password hash.
 # Larger numbers increase the work factor needed to generate the hash.
@@ -1442,7 +1442,7 @@ metrics_flags:
 
 # Whether or not to report anonymized homeserver usage statistics.
 #
-report_stats: ${report_stats}
+report_stats: "${report_stats}"
 
 # The endpoint to report the anonymized homeserver usage statistics to.
 # Defaults to https://matrix.org/report-usage-stats/push
@@ -1492,19 +1492,19 @@ room_prejoin_state:
 # the registration_shared_secret is used, if one is given; otherwise,
 # a secret key is derived from the signing key.
 #
-macaroon_secret_key: ${macaroon_secret_key}
+macaroon_secret_key: "${macaroon_secret_key}"
 
 # a secret which is used to calculate HMACs for form values, to stop
 # falsification of values. Must be specified for the User Consent
 # forms to work.
 #
-form_secret: ${form_secret}
+form_secret: "${form_secret}"
 
 ## Signing Keys ##
 
 # Path to the signing key to sign messages with
 #
-signing_key_path: ${signing_key_path}
+signing_key_path: "${signing_key_path}"
 
 # The keys that the server used to sign messages with but won't use
 # to sign new messages.

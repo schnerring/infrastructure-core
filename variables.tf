@@ -146,12 +146,6 @@ variable "synapse_image_version" {
   default     = "v1.33.1"
 }
 
-variable "synapse_image_version" {
-  type        = string
-  description = "Synapse image version."
-  default     = "v1.33.1"
-}
-
 variable "synapse_server_name" {
   type        = string
   description = "Public Synapse hostname."
