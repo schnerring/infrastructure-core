@@ -22,23 +22,6 @@ resource "kubernetes_service" "matrix" {
   }
 }
 
-resource "kubernetes_persistent_volume_claim" "matrix" {
-  metadata {
-    name      = "matrix-pvc"
-    namespace = kubernetes_namespace.matrix.metadata.0.name
-  }
-
-  spec {
-    access_modes = ["ReadWriteOnce"]
-
-    resources {
-      requests = {
-        "storage" = "1Gi"
-      }
-    }
-  }
-}
-
 locals {
   synapse_log_config       = "/data/${var.synapse_server_name}.log.config"
   synapse_signing_key_path = "/data/${var.synapse_server_name}.signing.key"
@@ -74,6 +57,23 @@ resource "kubernetes_secret" "matrix" {
     )
 
     "signing.key" = var.synapse_signing_key
+  }
+}
+
+resource "kubernetes_persistent_volume_claim" "matrix" {
+  metadata {
+    name      = "matrix-pvc"
+    namespace = kubernetes_namespace.matrix.metadata.0.name
+  }
+
+  spec {
+    access_modes = ["ReadWriteOnce"]
+
+    resources {
+      requests = {
+        "storage" = "4Gi"
+      }
+    }
   }
 }
 

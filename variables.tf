@@ -143,7 +143,7 @@ variable "remark42_auth_github_csec" {
 variable "synapse_image_version" {
   type        = string
   description = "Synapse image version."
-  default     = "v1.33.1"
+  default     = "v1.33.2"
 }
 
 variable "synapse_server_name" {
