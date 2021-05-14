@@ -45,6 +45,10 @@ resource "kubernetes_secret" "matrix" {
         "registration_shared_secret" = var.synapse_registration_shared_secret
         "macaroon_secret_key"        = var.synapse_macaroon_secret_key
         "form_secret"                = var.synapse_form_secret
+        "postgres_username"          = postgresql_role.matrix_db.name
+        "postgres_password"          = random_password.matrix_db.result
+        "postgres_database"          = postgresql_database.matrix_db.name
+        "postgres_host"              = "${var.postgres_service_name}-headless.${kubernetes_namespace.postgres.metadata.0.name}"
       }
     )
 

@@ -772,22 +772,22 @@ caches:
 #
 # Example Postgres configuration:
 #
-#database:
-#  name: psycopg2
-#  args:
-#    user: synapse_user
-#    password: secretpassword
-#    database: synapse
-#    host: localhost
-#    cp_min: 5
-#    cp_max: 10
-#
+database:
+  name: psycopg2
+  args:
+    user: "${postgres_username}"
+    password: "${postgres_password}"
+    database: "${postgres_database}"
+    host: "${postgres_host}"
+    cp_min: 5
+    cp_max: 10
+
 # For more information on using Synapse with Postgres, see `docs/postgres.md`.
 #
-database:
-  name: sqlite3
-  args:
-    database: /data/homeserver.db
+# database:
+#   name: sqlite3
+#   args:
+#     database: /data/homeserver.db
 
 ## Logging ##
 
