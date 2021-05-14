@@ -1,10 +1,12 @@
 # infrastructure
 
-Terraform "Infrastructure as Code" (IaC) project to manage my personal cloud infrastructure
+Terraform "Infrastructure as Code" (IaC) project to manage my cloud infrastructure.
+
+This project is constantly evolving and will lack extensive documentation until stabilizing.
 
 ## Local Development
 
-## Environment Variables
+### Environment Variables
 
 To authenticate to Azure, a service principal with subscription _Owner_ permissions is required. Set the following variables to [configure authentication](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret#configuring-the-service-principal-in-terraform):
 
@@ -13,7 +15,9 @@ To authenticate to Azure, a service principal with subscription _Owner_ permissi
 - `ARM_SUBSCRIPTION_ID`
 - `ARM_TENANT_ID`
 
-To authenticate to GitHub, set the `GITHUB_TOKEN` variable to a [personal access token](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with _public_repo_ scope.
+To authenticate with GitHub, set the `GITHUB_TOKEN` variable to a [personal access token](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with _public_repo_ scope.
+
+Terraform input variables to configure the deployment are defined inside the [`variables.tf`](./variables.tf) file.
 
 ### Initialize
 
@@ -33,3 +37,23 @@ terraform init \
 terraform plan -out infrastructure.tfplan
 terraform apply infrastructure.tfplan
 ```
+
+## Terraform Resource Overview
+
+| :File                                       | :Description                                                                                                                                                       |
+| :------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :[`common.tf`](./commond.tf)                | :Common resources that is shared between deployments                                                                                                               |
+| :[`backend.tf`](./backend.tf)               | :[Remote State](https://www.terraform.io/docs/language/state/remote.html) configuration                                                                            |
+| :[`provider.tf`](./provider.tf)             | :[Provider](https://www.terraform.io/docs/language/providers/index.html) configuration                                                                             |
+| :[`terraform.tf`](./terraform.tf)           | :Remote State storage configuration                                                                                                                                |
+| :[`variables.tf`](./variables.tf)           | :[Input Variables](https://www.terraform.io/docs/language/values/variables.html)                                                                                   |
+| :[`outputs.tf`](./outputs.tf)               | :[Output Values](https://www.terraform.io/docs/language/values/outputs.html)                                                                                       |
+| :[`freenas-backup.tf`](./freenas-backup.tf) | :Azure Storage Account configuration that is used by my FreeNAS as backup storage                                                                                  |
+| :[`cloudflare.tf`](./cloudflare.tf)         | :Common Cloudflare DNS records and Page Rules                                                                                                                      |
+| :[`devops.tf`](./devops.tf)                 | :Azure Service Principal authorized to perform Terraform operations                                                                                                |
+| :[`hello.tf`](./hello.tf)                   | :"Hello World" AKS deployment                                                                                                                                      |
+| :[`k8s.tf`](./k8s.tf)                       | :Azure Kubernetes Service (AKS) cluster resources                                                                                                                  |
+| :[`matrix.tf`](./matrix.tf)                 | :Matrix [Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) AKS deployments |
+| :[`plausible.tf`](./plausible.tf)           | :[Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
+| :[`postgres.tf`](./postgres.tf)             | :[PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
+| :[`remark42.tf`](./remark42.tf)             | :[Remark42](https://remark42.com/) AKS deployment                                                                                                                  |

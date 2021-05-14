@@ -9,6 +9,18 @@ output "kube_config" {
   sensitive   = true
 }
 
+output "postgres_admin_username" {
+  value       = var.postgres_username
+  description = "PostgreSQL administrator password."
+  sensitive   = true
+}
+
+output "postgres_admin_password" {
+  value       = random_password.postgres.result
+  description = "PostgreSQL administrator password."
+  sensitive   = true
+}
+
 output "plausible_admin_password" {
   value       = random_password.plausible_admin_pwd.result
   description = "Terraform-generated Plausible administrator password."
