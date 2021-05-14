@@ -22,6 +22,27 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
   ]
 }
 
+provider "registry.terraform.io/cyrilgdn/postgresql" {
+  version     = "1.13.0-pre1"
+  constraints = "1.13.0-pre1"
+  hashes = [
+    "h1:JyAlQQlBCn4qyo+7YtFKWNS/CMB+hQVlOpNhdzMwWhg=",
+    "zh:11952cc6310ea4c24df4de839a1089c0eee20bbabbc18a99251dbec88c799933",
+    "zh:13ce0f25b66eeba63c0db8b7872a0acaf39ed2444eba29e2b8e375fa5ac0785f",
+    "zh:3e1ecd7b1cfdca3dc3cc4acf747fefd3721a63da816c4a13f484b7d1e8224552",
+    "zh:490cb7dd76ac0b7aa1d3abbd160d99d182902c5d34436e9c0970535a85616809",
+    "zh:4fa9a799300cb5112a634092c238f6bd8194a2182dde66b8dca0937725b5da6d",
+    "zh:8c797dc301eb8451c09e220fa5fab23ddd1e980f3f00ca4b84b2c6d29168ecd3",
+    "zh:933fde81525a9586187b059b4278e162ada4567cfe5c4f366e1ea92b15cc1fab",
+    "zh:9c42be239fef61b81abaeed2bbb72ebdb8206f599ccfa7e7e2adb8fcd45078c2",
+    "zh:ad21112de2c6341f74f1210e5aec14212fbdf5c83cbb0b00217df823a62a7b3c",
+    "zh:d82fa2852b0aa620d5e51613e7a4a81a4bfcdec7adff0941af7a672fe5b5739e",
+    "zh:d9425cb7c13b36833b036a129900c296197bfd03b96b27b738147efd5ac1fcb0",
+    "zh:e55266e7582aa31e27cc4ec9c200b50a2953c71f71cfb772480a9f605e911707",
+    "zh:e937f7f5cbb60d27705eaedc711165f7bb6b3b1568e96497a47c6d069a87a8ce",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/azuread" {
   version     = "1.4.0"
   constraints = "1.4.0"
