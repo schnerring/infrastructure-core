@@ -118,6 +118,7 @@ resource "kubernetes_deployment" "matrix" {
         security_context {
           run_as_user     = "991"
           run_as_group    = "991"
+          fs_group        = "991"
           run_as_non_root = true
         }
 
