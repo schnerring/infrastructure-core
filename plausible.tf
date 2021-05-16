@@ -221,6 +221,7 @@ resource "kubernetes_deployment" "plausible" {
       spec {
         restart_policy = "Always"
 
+        # see https://github.com/plausible/analytics/blob/master/Dockerfile
         security_context {
           run_as_user     = "1000"
           run_as_group    = "1000"

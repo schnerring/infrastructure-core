@@ -111,6 +111,14 @@ resource "kubernetes_deployment" "remark42" {
         hostname       = "remark42"
         restart_policy = "Always"
 
+        # see https://github.com/umputun/baseimage/blob/master/base.alpine/Dockerfile
+        # security_context {
+        #   run_as_user     = "1001"
+        #   run_as_group    = "1001"
+        #   fs_group        = "1001"
+        #   run_as_non_root = true
+        # }
+
         container {
           name  = "remark42"
           image = "umputun/remark42:${var.remark42_image_version}"
@@ -119,190 +127,15 @@ resource "kubernetes_deployment" "remark42" {
             container_port = 8080
           }
 
-          env {
-            name = "REMARK_URL"
-
-            value_from {
-              config_map_key_ref {
-                key  = "REMARK_URL"
-                name = "remark42-cm"
-              }
+          env_from {
+            secret_ref {
+              name = "remark42-secret"
             }
           }
 
-          env {
-            name = "SECRET"
-
-            value_from {
-              secret_key_ref {
-                key  = "SECRET"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SITE"
-
-            value_from {
-              config_map_key_ref {
-                key  = "SITE"
-                name = "remark42-cm"
-              }
-            }
-          }
-
-          env {
-            name = "AUTH_EMAIL_FROM"
-
-            value_from {
-              secret_key_ref {
-                key  = "AUTH_EMAIL_FROM"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "AUTH_EMAIL_ENABLE"
-
-            value_from {
-              config_map_key_ref {
-                key  = "AUTH_EMAIL_ENABLE"
-                name = "remark42-cm"
-              }
-            }
-          }
-
-          env {
-            name = "AUTH_GITHUB_CID"
-
-            value_from {
-              secret_key_ref {
-                key  = "AUTH_GITHUB_CID"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "AUTH_GITHUB_CSEC"
-
-            value_from {
-              secret_key_ref {
-                key  = "AUTH_GITHUB_CSEC"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "ADMIN_SHARED_ID"
-
-            value_from {
-              config_map_key_ref {
-                key  = "ADMIN_SHARED_ID"
-                name = "remark42-cm"
-              }
-            }
-          }
-
-          env {
-            name = "ADMIN_SHARED_EMAIL"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_SHARED_EMAIL"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "NOTIFY_TYPE"
-
-            value_from {
-              config_map_key_ref {
-                key  = "NOTIFY_TYPE"
-                name = "remark42-cm"
-              }
-            }
-          }
-
-          env {
-            name = "NOTIFY_EMAIL_ADMIN"
-
-            value_from {
-              config_map_key_ref {
-                key  = "NOTIFY_EMAIL_ADMIN"
-                name = "remark42-cm"
-              }
-            }
-          }
-
-          env {
-            name = "NOTIFY_EMAIL_FROM"
-
-            value_from {
-              secret_key_ref {
-                key  = "NOTIFY_EMAIL_FROM"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_PORT"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_PORT"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_USERNAME"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_USERNAME"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_PASSWORD"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_PASSWORD"
-                name = "remark42-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_TLS"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_TLS"
-                name = "remark42-secret"
-              }
+          env_from {
+            config_map_ref {
+              name = "remark42-cm"
             }
           }
 
