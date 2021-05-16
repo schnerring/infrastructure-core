@@ -114,9 +114,20 @@ resource "kubernetes_deployment" "matrix" {
         hostname       = "matrix"
         restart_policy = "Always"
 
+        # see https://github.com/matrix-org/synapse/blob/master/docker/README.md#generating-a-configuration-file
+        security_context {
+          run_as_user     = "991"
+          run_as_group    = "991"
+          run_as_non_root = true
+        }
+
         container {
           name  = "synapse"
           image = "matrixdotorg/synapse:${var.synapse_image_version}"
+
+          security_context {
+            read_only_root_filesystem = true
+          }
 
           port {
             container_port = 8008
