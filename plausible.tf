@@ -160,10 +160,6 @@ resource "random_password" "plausible_secret_key_base" {
   length = 128
 }
 
-locals {
-  plausible_db_name = "plausible"
-}
-
 resource "kubernetes_secret" "plausible" {
   metadata {
     name      = "plausible-secret"
@@ -183,8 +179,8 @@ resource "kubernetes_secret" "plausible" {
     "DISABLE_REGISTRATION" = "true"
 
     # Database
-    "DATABASE_URL"            = "postgres://${var.postgres_username}:${urlencode(random_password.postgres.result)}@${var.postgres_service_name}-headless.${kubernetes_namespace.postgres.metadata.0.name}:${var.postgres_service_port}/${local.plausible_db_name}?ssl=false"
-    "CLICKHOUSE_DATABASE_URL" = "http://event-data-svc:8123/${local.plausible_db_name}"
+    "DATABASE_URL"            = "postgres://${postgresql_role.plausible_db.name}:${urlencode(random_password.plausible_db.result)}@${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}:5432/${postgresql_database.plausible_db.name}"
+    "CLICKHOUSE_DATABASE_URL" = "http://event-data-svc:8123/plausible"
 
     # SMTP
     "MAILER_EMAIL"          = var.plausible_mailer_email
@@ -225,6 +221,12 @@ resource "kubernetes_deployment" "plausible" {
       spec {
         restart_policy = "Always"
 
+        security_context {
+          run_as_user     = "1000"
+          run_as_group    = "1000"
+          run_as_non_root = true
+        }
+
         init_container {
           name  = "plausible-init"
           image = "plausible/analytics:${var.plausible_image_version}"
@@ -233,171 +235,16 @@ resource "kubernetes_deployment" "plausible" {
 
           args = [
             "-c",
-            "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"
+            "sleep 10 && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"
           ]
 
-          env {
-            name = "ADMIN_USER_EMAIL"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_USER_EMAIL"
-                name = "plausible-secret"
-              }
-            }
+          security_context {
+            read_only_root_filesystem = true
           }
 
-          env {
-            name = "ADMIN_USER_NAME"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_USER_NAME"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "ADMIN_USER_PWD"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_USER_PWD"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "BASE_URL"
-
-            value_from {
-              secret_key_ref {
-                key  = "BASE_URL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SECRET_KEY_BASE"
-
-            value_from {
-              secret_key_ref {
-                key  = "SECRET_KEY_BASE"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "DISABLE_REGISTRATION"
-
-            value_from {
-              secret_key_ref {
-                key  = "DISABLE_REGISTRATION"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "DATABASE_URL"
-
-            value_from {
-              secret_key_ref {
-                key  = "DATABASE_URL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "CLICKHOUSE_DATABASE_URL"
-
-            value_from {
-              secret_key_ref {
-                key  = "CLICKHOUSE_DATABASE_URL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "MAILER_EMAIL"
-
-            value_from {
-              secret_key_ref {
-                key  = "MAILER_EMAIL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST_ADDR"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST_ADDR"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST_PORT"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST_PORT"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_USER_NAME"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_USER_NAME"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_USER_PWD"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_USER_PWD"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST_SSL_ENABLED"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST_SSL_ENABLED"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_RETRIES"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_RETRIES"
-                name = "plausible-secret"
-              }
+          env_from {
+            secret_ref {
+              name = "plausible-secret"
             }
           }
         }
@@ -413,173 +260,18 @@ resource "kubernetes_deployment" "plausible" {
             "sleep 10 && /entrypoint.sh run"
           ]
 
+          security_context {
+            read_only_root_filesystem = true
+          }
+
           port {
             name           = "http"
             container_port = 8000
           }
 
-          env {
-            name = "ADMIN_USER_EMAIL"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_USER_EMAIL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "ADMIN_USER_NAME"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_USER_NAME"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "ADMIN_USER_PWD"
-
-            value_from {
-              secret_key_ref {
-                key  = "ADMIN_USER_PWD"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "BASE_URL"
-
-            value_from {
-              secret_key_ref {
-                key  = "BASE_URL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SECRET_KEY_BASE"
-
-            value_from {
-              secret_key_ref {
-                key  = "SECRET_KEY_BASE"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "DISABLE_REGISTRATION"
-
-            value_from {
-              secret_key_ref {
-                key  = "DISABLE_REGISTRATION"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "DATABASE_URL"
-
-            value_from {
-              secret_key_ref {
-                key  = "DATABASE_URL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "CLICKHOUSE_DATABASE_URL"
-
-            value_from {
-              secret_key_ref {
-                key  = "CLICKHOUSE_DATABASE_URL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "MAILER_EMAIL"
-
-            value_from {
-              secret_key_ref {
-                key  = "MAILER_EMAIL"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST_ADDR"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST_ADDR"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST_PORT"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST_PORT"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_USER_NAME"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_USER_NAME"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_USER_PWD"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_USER_PWD"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_HOST_SSL_ENABLED"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_HOST_SSL_ENABLED"
-                name = "plausible-secret"
-              }
-            }
-          }
-
-          env {
-            name = "SMTP_RETRIES"
-
-            value_from {
-              secret_key_ref {
-                key  = "SMTP_RETRIES"
-                name = "plausible-secret"
-              }
+          env_from {
+            secret_ref {
+              name = "plausible-secret"
             }
           }
         }
@@ -646,4 +338,19 @@ resource "kubernetes_ingress" "plausible" {
       secret_name = "plausible-tls-secret"
     }
   }
+}
+
+resource "random_password" "plausible_db" {
+  length = 64
+}
+
+resource "postgresql_role" "plausible_db" {
+  name     = "plausible"
+  login    = true
+  password = random_password.plausible_db.result
+}
+
+resource "postgresql_database" "plausible_db" {
+  name  = "plausible"
+  owner = postgresql_role.plausible_db.name
 }

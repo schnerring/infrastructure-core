@@ -48,7 +48,7 @@ resource "kubernetes_secret" "matrix" {
         "postgres_username"          = postgresql_role.matrix_db.name
         "postgres_password"          = random_password.matrix_db.result
         "postgres_database"          = postgresql_database.matrix_db.name
-        "postgres_host"              = "${var.postgres_service_name}-headless.${kubernetes_namespace.postgres.metadata.0.name}"
+        "postgres_host"              = "${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}"
       }
     )
 
@@ -56,7 +56,7 @@ resource "kubernetes_secret" "matrix" {
       "${path.module}/synapse-config/log.tpl.config",
       {
         "log_filename" = "/data/homeserver.log"
-        "log_level"    = "INFO"
+        "log_level"    = "WARNING"
       }
     )
 
@@ -75,7 +75,7 @@ resource "kubernetes_persistent_volume_claim" "matrix" {
 
     resources {
       requests = {
-        "storage" = "4Gi"
+        "storage" = "1Gi"
       }
     }
   }
@@ -89,6 +89,7 @@ resource "kubernetes_deployment" "matrix" {
       "app" = "matrix"
     }
   }
+
   spec {
     replicas = 1
 
@@ -341,6 +342,7 @@ resource "postgresql_role" "matrix_db" {
 
 resource "postgresql_database" "matrix_db" {
   name       = "synapse"
+  owner      = postgresql_role.matrix_db.name
   encoding   = "UTF8"
   lc_collate = "C"
   lc_ctype   = "C"

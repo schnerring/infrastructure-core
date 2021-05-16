@@ -131,3 +131,17 @@ resource "cloudflare_record" "traefik" {
   value   = data.kubernetes_service.traefik.status.0.load_balancer.0.ingress.0.ip
   proxied = true
 }
+
+resource "kubernetes_storage_class" "standard_ssd_lrs_retain" {
+  metadata {
+    name = "standard-ssd-lrs-retain-sc"
+  }
+
+  storage_provisioner = "kubernetes.io/azure-disk"
+  reclaim_policy      = "Retain"
+
+  parameters = {
+    "storageaccounttype" = "StandardSSD_LRS"
+    "kind"               = "Managed"
+  }
+}

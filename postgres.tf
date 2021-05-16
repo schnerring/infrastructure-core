@@ -15,39 +15,116 @@ resource "kubernetes_secret" "postgres" {
   }
 
   data = {
-    "postgresql-password" = random_password.postgres.result
+    "POSTGRES_USER"     = var.postgres_username
+    "POSTGRES_PASSWORD" = random_password.postgres.result
   }
 }
 
-resource "helm_release" "postgres" {
-  name       = "postgres"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "postgresql"
-  version    = var.postgres_helm_chart_version
-  namespace  = kubernetes_namespace.postgres.metadata.0.name
-
-  set {
-    name  = "postgresqlUsername"
-    value = var.postgres_username
+resource "kubernetes_persistent_volume_claim" "postgres" {
+  metadata {
+    name      = "postgres-pvc"
+    namespace = kubernetes_namespace.postgres.metadata.0.name
   }
 
-  set {
-    name  = "fullnameOverride"
-    value = var.postgres_service_name
+  spec {
+    access_modes       = ["ReadWriteOnce"]
+    storage_class_name = "standard-ssd-lrs-retain-sc"
+
+    resources {
+      requests = {
+        "storage" = "4Gi"
+      }
+    }
+  }
+}
+
+locals {
+  postgres_mount_path = "/var/lib/postgresql/data"
+}
+
+resource "kubernetes_stateful_set" "postgres" {
+  metadata {
+    name      = "postgres-sts"
+    namespace = kubernetes_namespace.postgres.metadata.0.name
   }
 
-  set {
-    name  = "existingSecret"
-    value = kubernetes_secret.postgres.metadata.0.name
+  spec {
+    replicas     = 1
+    service_name = "postgres"
+
+    selector {
+      match_labels = {
+        "app" = "postgres"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          "app" = "postgres"
+        }
+      }
+
+      spec {
+        security_context {
+          run_as_user     = "999"
+          run_as_group    = "999"
+          fs_group        = "999"
+          run_as_non_root = true
+        }
+
+        container {
+          name  = "postgres"
+          image = "postgres:${var.postgres_image_version}"
+
+          port {
+            name           = "postgres"
+            container_port = 5432
+          }
+
+          env_from {
+            secret_ref {
+              name = "postgres-secret"
+            }
+          }
+
+          env {
+            name  = "PGDATA"
+            value = "${local.postgres_mount_path}/pgdata"
+          }
+
+          volume_mount {
+            mount_path = local.postgres_mount_path
+            name       = "data-vol"
+          }
+        }
+
+        volume {
+          name = "data-vol"
+
+          persistent_volume_claim {
+            claim_name = "postgres-pvc"
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "postgres" {
+  metadata {
+    name      = "postgres-svc"
+    namespace = kubernetes_namespace.postgres.metadata.0.name
   }
 
-  set {
-    name  = "service.port"
-    value = var.postgres_service_port
-  }
+  spec {
+    selector = {
+      "app" = "postgres"
+    }
 
-  set {
-    name  = "persistence.size"
-    value = "1Gi"
+    port {
+      port        = 5432
+      target_port = 5432
+    }
   }
 }
