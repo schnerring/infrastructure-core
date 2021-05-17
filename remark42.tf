@@ -16,9 +16,6 @@ resource "kubernetes_persistent_volume_claim" "remark42" {
   metadata {
     name      = "remark42-pvc"
     namespace = kubernetes_namespace.remark42.metadata.0.name
-    labels = {
-      "app" = "remark42-pvc"
-    }
   }
 
   spec {

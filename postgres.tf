@@ -27,8 +27,7 @@ resource "kubernetes_persistent_volume_claim" "postgres" {
   }
 
   spec {
-    access_modes       = ["ReadWriteOnce"]
-    storage_class_name = "standard-ssd-lrs-retain-sc"
+    access_modes = ["ReadWriteOnce"]
 
     resources {
       requests = {

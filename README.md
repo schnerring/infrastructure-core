@@ -6,6 +6,14 @@ This project is constantly evolving and will lack extensive documentation until 
 
 ## Local Development
 
+### Connect to Postgres
+
+This project also manages Postgres databases. Before being able to apply changes, connect to Postgres by running:
+
+```shell
+kubectl port-forward service/postgres-svc --namespace postgres 5432:5432
+```
+
 ### Environment Variables
 
 To authenticate to Azure, a service principal with subscription _Owner_ permissions is required. Set the following variables to [configure authentication](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret#configuring-the-service-principal-in-terraform):
