@@ -11,11 +11,11 @@ resource "kubernetes_persistent_volume_claim" "event_data" {
   }
 
   spec {
-    access_modes = ["ReadWriteOnce"] # TODO azurefile / ReadWriteMany?
+    access_modes = ["ReadWriteOnce"]
 
     resources {
       requests = {
-        "storage" = "1Gi"
+        "storage" = "4Gi"
       }
     }
   }

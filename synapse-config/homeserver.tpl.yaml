@@ -274,6 +274,7 @@ listeners:
     tls: false
     type: http
     x_forwarded: true
+    bind_addresses: ["::"]
 
     resources:
       - names: [client, federation]

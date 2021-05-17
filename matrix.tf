@@ -75,7 +75,7 @@ resource "kubernetes_persistent_volume_claim" "matrix" {
 
     resources {
       requests = {
-        "storage" = "1Gi"
+        "storage" = "4Gi"
       }
     }
   }
