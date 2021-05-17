@@ -239,10 +239,6 @@ resource "kubernetes_deployment" "plausible" {
             "sleep 10 && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"
           ]
 
-          security_context {
-            read_only_root_filesystem = true
-          }
-
           env_from {
             secret_ref {
               name = "plausible-secret"
@@ -260,10 +256,6 @@ resource "kubernetes_deployment" "plausible" {
             "-c",
             "sleep 10 && /entrypoint.sh run"
           ]
-
-          security_context {
-            read_only_root_filesystem = true
-          }
 
           port {
             name           = "http"
