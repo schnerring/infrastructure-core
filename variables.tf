@@ -96,7 +96,7 @@ variable "smtp_password" {
 variable "remark42_image_version" {
   type        = string
   description = "Remark42 image version"
-  default     = "v1.7.1"
+  default     = "v1.8.1"
 }
 
 variable "remark42_email_from" {
