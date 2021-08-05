@@ -120,9 +120,9 @@ resource "kubernetes_deployment" "remark42" {
           name  = "remark42"
           image = "umputun/remark42:${var.remark42_image_version}"
 
-          security_context {
-            read_only_root_filesystem = true
-          }
+          # security_context {
+          #   read_only_root_filesystem = true
+          # }
 
           port {
             container_port = 8080

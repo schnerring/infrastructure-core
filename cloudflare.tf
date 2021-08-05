@@ -103,7 +103,7 @@ resource "cloudflare_record" "gh_pages_www" {
 resource "cloudflare_page_rule" "gh_pages_rule_forward_www_to_apex" {
   zone_id  = cloudflare_zone.schnerring_net.id
   target   = "https://www.schnerring.net/"
-  priority = 3
+  priority = 2
 
   actions {
     forwarding_url {
