@@ -48,20 +48,20 @@ terraform apply infrastructure.tfplan
 
 ## Terraform Resource Overview
 
-| :File                                       | :Description                                                                                                                                                       |
-| :------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| :[`common.tf`](./commond.tf)                | :Common resources that is shared between deployments                                                                                                               |
-| :[`backend.tf`](./backend.tf)               | :[Remote State](https://www.terraform.io/docs/language/state/remote.html) configuration                                                                            |
-| :[`provider.tf`](./provider.tf)             | :[Provider](https://www.terraform.io/docs/language/providers/index.html) configuration                                                                             |
-| :[`terraform.tf`](./terraform.tf)           | :Remote State storage configuration                                                                                                                                |
-| :[`variables.tf`](./variables.tf)           | :[Input Variables](https://www.terraform.io/docs/language/values/variables.html)                                                                                   |
-| :[`outputs.tf`](./outputs.tf)               | :[Output Values](https://www.terraform.io/docs/language/values/outputs.html)                                                                                       |
-| :[`freenas-backup.tf`](./freenas-backup.tf) | :Azure Storage Account configuration that is used by my FreeNAS as backup storage                                                                                  |
-| :[`cloudflare.tf`](./cloudflare.tf)         | :Common Cloudflare DNS records and Page Rules                                                                                                                      |
-| :[`devops.tf`](./devops.tf)                 | :Azure Service Principal authorized to perform Terraform operations                                                                                                |
-| :[`hello.tf`](./hello.tf)                   | :"Hello World" AKS deployment                                                                                                                                      |
-| :[`k8s.tf`](./k8s.tf)                       | :Azure Kubernetes Service (AKS) cluster resources                                                                                                                  |
-| :[`matrix.tf`](./matrix.tf)                 | :Matrix [Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) AKS deployments |
-| :[`plausible.tf`](./plausible.tf)           | :[Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
-| :[`postgres.tf`](./postgres.tf)             | :[PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
-| :[`remark42.tf`](./remark42.tf)             | :[Remark42](https://remark42.com/) AKS deployment                                                                                                                  |
+| File                                       | Description                                                                                                                                                       |
+| :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`common.tf`](./commond.tf)                | Common resources that is shared between deployments                                                                                                               |
+| [`backend.tf`](./backend.tf)               | [Remote State](https://www.terraform.io/docs/language/state/remote.html) configuration                                                                            |
+| [`provider.tf`](./provider.tf)             | [Provider](https://www.terraform.io/docs/language/providers/index.html) configuration                                                                             |
+| [`terraform.tf`](./terraform.tf)           | Remote State storage configuration                                                                                                                                |
+| [`variables.tf`](./variables.tf)           | [Input Variables](https://www.terraform.io/docs/language/values/variables.html)                                                                                   |
+| [`outputs.tf`](./outputs.tf)               | [Output Values](https://www.terraform.io/docs/language/values/outputs.html)                                                                                       |
+| [`freenas-backup.tf`](./freenas-backup.tf) | Azure Storage Account configuration that is used by my FreeNAS as backup storage                                                                                  |
+| [`cloudflare.tf`](./cloudflare.tf)         | Common Cloudflare DNS records and Page Rules                                                                                                                      |
+| [`devops.tf`](./devops.tf)                 | Azure Service Principal authorized to perform Terraform operations                                                                                                |
+| [`hello.tf`](./hello.tf)                   | "Hello World" AKS deployment                                                                                                                                      |
+| [`k8s.tf`](./k8s.tf)                       | Azure Kubernetes Service (AKS) cluster resources                                                                                                                  |
+| [`matrix.tf`](./matrix.tf)                 | Matrix [Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) AKS deployments |
+| [`plausible.tf`](./plausible.tf)           | [Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
+| [`postgres.tf`](./postgres.tf)             | [PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
+| [`remark42.tf`](./remark42.tf)             | [Remark42](https://remark42.com/) AKS deployment                                                                                                                  |
