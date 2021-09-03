@@ -27,14 +27,14 @@ output "plausible_admin_password" {
   sensitive   = true
 }
 
-output "freenas_backup_account_name" {
-  value       = azurerm_storage_account.freenas_backup.name
-  description = "FreeNAS cloud credential account name."
+output "truenas_backup_account_name" {
+  value       = azurerm_storage_account.truenas_backup.name
+  description = "TrueNAS cloud credential account name."
   sensitive   = true
 }
 
-output "freenas_backup_account_key" {
-  value       = azurerm_storage_account.freenas_backup.secondary_access_key
-  description = "FreeNAS cloud credential account key."
+output "truenas_backup_account_key" {
+  value       = azurerm_storage_account.truenas_backup.secondary_access_key
+  description = "TrueNAS cloud credential account key."
   sensitive   = true
 }

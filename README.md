@@ -56,7 +56,7 @@ terraform apply infrastructure.tfplan
 | [`terraform.tf`](./terraform.tf)           | Remote State storage configuration                                                                                                                                |
 | [`variables.tf`](./variables.tf)           | [Input Variables](https://www.terraform.io/docs/language/values/variables.html)                                                                                   |
 | [`outputs.tf`](./outputs.tf)               | [Output Values](https://www.terraform.io/docs/language/values/outputs.html)                                                                                       |
-| [`freenas-backup.tf`](./freenas-backup.tf) | Azure Storage Account configuration that is used by my FreeNAS as backup storage                                                                                  |
+| [`truenas-backup.tf`](./truenas-backup.tf) | Azure Storage Account configuration that is used by my TrueNAS as backup storage                                                                                  |
 | [`cloudflare.tf`](./cloudflare.tf)         | Common Cloudflare DNS records and Page Rules                                                                                                                      |
 | [`devops.tf`](./devops.tf)                 | Azure Service Principal authorized to perform Terraform operations                                                                                                |
 | [`hello.tf`](./hello.tf)                   | "Hello World" AKS deployment                                                                                                                                      |

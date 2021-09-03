@@ -1,14 +1,14 @@
-# FreeNAS backup resources
+# TrueNAS backup resources
 
-resource "azurerm_resource_group" "freenas_backup" {
-  name     = "freenas-backup-rg"
+resource "azurerm_resource_group" "truenas_backup" {
+  name     = "truenas-backup-rg"
   location = var.location
   tags     = var.tags
 }
 
-resource "azurerm_storage_account" "freenas_backup" {
-  name                = "freenasbackupst${random_id.tf_st_id.dec}"
-  resource_group_name = azurerm_resource_group.freenas_backup.name
+resource "azurerm_storage_account" "truenas_backup" {
+  name                = "truenasbackupst${random_id.tf_st_id.dec}"
+  resource_group_name = azurerm_resource_group.truenas_backup.name
   location            = var.location
   tags                = var.tags
 
@@ -16,13 +16,13 @@ resource "azurerm_storage_account" "freenas_backup" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_storage_container" "freenas_backup" {
-  name                 = "freenas-backup-stctn"
-  storage_account_name = azurerm_storage_account.freenas_backup.name
+resource "azurerm_storage_container" "truenas_backup" {
+  name                 = "truenas-backup-stctn"
+  storage_account_name = azurerm_storage_account.truenas_backup.name
 }
 
-resource "azurerm_storage_management_policy" "freenas_backup" {
-  storage_account_id = azurerm_storage_account.freenas_backup.id
+resource "azurerm_storage_management_policy" "truenas_backup" {
+  storage_account_id = azurerm_storage_account.truenas_backup.id
 
   rule {
     name    = "rule1"
