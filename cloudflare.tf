@@ -132,3 +132,40 @@ resource "cloudflare_record" "azure_verification" {
   value   = "MS=ms51347144"
   ttl     = 86400
 }
+
+# Sea Bats
+
+resource "cloudflare_zone" "seabats_org" {
+  zone = "seabats.org"
+}
+
+# GitHub Pages
+
+resource "cloudflare_record" "seabats_gh_pages_apex" {
+  zone_id = cloudflare_zone.seabats_org.id
+  name    = "seabats.org"
+  type    = "CNAME"
+  value   = "schnerring.github.io"
+  proxied = true
+}
+
+resource "cloudflare_record" "seabats_gh_pages_www" {
+  zone_id = cloudflare_zone.seabats_org.id
+  name    = "www"
+  type    = "CNAME"
+  value   = "schnerring.github.io"
+  proxied = true
+}
+
+resource "cloudflare_page_rule" "gh_pages_rule_forward_www_to_apex_seabats" {
+  zone_id  = cloudflare_zone.seabats_org.id
+  target   = "https://www.seabats.org/"
+  priority = 1
+
+  actions {
+    forwarding_url {
+      url         = "https://seabats.org/"
+      status_code = 301
+    }
+  }
+}

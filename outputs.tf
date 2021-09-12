@@ -1,6 +1,6 @@
 output "dns_name_servers" {
   value       = cloudflare_zone.schnerring_net.name_servers
-  description = "Cloudflare-assigned name servers."
+  description = "Cloudflare-assigned schnerring.net name servers."
 }
 
 output "kube_config" {
@@ -37,4 +37,9 @@ output "truenas_backup_account_key" {
   value       = azurerm_storage_account.truenas_backup.secondary_access_key
   description = "TrueNAS cloud credential account key."
   sensitive   = true
+}
+
+output "seabats_dns_name_servers" {
+  value       = cloudflare_zone.seabats_org.name_servers
+  description = "Cloudflare-assigned seabats.org name servers."
 }
