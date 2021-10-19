@@ -194,7 +194,7 @@ resource "cloudflare_record" "matrix_delegation" {
   type    = "SRV"
   ttl     = 86400
 
-  data = {
+  data {
     service  = "_matrix"
     proto    = "_tcp"
     name     = var.synapse_server_name
