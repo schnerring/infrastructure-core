@@ -169,3 +169,13 @@ resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex"
     }
   }
 }
+
+# Cloudflare Pages
+
+resource "cloudflare_record" "hugo_theme_gruvbox" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "hugo-theme-gruvbox"
+  type    = "CNAME"
+  value   = "hugo-theme-gruvbox.pages.dev"
+  proxied = true
+}
