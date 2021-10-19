@@ -39,7 +39,7 @@ output "truenas_backup_account_key" {
   sensitive   = true
 }
 
-output "seabats_dns_name_servers" {
-  value       = cloudflare_zone.seabats_org.name_servers
-  description = "Cloudflare-assigned seabats.org name servers."
+output "sensingskies_org_dns_name_servers" {
+  value       = cloudflare_zone.sensingskies_org.name_servers
+  description = "Cloudflare-assigned sensingskies.org name servers."
 }

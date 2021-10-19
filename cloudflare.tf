@@ -135,36 +135,36 @@ resource "cloudflare_record" "azure_verification" {
 
 # Sea Bats
 
-resource "cloudflare_zone" "seabats_org" {
-  zone = "seabats.org"
+resource "cloudflare_zone" "sensingskies_org" {
+  zone = "sensingskies.org"
 }
 
 # GitHub Pages
 
-resource "cloudflare_record" "seabats_gh_pages_apex" {
-  zone_id = cloudflare_zone.seabats_org.id
-  name    = "seabats.org"
+resource "cloudflare_record" "sensingskies_gh_pages_apex" {
+  zone_id = cloudflare_zone.sensingskies_org.id
+  name    = "sensingskies.org"
   type    = "CNAME"
   value   = "schnerring.github.io"
   proxied = true
 }
 
-resource "cloudflare_record" "seabats_gh_pages_www" {
-  zone_id = cloudflare_zone.seabats_org.id
+resource "cloudflare_record" "sensingskies_gh_pages_www" {
+  zone_id = cloudflare_zone.sensingskies_org.id
   name    = "www"
   type    = "CNAME"
   value   = "schnerring.github.io"
   proxied = true
 }
 
-resource "cloudflare_page_rule" "gh_pages_rule_forward_www_to_apex_seabats" {
-  zone_id  = cloudflare_zone.seabats_org.id
-  target   = "https://www.seabats.org/"
+resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex" {
+  zone_id  = cloudflare_zone.sensingskies_org.id
+  target   = "https://www.sensingskies.org/"
   priority = 1
 
   actions {
     forwarding_url {
-      url         = "https://seabats.org/"
+      url         = "https://sensingskies.org/"
       status_code = 301
     }
   }
