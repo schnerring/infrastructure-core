@@ -9,7 +9,7 @@ terraform {
 
     azurerm = {
       source  = "azurerm"
-      version = "=2.56.0"
+      version = "=2.81.0"
     }
 
     cloudflare = {
