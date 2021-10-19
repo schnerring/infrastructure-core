@@ -49,7 +49,7 @@ terraform {
 
     time = {
       source  = "time"
-      version = "=0.7.0"
+      version = "=0.7.2"
     }
   }
 }
