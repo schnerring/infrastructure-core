@@ -39,7 +39,7 @@ terraform {
 
     postgresql = {
       source  = "cyrilgdn/postgresql"
-      version = "1.13.0-pre1"
+      version = "1.14"
     }
 
     random = {
