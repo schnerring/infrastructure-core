@@ -17,7 +17,7 @@ resource "azurerm_storage_account" "truenas_backup" {
 }
 
 resource "azurerm_storage_container" "truenas_backup" {
-  name                 = "truenas-backup-stctn"
+  name                 = "pools"
   storage_account_name = azurerm_storage_account.truenas_backup.name
 }
 
