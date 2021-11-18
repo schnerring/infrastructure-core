@@ -67,6 +67,8 @@ resource "kubernetes_secret" "remark42" {
     "SMTP_PASSWORD" = var.smtp_password
     "SMTP_TLS"      = "true"
 
+    "AUTH_ANON" = "true"
+
     "AUTH_GITHUB_CID"  = var.remark42_auth_github_cid
     "AUTH_GITHUB_CSEC" = var.remark42_auth_github_csec
 
