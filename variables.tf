@@ -128,6 +128,18 @@ variable "remark42_auth_github_csec" {
   sensitive   = true
 }
 
+variable "remark42_auth_twitter_cid" {
+  type        = string
+  description = "Twitter OAuth client ID."
+  sensitive   = true
+}
+
+variable "remark42_auth_twitter_csec" {
+  type        = string
+  description = "Twitter OAuth client secret."
+  sensitive   = true
+}
+
 variable "synapse_image_version" {
   type        = string
   description = "Synapse image version."

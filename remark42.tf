@@ -70,6 +70,9 @@ resource "kubernetes_secret" "remark42" {
     "AUTH_GITHUB_CID"  = var.remark42_auth_github_cid
     "AUTH_GITHUB_CSEC" = var.remark42_auth_github_csec
 
+    "AUTH_TWITTER_CID"  = var.remark42_auth_twitter_cid
+    "AUTH_TWITTER_CSEC" = var.remark42_auth_twitter_csec
+
     "ADMIN_SHARED_EMAIL" = join(",", var.remark42_admin_shared_emails)
     "AUTH_EMAIL_FROM"    = var.remark42_email_from
     "NOTIFY_EMAIL_FROM"  = var.remark42_email_from
