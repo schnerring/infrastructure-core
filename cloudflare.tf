@@ -179,3 +179,21 @@ resource "cloudflare_record" "hugo_theme_gruvbox" {
   value   = "hugo-theme-gruvbox.pages.dev"
   proxied = true
 }
+
+# VPN
+
+resource "cloudflare_record" "vpn0" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "vpn0"
+  type    = "A"
+  value   = "193.32.127.213" # Mullvad ch5-wireguard public exit IP
+  proxied = false
+}
+
+resource "cloudflare_record" "vpn1" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "vpn1"
+  type    = "A"
+  value   = "193.32.127.220" # Mullvad ch6-wireguard public exit IP
+  proxied = false
+}
