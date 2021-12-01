@@ -71,6 +71,11 @@ resource "azurerm_storage_container" "truenas_backup_games" {
   storage_account_name = azurerm_storage_account.truenas_backup.name
 }
 
+resource "azurerm_storage_container" "truenas_backup_media" {
+  name                 = "media"
+  storage_account_name = azurerm_storage_account.truenas_backup.name
+}
+
 resource "azurerm_storage_container" "truenas_backup_pictures" {
   name                 = "pictures"
   storage_account_name = azurerm_storage_account.truenas_backup.name
