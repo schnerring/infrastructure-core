@@ -36,62 +36,25 @@ resource "azurerm_storage_management_policy" "truenas_backup" {
   }
 }
 
-resource "azurerm_storage_container" "truenas_backup_misc" {
-  name                 = "misc"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
+locals {
+  backup_datasets = [
+    "misc",
+    "apps",
+    "archive",
+    "backup",
+    "books",
+    "documents",
+    "games",
+    "media",
+    "pictures",
+    "syncthing",
+    "tech",
+    "test"
+  ]
 }
 
-resource "azurerm_storage_container" "truenas_backup_apps" {
-  name                 = "apps"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_archive" {
-  name                 = "archive"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_backup" {
-  name                 = "backup"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_books" {
-  name                 = "books"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_documents" {
-  name                 = "documents"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_games" {
-  name                 = "games"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_media" {
-  name                 = "media"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_pictures" {
-  name                 = "pictures"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_syncthing" {
-  name                 = "syncthing"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_tech" {
-  name                 = "tech"
-  storage_account_name = azurerm_storage_account.truenas_backup.name
-}
-
-resource "azurerm_storage_container" "truenas_backup_test" {
-  name                 = "test"
+resource "azurerm_storage_container" "truenas_backup" {
+  count = length(local.backup_datasets)
+  name                 = local.backup_datasets[count.index]
   storage_account_name = azurerm_storage_account.truenas_backup.name
 }
