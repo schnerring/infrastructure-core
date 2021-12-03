@@ -133,12 +133,6 @@ resource "cloudflare_record" "azure_verification" {
   ttl     = 86400
 }
 
-# Sea Bats
-
-resource "cloudflare_zone" "sensingskies_org" {
-  zone = "sensingskies.org"
-}
-
 # GitHub Pages
 
 resource "cloudflare_record" "sensingskies_gh_pages_apex" {
@@ -196,4 +190,20 @@ resource "cloudflare_record" "vpn2" {
   type    = "A"
   value   = "193.32.127.225" # Mullvad ch7-wireguard public exit IP
   proxied = false
+}
+
+# Google Search Console
+
+resource "cloudflare_record" "google_search_console_verification" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "schnerring.net"
+  type    = "TXT"
+  value   = "google-site-verification=rDrVxUuHJAgkWBR7JfDMV2hGwwldC30PeDfRFza-TVg"
+  ttl     = 86400
+}
+
+# Sea Bats
+
+resource "cloudflare_zone" "sensingskies_org" {
+  zone = "sensingskies.org"
 }
