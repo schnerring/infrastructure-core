@@ -27,6 +27,12 @@ output "plausible_admin_password" {
   sensitive   = true
 }
 
+output "remark42_admin_password" {
+  value       = random_password.remark42_admin_password.result
+  description = "Terraform-generated Remark42 administrator password."
+  sensitive   = true
+}
+
 output "truenas_backup_account_name" {
   value       = azurerm_storage_account.truenas_backup.name
   description = "TrueNAS cloud credential account name."

@@ -52,6 +52,10 @@ resource "random_password" "remark42_secret" {
   length = 64
 }
 
+resource "random_password" "remark42_admin_password" {
+  length = 64
+}
+
 resource "kubernetes_secret" "remark42" {
   metadata {
     name      = "remark42-secret"
@@ -75,6 +79,7 @@ resource "kubernetes_secret" "remark42" {
     "AUTH_TWITTER_CID"  = var.remark42_auth_twitter_cid
     "AUTH_TWITTER_CSEC" = var.remark42_auth_twitter_csec
 
+    "ADMIN_PASSWD"       = random_password.remark42_admin_password.result
     "ADMIN_SHARED_EMAIL" = join(",", var.remark42_admin_shared_emails)
     "AUTH_EMAIL_FROM"    = var.remark42_email_from
     "NOTIFY_EMAIL_FROM"  = var.remark42_email_from
