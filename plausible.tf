@@ -190,6 +190,10 @@ resource "kubernetes_secret" "plausible" {
     "SMTP_USER_PWD"         = var.smtp_password
     "SMTP_HOST_SSL_ENABLED" = "true"
     "SMTP_RETRIES"          = "2"
+
+    # Google Search Console integration
+    "GOOGLE_CLIENT_ID"     = var.plausible_google_client_id
+    "GOOGLE_CLIENT_SECRET" = var.plausible_google_client_secret
   }
 }
 

@@ -69,6 +69,18 @@ variable "plausible_mailer_email" {
   sensitive   = true
 }
 
+variable "plausible_google_client_id" {
+  type        = string
+  description = "The Client ID from the Google API Console for Plausible."
+  sensitive   = true
+}
+
+variable "plausible_google_client_secret" {
+  type        = string
+  description = "The Client Secret from the Google API Console for Plausible."
+  sensitive   = true
+}
+
 variable "smtp_host" {
   type        = string
   description = "SMTP server address."
