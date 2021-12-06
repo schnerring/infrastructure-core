@@ -1,8 +1,6 @@
 # infrastructure
 
-Terraform "Infrastructure as Code" (IaC) project to manage my cloud infrastructure.
-
-This project is constantly evolving and will lack extensive documentation until stabilizing.
+This project contains the configuration for my cloud infrastructure, for which I use [Terraform](https://www.terraform.io/), an open-source infrastructure-as-code tool.
 
 ## Local Development
 
