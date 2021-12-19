@@ -48,7 +48,7 @@ variable "postgres_username" {
 variable "plausible_image_version" {
   type        = string
   description = "Plausible image version"
-  default     = "v1.4"
+  default     = "v1.4.3"
 }
 
 variable "plausible_admin_email" {
