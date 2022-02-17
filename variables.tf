@@ -35,7 +35,7 @@ variable "clickhouse_image_version" {
 variable "postgres_image_version" {
   type        = string
   description = "bitnami/postgresql Helm Chart version"
-  default     = "13.3"
+  default     = "14.2"
 }
 
 variable "postgres_username" {
