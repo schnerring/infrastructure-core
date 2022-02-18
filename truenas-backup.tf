@@ -49,12 +49,14 @@ locals {
     "pictures",
     "syncthing",
     "tech",
-    "test"
+    "test", # ^^
+    "backup-k8s",
+    "obs"
   ]
 }
 
 resource "azurerm_storage_container" "truenas_backup" {
-  count = length(local.backup_datasets)
+  count                = length(local.backup_datasets)
   name                 = local.backup_datasets[count.index]
   storage_account_name = azurerm_storage_account.truenas_backup.name
 }
