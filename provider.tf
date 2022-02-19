@@ -24,7 +24,7 @@ terraform {
 
     helm = {
       source  = "helm"
-      version = "=2.3.0"
+      version = "=2.4.1"
     }
 
     kubernetes = {
