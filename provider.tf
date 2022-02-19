@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azuread = {
       source  = "azuread"
-      version = "=2.7.0"
+      version = "=2.18.0"
     }
 
     azurerm = {
