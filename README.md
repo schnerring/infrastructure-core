@@ -47,7 +47,7 @@ terraform apply infrastructure.tfplan
 
 | File                                       | Description                                                                                                                                                       |
 | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`common.tf`](./commond.tf)                | Common resources that is shared between deployments                                                                                                               |
+| [`common.tf`](./common.tf)                | Common resources that is shared between deployments                                                                                                               |
 | [`backend.tf`](./backend.tf)               | [Remote State](https://www.terraform.io/docs/language/state/remote.html) configuration                                                                            |
 | [`provider.tf`](./provider.tf)             | [Provider](https://www.terraform.io/docs/language/providers/index.html) configuration                                                                             |
 | [`terraform.tf`](./terraform.tf)           | Remote State storage configuration                                                                                                                                |
