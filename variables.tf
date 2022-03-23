@@ -155,7 +155,7 @@ variable "remark42_auth_twitter_csec" {
 variable "synapse_image_version" {
   type        = string
   description = "Synapse image version."
-  default     = "v1.52.0"
+  default     = "v1.55.0"
 }
 
 variable "synapse_server_name" {
