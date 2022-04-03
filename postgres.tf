@@ -31,7 +31,9 @@ resource "kubernetes_persistent_volume_claim" "postgres" {
 
     resources {
       requests = {
-        "storage" = "4Gi"
+        # `default` storage class uses Standard SSDs
+        # https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types#standard-ssd-size
+        "storage" = "8Gi"
       }
     }
   }
