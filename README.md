@@ -47,7 +47,7 @@ terraform apply infrastructure.tfplan
 
 | File                                       | Description                                                                                                                                                       |
 | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`common.tf`](./common.tf)                | Common resources that is shared between deployments                                                                                                               |
+| [`common.tf`](./common.tf)                 | Common resources that is shared between deployments                                                                                                               |
 | [`backend.tf`](./backend.tf)               | [Remote State](https://www.terraform.io/docs/language/state/remote.html) configuration                                                                            |
 | [`provider.tf`](./provider.tf)             | [Provider](https://www.terraform.io/docs/language/providers/index.html) configuration                                                                             |
 | [`terraform.tf`](./terraform.tf)           | Remote State storage configuration                                                                                                                                |
@@ -62,3 +62,9 @@ terraform apply infrastructure.tfplan
 | [`plausible.tf`](./plausible.tf)           | [Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
 | [`postgres.tf`](./postgres.tf)             | [PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
 | [`remark42.tf`](./remark42.tf)             | [Remark42](https://remark42.com/) AKS deployment                                                                                                                  |
+
+## Related Repositories
+
+To back up the Kubernetes Services (Matrix Synapse, Plausible, Remark42), I run a custom set of scripts daily with cron on my TrueNAS. You can find the scripts in the following repo:
+
+[https://github.com/schnerring/k8s-backup-scripts](https://github.com/schnerring/k8s-backup-scripts)
