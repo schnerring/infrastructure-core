@@ -21,6 +21,13 @@ resource "azurerm_key_vault" "infrastructure_core" {
 
   sku_name                  = "standard"
   enable_rbac_authorization = true
+
+  # Many secrets inside this KV are managed manually, e.g., the Matrix Synapse
+  # signing key. To protect against accidental or malicious deletion of these
+  # secrets, enforce keeping soft-deleted secrets for the duration of retention
+  # period.
+  purge_protection_enabled   = true
+  soft_delete_retention_days = 90
 }
 
 # Azure Service Principal (SP), used by GitHub Actions and authorized to manage any Azure resource
