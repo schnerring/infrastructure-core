@@ -1,3 +1,20 @@
+resource "azurerm_resource_group" "devops" {
+  name     = "devops-rg"
+  location = var.location
+  tags     = var.tags
+}
+
+resource "azurerm_key_vault" "infrastructure_core" {
+  name                = "infracorekv${random_id.random.dec}"
+  location            = azurerm_resource_group.devops.location
+  resource_group_name = azurerm_resource_group.devops.name
+  tenant_id           = data.azurerm_subscription.subscription.tenant_id
+  tags                = var.tags
+
+  sku_name                  = "standard"
+  enable_rbac_authorization = true
+}
+
 # Azure Service Principal (SP), used by GitHub Actions and authorized to manage any Azure resource
 
 resource "azuread_application" "devops_infrastructure" {
