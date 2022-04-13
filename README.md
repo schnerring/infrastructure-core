@@ -22,7 +22,7 @@ az login
 
 To authenticate with GitHub, set the `GITHUB_TOKEN` variable to a [personal access token](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with _public_repo_ scope.
 
-Terraform input variables to configure the deployment are defined inside the [`variables.tf`](./variables.tf) file.
+Terraform input variables to configure the deployment are defined inside the [`variables.tf`](./variables.tf) file. To enhance operational security, variable values required by Terraform are stored inside the `infracorekvXXXXX` (`azurerm_key_vault.infrastructure_core`) key vault. The [map-kv-to-env-vars.ps1](./map-kv-to-env-vars.ps1) convenience script maps the `TF-VAR-*` key vault secrets to `TF_VAR_*` environment variables. These mappings are not persisted and only available during the PowerShell session.
 
 ### Initialize
 
