@@ -41,7 +41,6 @@ variable "postgres_image_version" {
 variable "postgres_username" {
   type        = string
   description = "Postgres username."
-  default     = "postgres"
   sensitive   = true
 }
 
