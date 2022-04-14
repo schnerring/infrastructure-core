@@ -33,9 +33,9 @@ $secrets = Get-AzKeyVaultSecret -VaultName $KeyVault -Name "*"
 $i = 1;
 foreach ($secret in $secrets) {
   $percentComplete = $i/$secrets.Count*100
+  $envVarName = $secret.Name.Replace("-", "_")
   Write-Progress "Mapping secrets to environment variables ..." -Status $envVarName -PercentComplete $percentComplete
   $secretValuePlain = Get-AzKeyVaultSecret -VaultName $KeyVault -Name $secret.Name -AsPlainText
-  $envVarName = $secret.Name.Replace("-", "_")
   Set-Item -Path env:$envVarName -Value $secretValuePlain
   $i++
 }
