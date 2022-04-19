@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "devops" {
 }
 
 ################################################################################
-# infrastructure-core resources
+# Secret store for infrastructure-core resources
 # https://github.com/schnerring/infrastructure-core
 ################################################################################
 
