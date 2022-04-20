@@ -179,7 +179,7 @@ resource "kubernetes_secret" "plausible" {
     "DISABLE_REGISTRATION" = "true"
 
     # Database
-    "DATABASE_URL"            = "postgres://${postgresql_role.plausible_db.name}:${urlencode(random_password.plausible_db.result)}@${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}:5432/${postgresql_database.plausible_db.name}"
+    "DATABASE_URL"            = "postgres://${var.plausible_db_username}:${urlencode(random_password.plausible_db.result)}@${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}:5432/${var.plausible_db}"
     "CLICKHOUSE_DATABASE_URL" = "http://event-data-svc:8123/plausible"
 
     # SMTP

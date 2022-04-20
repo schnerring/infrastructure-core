@@ -1,16 +1,12 @@
 # Plausible Analytics DB
 
-resource "random_password" "plausible" {
-  length = 64
-}
-
 resource "postgresql_role" "plausible" {
-  name     = "plausible"
+  name     = var.plausible_username
   login    = true
-  password = random_password.plausible.result
+  password = var.plausible_password
 }
 
 resource "postgresql_database" "plausible" {
-  name  = "plausible"
+  name  = var.plausible_db
   owner = postgresql_role.plausible.name
 }

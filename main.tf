@@ -57,6 +57,22 @@ provider "postgresql" {
   sslmode  = "disable"
 }
 
+resource "random_password" "matrix_synapse_db" {
+  length = 64
+}
+
+resource "random_password" "plausible_db" {
+  length = 64
+}
+
 module "postgres" {
   source = "./postgres"
+
+  matrix_synapse_db       = var.matrix_synapse_db
+  matrix_synapse_username = var.matrix_synapse_db_username
+  matrix_synapse_password = random_password.matrix_synapse_db.result
+
+  plausible_db       = var.plausible_db
+  plausible_username = var.plausible_db_username
+  plausible_password = random_password.plausible_db.result
 }

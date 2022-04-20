@@ -50,6 +50,18 @@ variable "plausible_image_version" {
   default     = "v1.4.4"
 }
 
+variable "plausible_db" {
+  type        = string
+  description = "Plausible Postgres database name."
+  default     = "plausible"
+}
+
+variable "plausible_db_username" {
+  type        = string
+  description = "Plausible Postgres username."
+  default     = "plausible" # TODO change to "plausible_user"
+}
+
 variable "plausible_admin_email" {
   type        = string
   description = "Plausible administrator email address."
@@ -150,6 +162,20 @@ variable "remark42_auth_twitter_csec" {
   description = "Twitter OAuth client secret."
   sensitive   = true
 }
+
+variable "matrix_synapse_db" {
+  type        = string
+  description = "Matrix Synapse Postgres database name."
+  default     = "synapse"
+}
+
+variable "matrix_synapse_db_username" {
+  type        = string
+  description = "Matrix Synapse Postgres username."
+  default     = "synapse_user"
+}
+
+# TODO rename to matrix_synapse
 
 variable "synapse_image_version" {
   type        = string
