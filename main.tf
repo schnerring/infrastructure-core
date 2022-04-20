@@ -49,6 +49,10 @@ terraform {
   }
 }
 
+terraform {
+  backend "azurerm" {}
+}
+
 provider "postgresql" {
   host     = "localhost" # kubectl port-forward TODO put into vars?
   port     = 5432
