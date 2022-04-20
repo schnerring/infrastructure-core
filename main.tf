@@ -9,7 +9,7 @@ terraform {
 
     azurerm = {
       source  = "azurerm"
-      version = "=2.97.0"
+      version = "~> 2.97.0"
     }
 
     cloudflare = {
@@ -24,12 +24,12 @@ terraform {
 
     helm = {
       source  = "helm"
-      version = "=2.4.1"
+      version = "~> 2.4.1"
     }
 
     kubernetes = {
       source  = "kubernetes"
-      version = "=2.8.0"
+      version = "~> 2.8.0"
     }
 
     postgresql = {
