@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "truenas_backup" {
 }
 
 resource "azurerm_storage_account" "truenas_backup" {
-  name                = "truenasbackupst${random_id.tf_st_id.dec}"
+  name                = "truenasbackupst${random_id.default.dec}"
   resource_group_name = azurerm_resource_group.truenas_backup.name
   location            = var.location
   tags                = var.tags

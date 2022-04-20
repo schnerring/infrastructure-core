@@ -34,13 +34,13 @@ output "remark42_admin_password" {
 }
 
 output "truenas_backup_account_name" {
-  value       = azurerm_storage_account.truenas_backup.name
+  value       = module.core.truenas_backup_account_name
   description = "TrueNAS cloud credential account name."
   sensitive   = true
 }
 
 output "truenas_backup_account_key" {
-  value       = azurerm_storage_account.truenas_backup.secondary_access_key
+  value       = module.core.truenas_backup_account_key
   description = "TrueNAS cloud credential account key."
   sensitive   = true
 }

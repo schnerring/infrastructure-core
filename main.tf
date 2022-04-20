@@ -53,6 +53,19 @@ terraform {
   backend "azurerm" {}
 }
 
+# Core module
+
+module "core" {
+  source = "./core"
+
+  location = var.location
+  tags     = var.tags
+}
+
+# Kubernetes module
+
+# Postgres module
+
 provider "postgresql" {
   host     = "localhost" # kubectl port-forward TODO put into vars?
   port     = 5432

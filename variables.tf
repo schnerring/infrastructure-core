@@ -1,6 +1,6 @@
 variable "location" {
   type        = string
-  description = "Azure datacenter location where resources will be deployed to."
+  description = "Azure region where resources will be deployed."
   default     = "Switzerland North"
 }
 
