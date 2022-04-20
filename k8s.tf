@@ -102,6 +102,7 @@ resource "helm_release" "traefik" {
   version    = "10.14.2"
   namespace  = kubernetes_namespace.traefik.metadata[0].name
 
+  # Permanent HTTP to HTTPS redirect
   set {
     name  = "ports.web.redirectTo"
     value = "websecure"

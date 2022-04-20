@@ -336,18 +336,3 @@ resource "kubernetes_ingress" "plausible" {
     }
   }
 }
-
-resource "random_password" "plausible_db" {
-  length = 64
-}
-
-resource "postgresql_role" "plausible_db" {
-  name     = "plausible"
-  login    = true
-  password = random_password.plausible_db.result
-}
-
-resource "postgresql_database" "plausible_db" {
-  name  = "plausible"
-  owner = postgresql_role.plausible_db.name
-}

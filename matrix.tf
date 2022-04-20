@@ -338,24 +338,3 @@ resource "kubernetes_service" "matrix_admin" {
     }
   }
 }
-
-# See https://github.com/matrix-org/synapse/blob/master/docs/postgres.md#set-up-database
-
-resource "random_password" "matrix_db" {
-  length = 64
-}
-
-resource "postgresql_role" "matrix_db" {
-  name     = "synapse_user"
-  login    = true
-  password = random_password.matrix_db.result
-}
-
-resource "postgresql_database" "matrix_db" {
-  name       = "synapse"
-  owner      = postgresql_role.matrix_db.name
-  encoding   = "UTF8"
-  lc_collate = "C"
-  lc_ctype   = "C"
-  template   = "template0"
-}
