@@ -240,7 +240,7 @@ resource "kubernetes_deployment" "plausible" {
 
           args = [
             "-c",
-            "sleep 10 && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"
+            "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"
           ]
 
           env_from {
