@@ -133,37 +133,6 @@ resource "cloudflare_record" "azure_verification" {
   ttl     = 86400
 }
 
-# GitHub Pages
-
-resource "cloudflare_record" "sensingskies_gh_pages_apex" {
-  zone_id = cloudflare_zone.sensingskies_org.id
-  name    = "sensingskies.org"
-  type    = "CNAME"
-  value   = "schnerring.github.io"
-  proxied = true
-}
-
-resource "cloudflare_record" "sensingskies_gh_pages_www" {
-  zone_id = cloudflare_zone.sensingskies_org.id
-  name    = "www"
-  type    = "CNAME"
-  value   = "schnerring.github.io"
-  proxied = true
-}
-
-resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex" {
-  zone_id  = cloudflare_zone.sensingskies_org.id
-  target   = "https://www.sensingskies.org/"
-  priority = 1
-
-  actions {
-    forwarding_url {
-      url         = "https://sensingskies.org/"
-      status_code = 301
-    }
-  }
-}
-
 # Cloudflare Pages
 
 resource "cloudflare_record" "hugo_theme_gruvbox" {
@@ -206,4 +175,33 @@ resource "cloudflare_record" "google_search_console_verification" {
 
 resource "cloudflare_zone" "sensingskies_org" {
   zone = "sensingskies.org"
+}
+
+resource "cloudflare_record" "sensingskies_gh_pages_apex" {
+  zone_id = cloudflare_zone.sensingskies_org.id
+  name    = "sensingskies.org"
+  type    = "CNAME"
+  value   = "schnerring.github.io"
+  proxied = true
+}
+
+resource "cloudflare_record" "sensingskies_gh_pages_www" {
+  zone_id = cloudflare_zone.sensingskies_org.id
+  name    = "www"
+  type    = "CNAME"
+  value   = "schnerring.github.io"
+  proxied = true
+}
+
+resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex" {
+  zone_id  = cloudflare_zone.sensingskies_org.id
+  target   = "https://www.sensingskies.org/"
+  priority = 1
+
+  actions {
+    forwarding_url {
+      url         = "https://sensingskies.org/"
+      status_code = 301
+    }
+  }
 }

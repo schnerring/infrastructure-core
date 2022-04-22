@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "remark42" {
 }
 
 resource "cloudflare_record" "remark42" {
-  zone_id = cloudflare_zone.schnerring_net.id
+  zone_id = data.cloudflare_zone.schnerring_net.id
   name    = "remark42"
   type    = "CNAME"
   value   = cloudflare_record.traefik.hostname

@@ -182,14 +182,14 @@ resource "kubernetes_deployment" "matrix" {
 }
 
 resource "cloudflare_record" "matrix" {
-  zone_id = cloudflare_zone.schnerring_net.id
+  zone_id = data.cloudflare_zone.schnerring_net.id
   name    = "matrix"
   type    = "A"
   value   = cloudflare_record.traefik.value
 }
 
 resource "cloudflare_record" "matrix_delegation" {
-  zone_id = cloudflare_zone.schnerring_net.id
+  zone_id = data.cloudflare_zone.schnerring_net.id
   name    = "_matrix._tcp"
   type    = "SRV"
   ttl     = 86400

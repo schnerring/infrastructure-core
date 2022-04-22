@@ -123,7 +123,7 @@ data "kubernetes_service" "traefik" {
 }
 
 resource "cloudflare_record" "traefik" {
-  zone_id = cloudflare_zone.schnerring_net.id
+  zone_id = data.cloudflare_zone.schnerring_net.id
   name    = "k8s"
   type    = "A"
   value   = data.kubernetes_service.traefik.status.0.load_balancer.0.ingress.0.ip

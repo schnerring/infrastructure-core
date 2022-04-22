@@ -1,8 +1,3 @@
-output "dns_name_servers" {
-  value       = cloudflare_zone.schnerring_net.name_servers
-  description = "Cloudflare-assigned schnerring.net name servers."
-}
-
 output "kube_config" {
   value       = azurerm_kubernetes_cluster.k8s.kube_config_raw
   description = "kubeconfig for kubectl access."
@@ -45,7 +40,12 @@ output "truenas_backup_account_key" {
   sensitive   = true
 }
 
-output "sensingskies_org_dns_name_servers" {
-  value       = cloudflare_zone.sensingskies_org.name_servers
-  description = "Cloudflare-assigned sensingskies.org name servers."
+output "schnerring_net_dns_servers" {
+  value       = module.core.schnerring_net_dns_servers
+  description = "Cloudflare-assigned schnerring.net DNS servers."
+}
+
+output "sensingskies_org_dns_servers" {
+  value       = module.core.sensingskies_org_dns_servers
+  description = "Cloudflare-assigned sensingskies.org DNS servers."
 }

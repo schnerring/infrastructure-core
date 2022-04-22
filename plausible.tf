@@ -297,7 +297,7 @@ resource "kubernetes_service" "plausible" {
 }
 
 resource "cloudflare_record" "plausible" {
-  zone_id = cloudflare_zone.schnerring_net.id
+  zone_id = data.cloudflare_zone.schnerring_net.id
   name    = "plausible"
   type    = "CNAME"
   value   = cloudflare_record.traefik.hostname
