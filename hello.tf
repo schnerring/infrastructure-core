@@ -62,7 +62,7 @@ resource "kubernetes_service" "hello" {
   }
 }
 
-resource "kubernetes_ingress" "hello" {
+resource "kubernetes_ingress_v1" "hello" {
   metadata {
     name      = "hello-ing"
     namespace = kubernetes_namespace.hello.metadata.0.name
@@ -81,8 +81,13 @@ resource "kubernetes_ingress" "hello" {
           path = "/"
 
           backend {
-            service_name = "hello-svc"
-            service_port = 80
+            service {
+              name = "hello-svc"
+
+              port {
+                number = 80
+              }
+            }
           }
         }
       }

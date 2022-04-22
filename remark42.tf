@@ -187,7 +187,7 @@ resource "kubernetes_service" "remark42" {
   }
 }
 
-resource "kubernetes_ingress" "remark42" {
+resource "kubernetes_ingress_v1" "remark42" {
   metadata {
     name      = "remark42-ing"
     namespace = kubernetes_namespace.remark42.metadata.0.name
@@ -206,8 +206,13 @@ resource "kubernetes_ingress" "remark42" {
           path = "/"
 
           backend {
-            service_name = "remark42-svc"
-            service_port = 80
+            service {
+              name = "remark42-svc"
+
+              port {
+                number = 80
+              }
+            }
           }
         }
       }

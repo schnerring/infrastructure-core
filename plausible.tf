@@ -304,7 +304,7 @@ resource "cloudflare_record" "plausible" {
   proxied = true
 }
 
-resource "kubernetes_ingress" "plausible" {
+resource "kubernetes_ingress_v1" "plausible" {
   metadata {
     name      = "plausible-ing"
     namespace = kubernetes_namespace.plausible.metadata.0.name
@@ -323,8 +323,13 @@ resource "kubernetes_ingress" "plausible" {
           path = "/"
 
           backend {
-            service_name = "plausible-svc"
-            service_port = 8000
+            service {
+              name = "plausible-svc"
+
+              port {
+                number = 8000
+              }
+            }
           }
         }
       }
