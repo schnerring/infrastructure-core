@@ -1,17 +1,11 @@
 variable "location" {
   type        = string
   description = "Azure region where resources will be deployed."
-  default     = "Switzerland North"
 }
 
 variable "tags" {
   type        = map(string)
   description = "Default Azure tags applied to any resource."
-  default = {
-    "Environment"          = "Production"
-    "Management Framework" = "Terraform"
-    "Project"              = "infrastructure"
-  }
 }
 
 variable "letsencrypt_email" {
@@ -31,31 +25,26 @@ variable "letsencrypt_cloudflare_api_token" {
 variable "clickhouse_image_version" {
   type        = string
   description = "Clickhouse DB image version"
-  default     = "21.3.9.83" # LTS release: https://github.com/ClickHouse/ClickHouse/releases/tag/v21.3.9.83-lts
 }
 
 variable "postgres_image_version" {
   type        = string
   description = "bitnami/postgresql Helm Chart version"
-  default     = "13.3"
 }
 
 variable "plausible_image_version" {
   type        = string
   description = "Plausible image version"
-  default     = "v1.4.4"
 }
 
 variable "remark42_image_version" {
   type        = string
   description = "Remark42 image version"
-  default     = "v1.9.0"
 }
 
 variable "matrix_synapse_image_version" {
   type        = string
   description = "Synapse image version."
-  default     = "v1.55.0"
 }
 
 # SMTP
@@ -97,13 +86,11 @@ variable "postgres_username" {
 variable "plausible_db" {
   type        = string
   description = "Plausible Postgres database name."
-  default     = "plausible"
 }
 
 variable "plausible_db_username" {
   type        = string
   description = "Plausible Postgres username."
-  default     = "plausible" # TODO change to "plausible_user"
 }
 
 variable "plausible_admin_email" {
@@ -184,13 +171,11 @@ variable "remark42_auth_twitter_csec" {
 variable "matrix_synapse_db" {
   type        = string
   description = "Matrix Synapse Postgres database name."
-  default     = "synapse"
 }
 
 variable "matrix_synapse_db_username" {
   type        = string
   description = "Matrix Synapse Postgres username."
-  default     = "synapse_user"
 }
 
 variable "matrix_synapse_server_name" {
