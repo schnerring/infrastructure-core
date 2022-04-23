@@ -20,7 +20,9 @@ kubectl port-forward service/postgres-svc --namespace postgres 5432:5432
 az login
 ```
 
-To authenticate with GitHub, set the `GITHUB_TOKEN` variable to a [personal access token](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with _public_repo_ scope.
+To authenticate with GitHub, set the `GITHUB_TOKEN` variable to a [personal access token (PAT)](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with `public_repo` scope.
+
+To authenticate to Cloudflare, set the `CLOUDFLARE_API_TOKEN` variable to a PAT with `Zone.Zone` and `Zone.DNS` permissions.
 
 Terraform input variables to configure the deployment are defined inside the [variables.tf](./variables.tf) file. To enhance operational security, variable values required by Terraform are stored inside the `infracorekvXXXXX` key vault (`azurerm_key_vault.infrastructure_core`). The [map-kv-to-env-vars.ps1](./map-kv-to-env-vars.ps1) convenience script maps the `TF-VAR-*` key vault secrets to `TF_VAR_*` environment variables. These mappings are not persisted and only available inside the PowerShell session where the script was run.
 

@@ -8,7 +8,9 @@ output "backup_truenas_account_key" {
   sensitive = true
 }
 
-# DNS Servers
+output "cloudflare_schnerring_net_zone_id" {
+  value = cloudflare_zone.schnerring_net.id
+}
 
 output "schnerring_net_dns_servers" {
   value = cloudflare_zone.schnerring_net.name_servers

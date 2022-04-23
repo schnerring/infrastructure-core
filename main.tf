@@ -108,21 +108,10 @@ resource "random_password" "plausible_db" {
   length = 64
 }
 
-# TODO remove?
-
-data "cloudflare_zone" "schnerring_net" {
-  name = "schnerring.net"
-
-  # Zone is managed by core module
-  depends_on = [
-    module.core
-  ]
-}
-
 module "kubernetes" {
   source = "./kubernetes"
 
-  cloudflare_schnerring_net_zone_id = data.cloudflare_zone.schnerring_net.id
+  cloudflare_schnerring_net_zone_id = module.core.cloudflare_schnerring_net_zone_id
 
   letsencrypt_cloudflare_api_token = var.letsencrypt_cloudflare_api_token
   letsencrypt_email                = var.letsencrypt_email
