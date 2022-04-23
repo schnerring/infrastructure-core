@@ -22,9 +22,20 @@ az login
 
 To authenticate with GitHub, set the `GITHUB_TOKEN` variable to a [personal access token (PAT)](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with `public_repo` scope.
 
-To authenticate to Cloudflare, set the `CLOUDFLARE_API_TOKEN` variable to a PAT with `Zone.Zone` and `Zone.DNS` permissions.
+To authenticate to Cloudflare, set the `CLOUDFLARE_API_TOKEN` variable to a personal access token with `Zone.Zone` and `Zone.DNS` permissions.
 
-Terraform input variables to configure the deployment are defined inside the [variables.tf](./variables.tf) file. To enhance operational security, variable values required by Terraform are stored inside the `infracorekvXXXXX` key vault (`azurerm_key_vault.infrastructure_core`). The [map-kv-to-env-vars.ps1](./map-kv-to-env-vars.ps1) convenience script maps the `TF-VAR-*` key vault secrets to `TF_VAR_*` environment variables. These mappings are not persisted and only available inside the PowerShell session where the script was run.
+Terraform input variables to configure the deployment are defined inside the [variables.tf](./variables.tf) file. Use the `tfinfracorekv37` key vault stores Terraform variable values. It enhances operational security because storing secrets in plaintext files or environment variables can be avoided. The [map-kv-to-env-vars.ps1](./map-kv-to-env-vars.ps1) convenience script maps the `TF-VAR-*` key vault secrets to `TF_VAR_*` environment variables. These mappings are not persisted and only available inside the PowerShell session that executed the script.
+
+```powershell
+.\map-kv-to-env-vars.ps1 -KeyVault tfinfracorekv37
+```
+
+To access the key vault, the user requires the following role assignments:
+
+- `Key Vault Administrator` and `Key Vault Secrets Officer` roles to manage secrets
+- `Key Vault Secrets User` to read secrets
+
+I like to manage these assignments with the Azure Portal and not Terraform.
 
 ### Initialize
 
@@ -33,7 +44,7 @@ Initialize the [Terraform azurerm backend](https://www.terraform.io/docs/languag
 ```shell
 terraform init \
   -backend-config="resource_group_name=terraform-rg" \
-  -backend-config="storage_account_name=tfinfracorestNN" \
+  -backend-config="storage_account_name=tfinfracorest37" \
   -backend-config="container_name=terraform-backend" \
   -backend-config="key=infrastructure-core.tfstate"
 ```
@@ -41,8 +52,8 @@ terraform init \
 ### Deploy
 
 ```shell
-terraform plan -out infrastructure.tfplan
-terraform apply infrastructure.tfplan
+terraform plan -out infrastructure-core.tfplan
+terraform apply infrastructure-core.tfplan
 ```
 
 ## Terraform Resource Overview

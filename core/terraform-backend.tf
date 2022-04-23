@@ -23,6 +23,12 @@ resource "azurerm_storage_container" "terraform_infrastructure_core" {
 
 # Secret store for infrastructure-core resources
 # https://github.com/schnerring/infrastructure-core
+#
+# To manage Key Vault secrets, the user requires the `Key Vault Administrator`
+# and `Key Vault Secrets Officer` roles.
+#
+# To access Key Vault secrets, the user requires the `Key Vault Secrets User`
+# role.
 
 resource "azurerm_key_vault" "terraform_infrastructure_core" {
   name                = "tfinfracorekv${random_id.default.dec}"
