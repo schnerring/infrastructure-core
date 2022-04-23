@@ -108,8 +108,9 @@ resource "random_password" "plausible_db" {
 module "core" {
   source = "./core"
 
-  location = var.location
-  tags     = var.tags
+  location     = var.location
+  aks_location = var.aks_location
+  tags         = var.tags
 }
 
 module "kubernetes" {

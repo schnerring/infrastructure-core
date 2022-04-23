@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "aks" {
   name     = "aks-rg"
-  location = "East US"
+  location = var.aks_location
 }
 
 # Azure Kubernetes Service cluster hosting core web services of my website https://schnerring.net
@@ -24,6 +24,11 @@ resource "azurerm_kubernetes_cluster" "web_core" {
     vm_size         = "Standard_D2as_v4"
     os_disk_type    = "Ephemeral"
     os_disk_size_gb = 50
+  }
+
+  network_profile {
+    network_plugin    = "kubenet"
+    load_balancer_sku = "basic"
   }
 
   identity {

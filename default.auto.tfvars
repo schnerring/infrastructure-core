@@ -1,4 +1,6 @@
-location = "Switzerland North"
+location     = "Switzerland North"
+aks_location = "East US"
+
 tags = {
   "Environment"          = "Production"
   "Management Framework" = "Terraform"
