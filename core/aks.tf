@@ -1,6 +1,7 @@
 resource "azurerm_resource_group" "aks" {
   name     = "aks-rg"
   location = var.aks_location
+  tags     = var.tags
 }
 
 # Azure Kubernetes Service cluster hosting core web services of my website https://schnerring.net

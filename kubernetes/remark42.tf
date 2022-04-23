@@ -19,12 +19,11 @@ resource "kubernetes_persistent_volume_claim" "remark42" {
   }
 
   spec {
-    access_modes       = ["ReadWriteOnce"]
-    storage_class_name = "azurefile"
+    access_modes = ["ReadWriteOnce"]
 
     resources {
       requests = {
-        "storage" = "1Gi"
+        "storage" = "4Gi"
       }
     }
   }

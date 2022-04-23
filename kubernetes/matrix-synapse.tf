@@ -6,13 +6,13 @@ resource "kubernetes_namespace" "matrix" {
 
 resource "kubernetes_service" "matrix_synapse" {
   metadata {
-    name      = "matrix-svc"
+    name      = "matrix-synapse-svc"
     namespace = kubernetes_namespace.matrix.metadata.0.name
   }
 
   spec {
     selector = {
-      "app" = "matrix"
+      "app" = "matrix-synapse"
     }
 
     port {
@@ -29,7 +29,7 @@ locals {
 
 resource "kubernetes_secret" "matrix_synapse" {
   metadata {
-    name      = "matrix-secret"
+    name      = "matrix-synapse-secret"
     namespace = kubernetes_namespace.matrix.metadata.0.name
   }
 
@@ -66,7 +66,7 @@ resource "kubernetes_secret" "matrix_synapse" {
 
 resource "kubernetes_persistent_volume_claim" "matrix_synapse" {
   metadata {
-    name      = "matrix-pvc"
+    name      = "matrix-synapse-pvc"
     namespace = kubernetes_namespace.matrix.metadata.0.name
   }
 
@@ -83,10 +83,10 @@ resource "kubernetes_persistent_volume_claim" "matrix_synapse" {
 
 resource "kubernetes_deployment" "matrix_synapse" {
   metadata {
-    name      = "matrix-deploy"
+    name      = "matrix-synapse-deploy"
     namespace = kubernetes_namespace.matrix.metadata.0.name
     labels = {
-      "app" = "matrix"
+      "app" = "matrix-synapse"
     }
   }
 
@@ -95,7 +95,7 @@ resource "kubernetes_deployment" "matrix_synapse" {
 
     selector {
       match_labels = {
-        "app" = "matrix"
+        "app" = "matrix-synapse"
       }
     }
 
@@ -106,12 +106,12 @@ resource "kubernetes_deployment" "matrix_synapse" {
     template {
       metadata {
         labels = {
-          "app" = "matrix"
+          "app" = "matrix-synapse"
         }
       }
 
       spec {
-        hostname       = "matrix"
+        hostname       = "matrix-synapse"
         restart_policy = "Always"
 
         # see https://github.com/matrix-org/synapse/blob/master/docker/README.md#generating-a-configuration-file
@@ -123,7 +123,7 @@ resource "kubernetes_deployment" "matrix_synapse" {
         }
 
         container {
-          name  = "synapse"
+          name  = "matrix-synapse"
           image = "matrixdotorg/synapse:${var.matrix_synapse_image_version}"
 
           security_context {
@@ -165,7 +165,7 @@ resource "kubernetes_deployment" "matrix_synapse" {
           name = "data-vol"
 
           persistent_volume_claim {
-            claim_name = "matrix-pvc"
+            claim_name = "matrix-synapse-pvc"
           }
         }
 
@@ -173,7 +173,7 @@ resource "kubernetes_deployment" "matrix_synapse" {
           name = "secret-vol"
 
           secret {
-            secret_name = "matrix-secret"
+            secret_name = "matrix-synapse-secret"
           }
         }
       }
@@ -226,7 +226,7 @@ resource "kubernetes_ingress_v1" "matrix_synapse" {
 
           backend {
             service {
-              name = "matrix-svc"
+              name = "matrix-synapse-svc"
 
               port {
                 number = 8008
@@ -246,7 +246,7 @@ resource "kubernetes_ingress_v1" "matrix_synapse" {
 
           backend {
             service {
-              name = "matrix-svc"
+              name = "matrix-synapse-svc"
 
               port {
                 number = 8008
@@ -260,7 +260,7 @@ resource "kubernetes_ingress_v1" "matrix_synapse" {
 
           backend {
             service {
-              name = "matrix-svc"
+              name = "matrix-synapse-svc"
 
               port {
                 number = 8008

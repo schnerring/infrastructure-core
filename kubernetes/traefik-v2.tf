@@ -10,7 +10,7 @@ resource "helm_release" "traefik" {
   name       = "traefik"
   repository = "https://helm.traefik.io/traefik"
   chart      = "traefik"
-  version    = "10.14.2"
+  version    = var.traefik_helm_chart_version
   namespace  = kubernetes_namespace.traefik.metadata[0].name
 
   # Permanent HTTP to HTTPS redirect

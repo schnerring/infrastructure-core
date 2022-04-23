@@ -25,7 +25,17 @@ variable "letsencrypt_cloudflare_api_token" {
   sensitive   = true
 }
 
-# Image Versions
+# Kubernetes App Versions
+
+variable "cert_manager_helm_chart_version" {
+  type        = string
+  description = "cert-manager Helm Chart version"
+}
+
+variable "traefik_helm_chart_version" {
+  type        = string
+  description = "Traefik Helm Chart version"
+}
 
 variable "clickhouse_image_version" {
   type        = string

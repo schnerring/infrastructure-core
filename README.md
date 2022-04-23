@@ -56,6 +56,16 @@ terraform plan -out infrastructure-core.tfplan
 terraform apply infrastructure-core.tfplan
 ```
 
+## Replace the AKS cluster and re-create the Kubernetes resources
+
+```shell
+terraform destroy -target module.postgres
+terraform destroy -target module.kubernetes
+terraform apply -target module.kubernetes.helm_release.cert_manager #CRDs
+terraform apply -target module.kubernetes
+terraform apply
+```
+
 ## Terraform Resource Overview
 
 | File                                       | Description                                                                                                                                                       |

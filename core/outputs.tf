@@ -25,6 +25,11 @@ output "aks_kube_config_raw" {
   sensitive = true
 }
 
+output "aks_host" {
+  value     = azurerm_kubernetes_cluster.web_core.kube_config.0.host
+  sensitive = true
+}
+
 output "aks_client_certificate" {
   value     = azurerm_kubernetes_cluster.web_core.kube_config.0.client_certificate
   sensitive = true

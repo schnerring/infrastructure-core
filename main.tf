@@ -65,20 +65,20 @@ provider "cloudflare" {}
 
 provider "helm" {
   kubernetes {
-    host = azurerm_kubernetes_cluster.k8s.kube_config.0.host
+    host = module.core.aks_host
 
-    client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_certificate)
-    client_key             = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_key)
-    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.cluster_ca_certificate)
+    client_certificate     = base64decode(module.core.aks_client_certificate)
+    client_key             = base64decode(module.core.aks_client_key)
+    cluster_ca_certificate = base64decode(module.core.aks_cluster_ca_certificate)
   }
 }
 
 provider "kubernetes" {
-  host = azurerm_kubernetes_cluster.k8s.kube_config.0.host
+  host = module.core.aks_host
 
-  client_certificate     = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_certificate)
-  client_key             = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_key)
-  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.cluster_ca_certificate)
+  client_certificate     = base64decode(module.core.aks_client_certificate)
+  client_key             = base64decode(module.core.aks_client_key)
+  cluster_ca_certificate = base64decode(module.core.aks_cluster_ca_certificate)
 }
 
 provider "postgresql" {
@@ -121,11 +121,13 @@ module "kubernetes" {
   letsencrypt_cloudflare_api_token = var.letsencrypt_cloudflare_api_token
   letsencrypt_email                = var.letsencrypt_email
 
-  clickhouse_image_version     = var.clickhouse_image_version
-  postgres_image_version       = var.postgres_image_version
-  plausible_image_version      = var.plausible_image_version
-  remark42_image_version       = var.remark42_image_version
-  matrix_synapse_image_version = var.matrix_synapse_image_version
+  cert_manager_helm_chart_version = var.cert_manager_helm_chart_version
+  traefik_helm_chart_version      = var.traefik_helm_chart_version
+  clickhouse_image_version        = var.clickhouse_image_version
+  postgres_image_version          = var.postgres_image_version
+  plausible_image_version         = var.plausible_image_version
+  remark42_image_version          = var.remark42_image_version
+  matrix_synapse_image_version    = var.matrix_synapse_image_version
 
   smtp_host     = var.smtp_host
   smtp_port     = var.smtp_port

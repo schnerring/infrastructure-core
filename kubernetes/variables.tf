@@ -12,6 +12,14 @@ variable "letsencrypt_cloudflare_api_token" {
   sensitive = true
 }
 
+variable "cert_manager_helm_chart_version" {
+  type = string
+}
+
+variable "traefik_helm_chart_version" {
+  type = string
+}
+
 variable "clickhouse_image_version" {
   type = string
 }
