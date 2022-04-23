@@ -94,6 +94,12 @@ module "core" {
   tags     = var.tags
 }
 
+# Passwords
+
+resource "random_password" "postgres" {
+  length = 32
+}
+
 resource "random_password" "matrix_synapse_db" {
   length = 64
 }
@@ -102,16 +108,65 @@ resource "random_password" "plausible_db" {
   length = 64
 }
 
+# TODO remove?
+
+data "cloudflare_zone" "schnerring_net" {
+  name = "schnerring.net"
+
+  # Zone is managed by core module
+  depends_on = [
+    module.core
+  ]
+}
+
 module "kubernetes" {
   source = "./kubernetes"
 
-  matrix_synapse_db       = var.matrix_synapse_db
-  matrix_synapse_username = var.matrix_synapse_db_username
-  matrix_synapse_password = random_password.matrix_synapse_db.result
+  cloudflare_schnerring_net_zone_id = data.cloudflare_zone.schnerring_net.id
 
-  plausible_db       = var.plausible_db
-  plausible_username = var.plausible_db_username
-  plausible_password = random_password.plausible_db.result
+  letsencrypt_cloudflare_api_token = var.letsencrypt_cloudflare_api_token
+  letsencrypt_email                = var.letsencrypt_email
+
+  clickhouse_image_version     = var.clickhouse_image_version
+  postgres_image_version       = var.postgres_image_version
+  plausible_image_version      = var.plausible_image_version
+  remark42_image_version       = var.remark42_image_version
+  matrix_synapse_image_version = var.matrix_synapse_image_version
+
+  smtp_host     = var.smtp_host
+  smtp_port     = var.smtp_port
+  smtp_username = var.smtp_username
+  smtp_password = var.smtp_password
+
+  postgres_username = var.postgres_username
+  postgres_password = random_password.postgres.result
+
+  plausible_db                   = var.plausible_db
+  plausible_db_username          = var.plausible_db_username
+  plausible_db_password          = random_password.plausible_db.result
+  plausible_admin_email          = var.plausible_admin_email
+  plausible_admin_name           = var.plausible_admin_name
+  plausible_mailer_email         = var.plausible_mailer_email
+  plausible_google_client_id     = var.plausible_google_client_id
+  plausible_google_client_secret = var.plausible_google_client_secret
+
+  remark42_email_from          = var.remark42_email_from
+  remark42_admin_shared_ids    = var.remark42_admin_shared_ids
+  remark42_admin_shared_emails = var.remark42_admin_shared_emails
+  remark42_auth_github_cid     = var.remark42_auth_github_cid
+  remark42_auth_github_csec    = var.remark42_auth_github_csec
+  remark42_auth_twitter_cid    = var.remark42_auth_twitter_cid
+  remark42_auth_twitter_csec   = var.remark42_auth_twitter_csec
+
+  matrix_synapse_db                         = var.matrix_synapse_db
+  matrix_synapse_db_username                = var.matrix_synapse_db_username
+  matrix_synapse_db_password                = random_password.matrix_synapse_db.result
+  matrix_synapse_server_name                = var.matrix_synapse_server_name
+  matrix_synapse_report_stats               = var.matrix_synapse_report_stats
+  matrix_synapse_signing_key                = var.matrix_synapse_signing_key
+  matrix_synapse_registration_shared_secret = var.matrix_synapse_registration_shared_secret
+  matrix_synapse_macaroon_secret_key        = var.matrix_synapse_macaroon_secret_key
+  matrix_synapse_form_secret                = var.matrix_synapse_form_secret
 }
 
 module "postgres" {

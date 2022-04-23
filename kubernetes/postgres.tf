@@ -4,10 +4,6 @@ resource "kubernetes_namespace" "postgres" {
   }
 }
 
-resource "random_password" "postgres" {
-  length = 32
-}
-
 resource "kubernetes_secret" "postgres" {
   metadata {
     name      = "postgres-secret"
@@ -16,7 +12,7 @@ resource "kubernetes_secret" "postgres" {
 
   data = {
     "POSTGRES_USER"     = var.postgres_username
-    "POSTGRES_PASSWORD" = random_password.postgres.result
+    "POSTGRES_PASSWORD" = var.postgres_password
   }
 }
 

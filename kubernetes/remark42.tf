@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "remark42" {
 }
 
 resource "cloudflare_record" "remark42" {
-  zone_id = data.cloudflare_zone.schnerring_net.id
+  zone_id = var.cloudflare_schnerring_net_zone_id
   name    = "remark42"
   type    = "CNAME"
   value   = cloudflare_record.traefik.hostname
@@ -52,7 +52,7 @@ resource "random_password" "remark42_secret" {
   length = 64
 }
 
-resource "random_password" "remark42_admin_password" {
+resource "random_password" "remark42_admin" {
   length = 64
 }
 
@@ -79,7 +79,7 @@ resource "kubernetes_secret" "remark42" {
     "AUTH_TWITTER_CID"  = var.remark42_auth_twitter_cid
     "AUTH_TWITTER_CSEC" = var.remark42_auth_twitter_csec
 
-    "ADMIN_PASSWD"       = random_password.remark42_admin_password.result
+    "ADMIN_PASSWD"       = random_password.remark42_admin.result
     "ADMIN_SHARED_EMAIL" = join(",", var.remark42_admin_shared_emails)
     "AUTH_EMAIL_FROM"    = var.remark42_email_from
     "NOTIFY_EMAIL_FROM"  = var.remark42_email_from

@@ -152,7 +152,7 @@ resource "kubernetes_service" "event_data" {
   }
 }
 
-resource "random_password" "plausible_admin_pwd" {
+resource "random_password" "plausible_admin" {
   length = 64
 }
 
@@ -171,7 +171,7 @@ resource "kubernetes_secret" "plausible" {
     # Default User Generation
     "ADMIN_USER_EMAIL" = var.plausible_admin_email
     "ADMIN_USER_NAME"  = var.plausible_admin_name
-    "ADMIN_USER_PWD"   = random_password.plausible_admin_pwd.result
+    "ADMIN_USER_PWD"   = random_password.plausible_admin.result
 
     # Server
     "BASE_URL"             = "https://${cloudflare_record.plausible.hostname}"
@@ -179,7 +179,7 @@ resource "kubernetes_secret" "plausible" {
     "DISABLE_REGISTRATION" = "true"
 
     # Database
-    "DATABASE_URL"            = "postgres://${var.plausible_db_username}:${urlencode(random_password.plausible_db.result)}@${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}:5432/${var.plausible_db}"
+    "DATABASE_URL"            = "postgres://${var.plausible_db_username}:${urlencode(var.plausible_db_password)}@${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}:5432/${var.plausible_db}"
     "CLICKHOUSE_DATABASE_URL" = "http://event-data-svc:8123/plausible"
 
     # SMTP
@@ -297,7 +297,7 @@ resource "kubernetes_service" "plausible" {
 }
 
 resource "cloudflare_record" "plausible" {
-  zone_id = data.cloudflare_zone.schnerring_net.id
+  zone_id = var.cloudflare_schnerring_net_zone_id
   name    = "plausible"
   type    = "CNAME"
   value   = cloudflare_record.traefik.hostname

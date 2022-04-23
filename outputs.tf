@@ -17,13 +17,13 @@ output "postgres_admin_password" {
 }
 
 output "plausible_admin_password" {
-  value       = random_password.plausible_admin_pwd.result
+  value       = module.kubernetes.plausible_admin_password
   description = "Terraform-generated Plausible administrator password."
   sensitive   = true
 }
 
 output "remark42_admin_password" {
-  value       = random_password.remark42_admin_password.result
+  value       = module.kubernetes.remark42_admin_password
   description = "Terraform-generated Remark42 administrator password."
   sensitive   = true
 }

@@ -4,7 +4,7 @@ resource "kubernetes_namespace" "matrix" {
   }
 }
 
-resource "kubernetes_service" "matrix" {
+resource "kubernetes_service" "matrix_synapse" {
   metadata {
     name      = "matrix-svc"
     namespace = kubernetes_namespace.matrix.metadata.0.name
@@ -23,11 +23,11 @@ resource "kubernetes_service" "matrix" {
 }
 
 locals {
-  synapse_log_config       = "/data/${var.synapse_server_name}.log.config"
-  synapse_signing_key_path = "/data/${var.synapse_server_name}.signing.key"
+  matrix_synapse_log_config       = "/data/${var.matrix_synapse_server_name}.log.config"
+  matrix_synapse_signing_key_path = "/data/${var.matrix_synapse_server_name}.signing.key"
 }
 
-resource "kubernetes_secret" "matrix" {
+resource "kubernetes_secret" "matrix_synapse" {
   metadata {
     name      = "matrix-secret"
     namespace = kubernetes_namespace.matrix.metadata.0.name
@@ -36,35 +36,35 @@ resource "kubernetes_secret" "matrix" {
   # See also: https://github.com/matrix-org/synapse/blob/master/docker/README.md#generating-a-configuration-file
   data = {
     "homeserver.yaml" = templatefile(
-      "${path.module}/synapse-config/homeserver.tpl.yaml",
+      "${path.module}/matrix-synapse-config/homeserver.tpl.yaml",
       {
-        "server_name"                = var.synapse_server_name
-        "report_stats"               = var.synapse_report_stats
-        "log_config"                 = local.synapse_log_config
-        "signing_key_path"           = local.synapse_signing_key_path
-        "registration_shared_secret" = var.synapse_registration_shared_secret
-        "macaroon_secret_key"        = var.synapse_macaroon_secret_key
-        "form_secret"                = var.synapse_form_secret
+        "server_name"                = var.matrix_synapse_server_name
+        "report_stats"               = var.matrix_synapse_report_stats
+        "log_config"                 = local.matrix_synapse_log_config
+        "signing_key_path"           = local.matrix_synapse_signing_key_path
+        "registration_shared_secret" = var.matrix_synapse_registration_shared_secret
+        "macaroon_secret_key"        = var.matrix_synapse_macaroon_secret_key
+        "form_secret"                = var.matrix_synapse_form_secret
         "postgres_username"          = var.matrix_synapse_db_username
-        "postgres_password"          = random_password.matrix_synapse_db.result
+        "postgres_password"          = var.matrix_synapse_db_password
         "postgres_database"          = var.matrix_synapse_db
         "postgres_host"              = "${kubernetes_service.postgres.metadata.0.name}.${kubernetes_namespace.postgres.metadata.0.name}"
       }
     )
 
     "log.config" = templatefile(
-      "${path.module}/synapse-config/log.tpl.config",
+      "${path.module}/matrix-synapse-config/log.tpl.config",
       {
         "log_filename" = "/data/homeserver.log"
         "log_level"    = "WARNING"
       }
     )
 
-    "signing.key" = var.synapse_signing_key
+    "signing.key" = var.matrix_synapse_signing_key
   }
 }
 
-resource "kubernetes_persistent_volume_claim" "matrix" {
+resource "kubernetes_persistent_volume_claim" "matrix_synapse" {
   metadata {
     name      = "matrix-pvc"
     namespace = kubernetes_namespace.matrix.metadata.0.name
@@ -81,7 +81,7 @@ resource "kubernetes_persistent_volume_claim" "matrix" {
   }
 }
 
-resource "kubernetes_deployment" "matrix" {
+resource "kubernetes_deployment" "matrix_synapse" {
   metadata {
     name      = "matrix-deploy"
     namespace = kubernetes_namespace.matrix.metadata.0.name
@@ -124,7 +124,7 @@ resource "kubernetes_deployment" "matrix" {
 
         container {
           name  = "synapse"
-          image = "matrixdotorg/synapse:${var.synapse_image_version}"
+          image = "matrixdotorg/synapse:${var.matrix_synapse_image_version}"
 
           security_context {
             read_only_root_filesystem = true
@@ -148,14 +148,14 @@ resource "kubernetes_deployment" "matrix" {
 
           volume_mount {
             name       = "secret-vol"
-            mount_path = local.synapse_log_config
+            mount_path = local.matrix_synapse_log_config
             sub_path   = "log.config"
             read_only  = true
           }
 
           volume_mount {
             name       = "secret-vol"
-            mount_path = local.synapse_signing_key_path
+            mount_path = local.matrix_synapse_signing_key_path
             sub_path   = "signing.key"
             read_only  = true
           }
@@ -182,14 +182,14 @@ resource "kubernetes_deployment" "matrix" {
 }
 
 resource "cloudflare_record" "matrix" {
-  zone_id = data.cloudflare_zone.schnerring_net.id
+  zone_id = var.cloudflare_schnerring_net_zone_id
   name    = "matrix"
   type    = "A"
   value   = cloudflare_record.traefik.value
 }
 
 resource "cloudflare_record" "matrix_delegation" {
-  zone_id = data.cloudflare_zone.schnerring_net.id
+  zone_id = var.cloudflare_schnerring_net_zone_id
   name    = "_matrix._tcp"
   type    = "SRV"
   ttl     = 86400
@@ -197,7 +197,7 @@ resource "cloudflare_record" "matrix_delegation" {
   data {
     service  = "_matrix"
     proto    = "_tcp"
-    name     = var.synapse_server_name
+    name     = var.matrix_synapse_server_name
     priority = 0
     weight   = 0
     port     = 443
@@ -205,7 +205,7 @@ resource "cloudflare_record" "matrix_delegation" {
   }
 }
 
-resource "kubernetes_ingress_v1" "matrix" {
+resource "kubernetes_ingress_v1" "matrix_synapse" {
   metadata {
     name      = "matrix-ing"
     namespace = kubernetes_namespace.matrix.metadata.0.name
@@ -218,7 +218,7 @@ resource "kubernetes_ingress_v1" "matrix" {
 
   spec {
     rule {
-      host = var.synapse_server_name
+      host = var.matrix_synapse_server_name
 
       http {
         path {
@@ -289,7 +289,7 @@ resource "kubernetes_ingress_v1" "matrix" {
       secret_name = "matrix-tls-secret"
 
       hosts = [
-        var.synapse_server_name,
+        var.matrix_synapse_server_name,
         cloudflare_record.matrix.hostname
       ]
     }

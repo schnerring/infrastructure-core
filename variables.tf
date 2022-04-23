@@ -26,6 +26,8 @@ variable "letsencrypt_cloudflare_api_token" {
   sensitive   = true
 }
 
+# Image Versions
+
 variable "clickhouse_image_version" {
   type        = string
   description = "Clickhouse DB image version"
@@ -38,17 +40,59 @@ variable "postgres_image_version" {
   default     = "13.3"
 }
 
+variable "plausible_image_version" {
+  type        = string
+  description = "Plausible image version"
+  default     = "v1.4.4"
+}
+
+variable "remark42_image_version" {
+  type        = string
+  description = "Remark42 image version"
+  default     = "v1.9.0"
+}
+
+variable "matrix_synapse_image_version" {
+  type        = string
+  description = "Synapse image version."
+  default     = "v1.55.0"
+}
+
+# SMTP
+
+variable "smtp_host" {
+  type        = string
+  description = "SMTP server address."
+  sensitive   = true
+}
+
+variable "smtp_port" {
+  type        = string
+  description = "SMTP server port (implicit TLS)."
+  sensitive   = true
+}
+
+variable "smtp_username" {
+  type        = string
+  description = "SMTP authentication username."
+  sensitive   = true
+}
+
+variable "smtp_password" {
+  type        = string
+  description = "SMTP authentication password."
+  sensitive   = true
+}
+
+# Postgres
+
 variable "postgres_username" {
   type        = string
   description = "Postgres username."
   sensitive   = true
 }
 
-variable "plausible_image_version" {
-  type        = string
-  description = "Plausible image version"
-  default     = "v1.4.4"
-}
+# Plausible
 
 variable "plausible_db" {
   type        = string
@@ -92,35 +136,7 @@ variable "plausible_google_client_secret" {
   sensitive   = true
 }
 
-variable "smtp_host" {
-  type        = string
-  description = "SMTP server address."
-  sensitive   = true
-}
-
-variable "smtp_port" {
-  type        = string
-  description = "SMTP server port (implicit TLS)."
-  sensitive   = true
-}
-
-variable "smtp_username" {
-  type        = string
-  description = "SMTP authentication username."
-  sensitive   = true
-}
-
-variable "smtp_password" {
-  type        = string
-  description = "SMTP authentication password."
-  sensitive   = true
-}
-
-variable "remark42_image_version" {
-  type        = string
-  description = "Remark42 image version"
-  default     = "v1.9.0"
-}
+# Remark42
 
 variable "remark42_email_from" {
   type        = string
@@ -163,6 +179,8 @@ variable "remark42_auth_twitter_csec" {
   sensitive   = true
 }
 
+# Matrix Synapse
+
 variable "matrix_synapse_db" {
   type        = string
   description = "Matrix Synapse Postgres database name."
@@ -175,43 +193,35 @@ variable "matrix_synapse_db_username" {
   default     = "synapse_user"
 }
 
-# TODO rename to matrix_synapse
-
-variable "synapse_image_version" {
-  type        = string
-  description = "Synapse image version."
-  default     = "v1.55.0"
-}
-
-variable "synapse_server_name" {
+variable "matrix_synapse_server_name" {
   type        = string
   description = "Public Synapse hostname."
 }
 
-variable "synapse_report_stats" {
+variable "matrix_synapse_report_stats" {
   type        = bool
   description = "Enable anonymous statistics reporting."
 }
 
-variable "synapse_signing_key" {
+variable "matrix_synapse_signing_key" {
   type        = string
   description = "Signing key Synapse signs messages with."
   sensitive   = true
 }
 
-variable "synapse_registration_shared_secret" {
+variable "matrix_synapse_registration_shared_secret" {
   type        = string
   description = "Allows registration of standard or admin accounts by anyone who has the shared secret."
   sensitive   = true
 }
 
-variable "synapse_macaroon_secret_key" {
+variable "matrix_synapse_macaroon_secret_key" {
   type        = string
   description = "Secret which is used to sign access tokens."
   sensitive   = true
 }
 
-variable "synapse_form_secret" {
+variable "matrix_synapse_form_secret" {
   type        = string
   description = "Secret which is used to calculate HMACs for form values."
   sensitive   = true
