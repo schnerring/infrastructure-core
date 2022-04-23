@@ -2,11 +2,6 @@ terraform {
   required_version = ">= 1.1.0"
 
   required_providers {
-    azuread = {
-      source  = "azuread"
-      version = "=2.18.0"
-    }
-
     azurerm = {
       source  = "azurerm"
       version = "~> 2.97.0"
@@ -15,11 +10,6 @@ terraform {
     cloudflare = {
       source  = "cloudflare/cloudflare"
       version = "~> 3.9.1"
-    }
-
-    github = {
-      source  = "integrations/github"
-      version = "=4.20.0"
     }
 
     helm = {
@@ -40,11 +30,6 @@ terraform {
     random = {
       source  = "random"
       version = "~> 3.1.2"
-    }
-
-    time = {
-      source  = "time"
-      version = "=0.7.2"
     }
   }
 
