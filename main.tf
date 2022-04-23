@@ -94,7 +94,7 @@ module "core" {
   tags     = var.tags
 }
 
-# Passwords
+# Postgres passwords
 
 resource "random_password" "postgres" {
   length = 32

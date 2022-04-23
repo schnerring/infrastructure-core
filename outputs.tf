@@ -28,14 +28,14 @@ output "remark42_admin_password" {
   sensitive   = true
 }
 
-output "truenas_backup_account_name" {
-  value       = module.core.truenas_backup_account_name
+output "backup_truenas_account_name" {
+  value       = module.core.backup_truenas_account_name
   description = "TrueNAS cloud credential account name."
   sensitive   = true
 }
 
-output "truenas_backup_account_key" {
-  value       = module.core.truenas_backup_account_key
+output "backup_truenas_account_key" {
+  value       = module.core.backup_truenas_account_key
   description = "TrueNAS cloud credential account key."
   sensitive   = true
 }

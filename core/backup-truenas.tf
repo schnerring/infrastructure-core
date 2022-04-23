@@ -1,14 +1,14 @@
 # TrueNAS backup resources
 
-resource "azurerm_resource_group" "truenas_backup" {
+resource "azurerm_resource_group" "backup_truenas" {
   name     = "truenas-backup-rg"
   location = var.location
   tags     = var.tags
 }
 
-resource "azurerm_storage_account" "truenas_backup" {
+resource "azurerm_storage_account" "backup_truenas" {
   name                = "truenasbackupst${random_id.default.dec}"
-  resource_group_name = azurerm_resource_group.truenas_backup.name
+  resource_group_name = azurerm_resource_group.backup_truenas.name
   location            = var.location
   tags                = var.tags
 
@@ -16,8 +16,8 @@ resource "azurerm_storage_account" "truenas_backup" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_storage_management_policy" "truenas_backup" {
-  storage_account_id = azurerm_storage_account.truenas_backup.id
+resource "azurerm_storage_management_policy" "backup_truenas" {
+  storage_account_id = azurerm_storage_account.backup_truenas.id
 
   rule {
     name    = "rule1"
@@ -55,8 +55,8 @@ locals {
   ]
 }
 
-resource "azurerm_storage_container" "truenas_backup" {
+resource "azurerm_storage_container" "backup_truenas" {
   count                = length(local.backup_datasets)
   name                 = local.backup_datasets[count.index]
-  storage_account_name = azurerm_storage_account.truenas_backup.name
+  storage_account_name = azurerm_storage_account.backup_truenas.name
 }
