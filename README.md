@@ -12,7 +12,7 @@ This project also manages Postgres databases. Before being able to apply changes
 kubectl port-forward service/postgres-svc --namespace postgres 5432:5432
 ```
 
-### Environment Variables
+### Authentication
 
 [Use the Azure CLI to authenticate to Azure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli) to interactively run Terraform:
 
@@ -20,11 +20,16 @@ kubectl port-forward service/postgres-svc --namespace postgres 5432:5432
 az login
 ```
 
-To authenticate with GitHub, set the `GITHUB_TOKEN` variable to a [personal access token (PAT)](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) with `public_repo` scope.
+For GitHub and Cloudflare, use [personal access tokens (PAT)](https://docs.github.com/en/rest/overview/other-authentication-methods#basic-authentication) and put them into the following environment variables:
 
-To authenticate to Cloudflare, set the `CLOUDFLARE_API_TOKEN` variable to a personal access token with `Zone.Zone` and `Zone.DNS` permissions.
+- `GITHUB_TOKEN` with `public_repo` scope
+- `CLOUDFLARE_API_TOKEN` with `Zone.Zone` and `Zone.DNS` permissions.
 
-Terraform input variables to configure the deployment are defined inside the [variables.tf](./variables.tf) file. Use the `tfinfracorekv37` key vault stores Terraform variable values. It enhances operational security because storing secrets in plaintext files or environment variables can be avoided. The [map-kv-to-env-vars.ps1](./map-kv-to-env-vars.ps1) convenience script maps the `TF-VAR-*` key vault secrets to `TF_VAR_*` environment variables. These mappings are not persisted and only available inside the PowerShell session that executed the script.
+### Terraform Input Variables
+
+Terraform input variables to configure the deployment are defined inside the [variables.tf](./variables.tf) file.
+
+Use the `tfinfracorekv37` key vault to store sensitive Terraform variable values. It enhances operational security because storing secrets in plaintext files or environment variables can be avoided. The [map-kv-to-env-vars.ps1](./map-kv-to-env-vars.ps1) convenience script maps the `TF-VAR-*` key vault secrets to `TF_VAR_*` environment variables. The mappings are not persisted and are only available within the PowerShell session that executed the script.
 
 ```powershell
 .\map-kv-to-env-vars.ps1 -KeyVault tfinfracorekv37
@@ -35,9 +40,9 @@ To access the key vault, the user requires the following role assignments:
 - `Key Vault Administrator` and `Key Vault Secrets Officer` roles to manage secrets
 - `Key Vault Secrets User` to read secrets
 
-I like to manage these assignments with the Azure Portal and not Terraform.
+I like to manage these role assignments with the Azure Portal and not add them to the Terraform state.
 
-### Initialize
+### Initialize the Terraform Backend
 
 Initialize the [Terraform azurerm backend](https://www.terraform.io/docs/language/settings/backends/azurerm.html):
 
@@ -88,6 +93,6 @@ terraform apply
 
 ## Related Repositories
 
-To back up the Kubernetes Services (Matrix Synapse, Plausible, Remark42), I run a custom set of scripts daily with cron on my TrueNAS. You can find the scripts in the following repo:
+To back up the Kubernetes Services (Matrix Synapse, Plausible, Remark42), I run a custom set of scripts with cron on my TrueNAS daily. You can find the scripts in the following repo:
 
 [https://github.com/schnerring/k8s-backup-scripts](https://github.com/schnerring/k8s-backup-scripts)
