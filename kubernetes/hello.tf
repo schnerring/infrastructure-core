@@ -74,7 +74,7 @@ resource "kubernetes_ingress_v1" "hello" {
 
   spec {
     rule {
-      host = "hello.k8s.schnerring.net"
+      host = cloudflare_record.hello.hostname
 
       http {
         path {
@@ -94,8 +94,16 @@ resource "kubernetes_ingress_v1" "hello" {
     }
 
     tls {
-      hosts       = ["hello.k8s.schnerring.net"]
+      hosts       = [cloudflare_record.hello.hostname]
       secret_name = "hello-tls-secret"
     }
   }
+}
+
+resource "cloudflare_record" "hello" {
+  zone_id = var.cloudflare_schnerring_net_zone_id
+  name    = "hello"
+  type    = "CNAME"
+  value   = cloudflare_record.traefik.hostname
+  proxied = true
 }
