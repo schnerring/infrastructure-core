@@ -1,35 +1,3 @@
-# Resources like Service Principals (SP), Key Vaults, and RBAC, used by GitHub
-# Actions workflows for authentication and secrets management.
-
-resource "azurerm_resource_group" "devops" {
-  name     = "devops-rg"
-  location = var.location
-  tags     = var.tags
-}
-
-################################################################################
-# Secret store for infrastructure-core resources
-# https://github.com/schnerring/infrastructure-core
-################################################################################
-
-resource "azurerm_key_vault" "infrastructure_core" {
-  name                = "infracorekv${random_id.random.dec}"
-  location            = azurerm_resource_group.devops.location
-  resource_group_name = azurerm_resource_group.devops.name
-  tenant_id           = data.azurerm_subscription.subscription.tenant_id
-  tags                = var.tags
-
-  sku_name                  = "standard"
-  enable_rbac_authorization = true
-
-  # Many secrets inside this KV are managed manually, e.g., the Matrix Synapse
-  # signing key. To protect against accidental or malicious deletion of these
-  # secrets, enforce keeping soft-deleted secrets for the duration of retention
-  # period.
-  purge_protection_enabled   = true
-  soft_delete_retention_days = 90
-}
-
 # Azure Service Principal (SP), used by GitHub Actions and authorized to manage any Azure resource
 
 resource "azuread_application" "infrastructure_core" {
