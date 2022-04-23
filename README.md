@@ -33,9 +33,9 @@ Initialize the [Terraform azurerm backend](https://www.terraform.io/docs/languag
 ```shell
 terraform init \
   -backend-config="resource_group_name=terraform-rg" \
-  -backend-config="storage_account_name=tfinfrastructurest37" \
-  -backend-config="container_name=infrastructure-stctn" \
-  -backend-config="key=infrastructure.tfstate"
+  -backend-config="storage_account_name=tfinfracorestNN" \
+  -backend-config="container_name=terraform-backend" \
+  -backend-config="key=infrastructure-core.tfstate"
 ```
 
 ### Deploy

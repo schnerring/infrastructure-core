@@ -17,6 +17,8 @@ terraform {
   }
 }
 
+data "azurerm_subscription" "subscription" {}
+
 resource "random_id" "default" {
   byte_length = 1
 }

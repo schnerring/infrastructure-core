@@ -51,6 +51,8 @@ terraform {
   backend "azurerm" {}
 }
 
+# Providers
+
 provider "azurerm" {
   features {
     key_vault {
@@ -87,13 +89,6 @@ provider "postgresql" {
   sslmode  = "disable"
 }
 
-module "core" {
-  source = "./core"
-
-  location = var.location
-  tags     = var.tags
-}
-
 # Postgres passwords
 
 resource "random_password" "postgres" {
@@ -106,6 +101,15 @@ resource "random_password" "matrix_synapse_db" {
 
 resource "random_password" "plausible_db" {
   length = 64
+}
+
+# Modules
+
+module "core" {
+  source = "./core"
+
+  location = var.location
+  tags     = var.tags
 }
 
 module "kubernetes" {
