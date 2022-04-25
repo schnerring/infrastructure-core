@@ -1,3 +1,4 @@
+VmReservationQuotes.csv
 *.tfplan
 
 # Created by https://www.toptal.com/developers/gitignore/api/vscode,terraform
