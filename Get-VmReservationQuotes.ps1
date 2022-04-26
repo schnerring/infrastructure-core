@@ -46,7 +46,9 @@ function Test-VmCapability ($vmSize, $capabilityName, $capabilityValue) {
 }
 
 $vmSizes = @()
+
 foreach ($vmSize in Get-AzComputeResourceSku) {
+  # Skip `availibilitySets`, `disks`, etc.
   if (-not ($vmSize.ResourceType -eq 'virtualMachines')) {
     continue
   }
@@ -96,6 +98,7 @@ foreach ($vmSize in $vmSizes) {
   $location = Get-VmLocation $vmSize
   $displayName = "$($vmSize.Name)-$location"
 
+  # Progress Bar
   $i++
   $percent = [Math]::Floor(($i / $vmSizes.Count) * 100)
   Write-Progress -Activity "Requesting VM quotes" -Status "$percent% $displayName" -PercentComplete $percent
