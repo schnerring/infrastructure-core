@@ -73,6 +73,8 @@ terraform apply
 
 ## Terraform Resource Overview
 
+Note: this section is outdated (TODO).
+
 | File                                       | Description                                                                                                                                                       |
 | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`common.tf`](./common.tf)                 | Common resources that is shared between deployments                                                                                                               |
