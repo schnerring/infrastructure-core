@@ -75,6 +75,20 @@ terraform apply
 
 Note: this section is outdated (TODO).
 
+The configuration is split into three Terraform modules:
+
+### Core
+
+TODO
+
+### Kubernetes
+
+TODO
+
+### PostgreSQL
+
+TODO
+
 | File                                       | Description                                                                                                                                                       |
 | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`common.tf`](./common.tf)                 | Common resources that is shared between deployments                                                                                                               |
