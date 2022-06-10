@@ -205,3 +205,27 @@ resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex"
     }
   }
 }
+
+# Self-hosted apps
+
+resource "cloudflare_record" "apps_cname" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "*.apps"
+  type    = "CNAME"
+  value   = "apps.schnerring.net"
+  ttl     = 86400
+}
+
+
+resource "cloudflare_record" "apps_caa" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "apps"
+  type    = "CAA"
+  ttl     = 86400
+
+  data {
+    flags = "0"
+    tag   = "issuewild"
+    value = "letsencrypt.org"
+  }
+}
