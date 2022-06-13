@@ -75,19 +75,28 @@ terraform apply
 
 Note: this section is outdated (TODO).
 
-The configuration is split into three Terraform modules:
+The configuration is split into three Terraform modules.
 
 ### Core
 
 TODO
 
+| File | Description |
+| ---- | ----------- |
+
 ### Kubernetes
 
 TODO
 
+| File | Description |
+| ---- | ----------- |
+
 ### PostgreSQL
 
 TODO
+
+| File | Description |
+| ---- | ----------- |
 
 | File                                       | Description                                                                                                                                                       |
 | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
