@@ -37,26 +37,26 @@ resource "azurerm_storage_management_policy" "backup_truenas" {
 }
 
 locals {
-  backup_datasets = [
+  backup_datasets = toset([
     "misc",
-    "apps",
     "archive",
+    "apps",
     "backup",
+    "backup-k8s",
     "books",
     "documents",
     "games",
     "media",
+    "obs",
     "pictures",
     "syncthing",
     "tech",
-    "test", # ^^
-    "backup-k8s",
-    "obs"
-  ]
+    "test" # ^^
+  ])
 }
 
 resource "azurerm_storage_container" "backup_truenas" {
-  count                = length(local.backup_datasets)
-  name                 = local.backup_datasets[count.index]
+  for_each             = local.backup_datasets
+  name                 = each.key
   storage_account_name = azurerm_storage_account.backup_truenas.name
 }
