@@ -40,7 +40,6 @@ locals {
   backup_datasets = toset([
     "misc",
     "archive",
-    "apps",
     "backup",
     "backup-k8s",
     "books",
