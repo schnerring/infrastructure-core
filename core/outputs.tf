@@ -16,6 +16,10 @@ output "schnerring_net_dns_servers" {
   value = cloudflare_zone.schnerring_net.name_servers
 }
 
+output "schnerring_app_dns_servers" {
+  value = cloudflare_zone.schnerring_app.name_servers
+}
+
 output "sensingskies_org_dns_servers" {
   value = cloudflare_zone.sensingskies_org.name_servers
 }

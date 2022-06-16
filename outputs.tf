@@ -45,6 +45,11 @@ output "schnerring_net_dns_servers" {
   description = "Cloudflare-assigned schnerring.net DNS servers."
 }
 
+output "schnerring_app_dns_servers" {
+  value       = module.core.schnerring_app_dns_servers
+  description = "Cloudflare-assigned schnerring.app DNS servers."
+}
+
 output "sensingskies_org_dns_servers" {
   value       = module.core.sensingskies_org_dns_servers
   description = "Cloudflare-assigned sensingskies.org DNS servers."

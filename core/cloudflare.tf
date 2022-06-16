@@ -208,6 +208,10 @@ resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex"
 
 # Self-hosted apps
 
+resource "cloudflare_zone" "schnerring_app" {
+  zone = "schnerring.app"
+}
+
 resource "cloudflare_record" "apps_cname" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "*.apps"
