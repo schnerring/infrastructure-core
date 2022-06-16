@@ -213,17 +213,16 @@ resource "cloudflare_zone" "schnerring_app" {
 }
 
 resource "cloudflare_record" "apps_cname" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "*.apps"
+  zone_id = cloudflare_zone.schnerring_app.id
+  name    = "*"
   type    = "CNAME"
-  value   = "apps.schnerring.net"
-  ttl     = 86400
+  value   = "schnerring.app"
+  proxied = true
 }
 
-
 resource "cloudflare_record" "apps_caa" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "apps"
+  zone_id = cloudflare_zone.schnerring_app.id
+  name    = "schnerring.app"
   type    = "CAA"
   ttl     = 86400
 
