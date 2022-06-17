@@ -50,7 +50,7 @@ locals {
     "pictures",
     "syncthing",
     "tech",
-    "test" # ^^
+    "test" # TODO can remove?
   ])
 }
 
