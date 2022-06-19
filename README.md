@@ -73,48 +73,48 @@ terraform apply
 
 ## Terraform Resource Overview
 
-Note: this section is outdated (TODO).
+The configuration is split into three Terraform modules because the [official Kubernetes provider documentation discourages](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs#stacking-with-managed-kubernetes-cluster-resources) stacking Kubernetes cluster infrastructure with Kubernetes resources.
 
-The configuration is split into three Terraform modules.
+Each module contains the following base files:
+
+| File           | Description                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| `main.tf`      | Terraform requirements and shared module resources                                        |
+| `outputs.tf`   | [Terraform Outputs](https://www.terraform.io/docs/language/values/outputs.html)           |
+| `variables.tf` | [Terraform Input Variables](https://www.terraform.io/docs/language/values/variables.html) |
 
 ### Core
 
-TODO
+Core infrastructure.
 
-| File | Description |
-| ---- | ----------- |
+| File                                                  | Description                                                                                                                                                  |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`aks.tf`](./core/k8s.tf)                             | Azure Kubernetes Service (AKS) cluster resources                                                                                                             |
+| [`backup-truenas.tf`](./core/backup-truenas.tf)       | Azure storage account containers used for TrueNAS cloud sync tasks                                                                                           |
+| [`backup.tf`](./core/backup.tf)                       | Azure backup vault to protect blob storage for Terraform state                                                                                               |
+| [`cloudflare.tf`](./core/cloudflare.tf)               | Common Cloudflare DNS records and Page Rules                                                                                                                 |
+| [`terraform-backend.tf`](./core/terraform-backend.tf) | Azure storage configuration for [Terraform Remote State](https://www.terraform.io/docs/language/state/remote.html) and Azure Key Vault for Terraform secrets |
 
 ### Kubernetes
 
-TODO
+Kubernetes resources that are stacked on top of the AKS cluster defined in the `core` module.
 
-| File | Description |
-| ---- | ----------- |
+| File                                        | Description                                                                                                                                                       |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`hello.tf`](./kubernetes/hello.tf)         | "Hello World" AKS deployment                                                                                                                                      |
+| [`matrix.tf`](./kubernetes/matrix.tf)       | [Matrix Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) AKS deployments |
+| [`plausible.tf`](./kubernetes/plausible.tf) | [Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
+| [`postgres.tf`](./kubernetes/postgres.tf)   | [PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
+| [`remark42.tf`](./kubernetes/remark42.tf)   | [Remark42](https://remark42.com/) AKS deployment                                                                                                                  |
 
 ### PostgreSQL
 
-TODO
+PostgreSQL resources that are stacked on top of the PostgreSQL deployment defined in the `kubernetes` module.
 
-| File | Description |
-| ---- | ----------- |
-
-| File                                       | Description                                                                                                                                                       |
-| :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`common.tf`](./common.tf)                 | Common resources that is shared between deployments                                                                                                               |
-| [`backend.tf`](./backend.tf)               | [Remote State](https://www.terraform.io/docs/language/state/remote.html) configuration                                                                            |
-| [`provider.tf`](./provider.tf)             | [Provider](https://www.terraform.io/docs/language/providers/index.html) configuration                                                                             |
-| [`terraform.tf`](./terraform.tf)           | Remote State storage configuration                                                                                                                                |
-| [`variables.tf`](./variables.tf)           | [Input Variables](https://www.terraform.io/docs/language/values/variables.html)                                                                                   |
-| [`outputs.tf`](./outputs.tf)               | [Output Values](https://www.terraform.io/docs/language/values/outputs.html)                                                                                       |
-| [`truenas-backup.tf`](./truenas-backup.tf) | Azure Storage Account configuration that is used by my TrueNAS as backup storage                                                                                  |
-| [`cloudflare.tf`](./cloudflare.tf)         | Common Cloudflare DNS records and Page Rules                                                                                                                      |
-| [`devops.tf`](./devops.tf)                 | Azure Service Principal authorized to perform Terraform operations                                                                                                |
-| [`hello.tf`](./hello.tf)                   | "Hello World" AKS deployment                                                                                                                                      |
-| [`k8s.tf`](./k8s.tf)                       | Azure Kubernetes Service (AKS) cluster resources                                                                                                                  |
-| [`matrix.tf`](./matrix.tf)                 | Matrix [Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) AKS deployments |
-| [`plausible.tf`](./plausible.tf)           | [Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
-| [`postgres.tf`](./postgres.tf)             | [PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
-| [`remark42.tf`](./remark42.tf)             | [Remark42](https://remark42.com/) AKS deployment                                                                                                                  |
+| File                                                | Description                      |
+| --------------------------------------------------- | -------------------------------- |
+| [`matrix-synapse.tf`](./postgres/matrix-synapse.tf) | Matrix Synapse database and user |
+| [`plausible.tf`](./postgres/plausible.tf)           | Plausible database and user      |
 
 ## Related Repositories
 
