@@ -2,6 +2,11 @@
 
 This project contains the configuration for my cloud infrastructure, for which I use [Terraform](https://www.terraform.io/), an open-source infrastructure-as-code tool.
 
+You can find additional info about some of the code on my blog:
+
+- [Use Terraform to Deploy an Azure Kubernetes Service (AKS) Cluster, Traefik 2, cert-manager, and Let’s Encrypt Certificates](https://schnerring.net/blog/use-terraform-to-deploy-an-azure-kubernetes-service-aks-cluster-traefik-2-cert-manager-and-lets-encrypt-certificates/)
+- [Use Terraform to Deploy the Remark42 Commenting System to Kubernetes and Integrate it with a Hugo Website](https://schnerring.net/blog/use-terraform-to-deploy-the-remark42-commenting-system-to-kubernetes-and-integrate-it-with-a-hugo-website/)
+
 ## Local Development
 
 ### Connect to Postgres
@@ -89,7 +94,7 @@ Core infrastructure.
 
 | File                                                  | Description                                                                                                                                                  |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`aks.tf`](./core/k8s.tf)                             | Azure Kubernetes Service (AKS) cluster resources                                                                                                             |
+| [`aks.tf`](./core/aks.tf)                             | Azure Kubernetes Service (AKS) cluster resources                                                                                                             |
 | [`backup-truenas.tf`](./core/backup-truenas.tf)       | Azure storage account containers used for TrueNAS cloud sync tasks                                                                                           |
 | [`backup.tf`](./core/backup.tf)                       | Azure backup vault to protect blob storage for Terraform state                                                                                               |
 | [`cloudflare.tf`](./core/cloudflare.tf)               | Common Cloudflare DNS records and Page Rules                                                                                                                 |
@@ -99,13 +104,16 @@ Core infrastructure.
 
 Kubernetes resources that are stacked on top of the AKS cluster defined in the `core` module.
 
-| File                                        | Description                                                                                                                                                       |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`hello.tf`](./kubernetes/hello.tf)         | "Hello World" AKS deployment                                                                                                                                      |
-| [`matrix.tf`](./kubernetes/matrix.tf)       | [Matrix Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) AKS deployments |
-| [`plausible.tf`](./kubernetes/plausible.tf) | [Plausible Analytics](https://plausible.io/) AKS deployment                                                                                                       |
-| [`postgres.tf`](./kubernetes/postgres.tf)   | [PostgreSQL](https://www.postgresql.org/) AKS deployment                                                                                                          |
-| [`remark42.tf`](./kubernetes/remark42.tf)   | [Remark42](https://remark42.com/) AKS deployment                                                                                                                  |
+| File                                                  | Description                                                                                                                                       |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`cert-manager.tf`](./kubernetes/cert-manager.tf)     | [cert-manager](https://cert-manager.io/)                                                                                                          |
+| [`hello.tf`](./kubernetes/hello.tf)                   | "Hello World" app                                                                                                                                 |
+| [`letsencrypt.tf`](./kubernetes/letsencrypt.tf)       | Let's Encrypt [cert-manager `ClusterIssuer`s](https://cert-manager.io/docs/concepts/issuer/)                                                      |
+| [`matrix-synapse.tf`](./kubernetes/matrix-synapse.tf) | [Matrix Synapse homeserver](https://github.com/matrix-org/synapse/) and [Synpase Admin UI](https://github.com/Awesome-Technologies/synapse-admin) |
+| [`plausible.tf`](./kubernetes/plausible.tf)           | [Plausible Analytics](https://plausible.io/)                                                                                                      |
+| [`postgres.tf`](./kubernetes/postgres.tf)             | [PostgreSQL](https://www.postgresql.org/)                                                                                                         |
+| [`remark42.tf`](./kubernetes/remark42.tf)             | [Remark42](https://remark42.com/)                                                                                                                 |
+| [`traefik-v2.tf`](./kubernetes/cert-manager.tf)       | [Traefik Proxy](https://traefik.io/traefik/)                                                                                                      |
 
 ### PostgreSQL
 
