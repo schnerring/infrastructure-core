@@ -113,7 +113,7 @@ Kubernetes resources that are stacked on top of the AKS cluster defined in the `
 | [`plausible.tf`](./kubernetes/plausible.tf)           | [Plausible Analytics](https://plausible.io/)                                                                                                      |
 | [`postgres.tf`](./kubernetes/postgres.tf)             | [PostgreSQL](https://www.postgresql.org/)                                                                                                         |
 | [`remark42.tf`](./kubernetes/remark42.tf)             | [Remark42](https://remark42.com/)                                                                                                                 |
-| [`traefik-v2.tf`](./kubernetes/cert-manager.tf)       | [Traefik Proxy](https://traefik.io/traefik/)                                                                                                      |
+| [`traefik-v2.tf`](./kubernetes/traefik-v2.tf)         | [Traefik Proxy](https://traefik.io/traefik/)                                                                                                      |
 
 ### PostgreSQL
 
