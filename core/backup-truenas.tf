@@ -39,15 +39,20 @@ resource "azurerm_storage_management_policy" "backup_truenas" {
 locals {
   backup_datasets = toset([
     "misc",
-    "archive",
+    "arrs",
     "backup",
     "backup-k8s",
     "books",
     "documents",
     "games",
+    "home",
+    "hp-scan",
     "media",
     "obs",
+    "paperless",
+    "photoprism",
     "pictures",
+    "scripts",
     "syncthing",
     "tech",
     "test" # TODO can remove?
