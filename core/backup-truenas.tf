@@ -47,7 +47,6 @@ locals {
     "games",
     "home",
     "hp-scan",
-    "media",
     "obs",
     "paperless",
     "photoprism",
