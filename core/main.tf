@@ -7,12 +7,12 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = ">= 3.9.1"
+      version = ">= 3.18.0"
     }
 
     random = {
       source  = "random"
-      version = ">= 3.1.2"
+      version = ">= 3.3.2"
     }
   }
 }
