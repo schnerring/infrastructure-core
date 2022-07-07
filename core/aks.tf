@@ -19,6 +19,9 @@ resource "azurerm_kubernetes_cluster" "web_core" {
   automatic_channel_upgrade = "stable"
   dns_prefix                = "web-core-aks-${random_id.default.hex}"
 
+  # TODO: defaults to true since azurerm v3
+  role_based_access_control_enabled = false
+
   default_node_pool {
     name            = "default"
     node_count      = 1
