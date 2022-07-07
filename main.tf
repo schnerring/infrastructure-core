@@ -9,7 +9,7 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 3.9.1"
+      version = "~> 3.18.0"
     }
 
     helm = {
