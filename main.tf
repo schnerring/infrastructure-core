@@ -24,12 +24,12 @@ terraform {
 
     postgresql = {
       source  = "cyrilgdn/postgresql"
-      version = "~> 1.15"
+      version = "~> 1.16"
     }
 
     random = {
       source  = "random"
-      version = "~> 3.1.2"
+      version = "~> 3.3.2"
     }
   }
 
