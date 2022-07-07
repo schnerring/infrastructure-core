@@ -20,6 +20,7 @@ resource "azurerm_kubernetes_cluster" "web_core" {
   dns_prefix                = "web-core-aks-${random_id.default.hex}"
 
   # TODO: defaults to true since azurerm v3
+  # See: https://github.com/schnerring/infrastructure-core/issues/16
   role_based_access_control_enabled = false
 
   default_node_pool {
