@@ -47,7 +47,7 @@ provider "registry.terraform.io/cyrilgdn/postgresql" {
 
 provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "2.97.0"
-  constraints = "2.97.0"
+  constraints = ">= 2.97.0, ~> 2.97.0"
   hashes = [
     "h1:m/v4e1frO81XrYo+urEcBtgf70ITOlDbmy3uLxbA2Lg=",
     "zh:0aac80e6d2b8ddf33d558ac893d52688e8abf8a0b995cfc3c35eb84afbf432a3",
