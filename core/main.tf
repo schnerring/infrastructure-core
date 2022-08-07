@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "azurerm"
-      version = ">= 3.12.0"
+      version = ">= 3.17.0"
     }
 
     cloudflare = {
