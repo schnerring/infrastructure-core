@@ -8,7 +8,7 @@ tags = {
 }
 
 cert_manager_helm_chart_version = "v1.8.0"
-traefik_helm_chart_version      = "10.19.4"
+traefik_helm_chart_version      = "10.24.0"
 clickhouse_image_version        = "21.8.14.5" # LTS release: https://hub.docker.com/r/yandex/clickhouse-server/tags?page=1&name=21.8.14
 postgres_image_version          = "14.2"
 plausible_image_version         = "v1.4.4"
