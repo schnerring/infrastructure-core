@@ -4,7 +4,5 @@
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform"
   },
-  "terraform-ls.experimentalFeatures": {
-    "validateOnSave": true
-  }
+  "terraform.experimentalFeatures.validateOnSave": true
 }
