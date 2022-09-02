@@ -16,8 +16,9 @@ resource "azurerm_kubernetes_cluster" "web_core" {
   location            = azurerm_resource_group.aks.location
   tags                = var.tags
 
-  automatic_channel_upgrade = "stable"
-  dns_prefix                = "web-core-aks-${random_id.default.hex}"
+  #automatic_channel_upgrade = "stable"
+  kubernetes_version = "1.23"
+  dns_prefix         = "web-core-aks-${random_id.default.hex}"
 
   # TODO: defaults to true since azurerm v3
   # See: https://github.com/schnerring/infrastructure-core/issues/16
