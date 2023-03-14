@@ -9,3 +9,8 @@ variable "aks_location" {
 variable "tags" {
   type = map(string)
 }
+
+variable "cloudflare_account_id" {
+  type      = string
+  sensitive = true
+}

@@ -9,7 +9,7 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 3.0"
+      version = "~> 4.0"
     }
 
     helm = {
@@ -96,6 +96,8 @@ module "core" {
   location     = var.location
   aks_location = var.aks_location
   tags         = var.tags
+
+  cloudflare_account_id = var.cloudflare_account_id
 }
 
 module "kubernetes" {

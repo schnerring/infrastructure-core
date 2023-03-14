@@ -1,5 +1,6 @@
 resource "cloudflare_zone" "schnerring_net" {
-  zone = "schnerring.net"
+  account_id = var.cloudflare_account_id
+  zone       = "schnerring.net"
 }
 
 # Email SPF
@@ -174,7 +175,8 @@ resource "cloudflare_record" "google_search_console_verification" {
 # Sea Bats
 
 resource "cloudflare_zone" "sensingskies_org" {
-  zone = "sensingskies.org"
+  account_id = var.cloudflare_account_id
+  zone       = "sensingskies.org"
 }
 
 resource "cloudflare_record" "sensingskies_gh_pages_apex" {
@@ -209,7 +211,8 @@ resource "cloudflare_page_rule" "sensingskies_gh_pages_rule_forward_www_to_apex"
 # Self-hosted apps
 
 resource "cloudflare_zone" "schnerring_app" {
-  zone = "schnerring.app"
+  account_id = var.cloudflare_account_id
+  zone       = "schnerring.app"
 }
 
 resource "cloudflare_record" "apps_cname" {
