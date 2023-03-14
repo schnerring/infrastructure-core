@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "azurerm"
-      version = "~> 3.19.1"
+      version = "~> 3.47"
     }
 
     cloudflare = {
