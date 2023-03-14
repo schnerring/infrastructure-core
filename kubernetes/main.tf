@@ -12,7 +12,7 @@ terraform {
 
     kubernetes = {
       source  = "kubernetes"
-      version = ">= 2.12.1"
+      version = ">= 2.18.1"
     }
 
     random = {

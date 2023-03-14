@@ -9,7 +9,7 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
+      version = "~> 4.1"
     }
 
     helm = {
@@ -19,7 +19,7 @@ terraform {
 
     kubernetes = {
       source  = "kubernetes"
-      version = "~> 2.12.1"
+      version = "~> 2.18"
     }
 
     postgresql = {
@@ -29,7 +29,7 @@ terraform {
 
     random = {
       source  = "random"
-      version = "~> 3.0"
+      version = "~> 3.4"
     }
   }
 
