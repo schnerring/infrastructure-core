@@ -3,7 +3,7 @@
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
   version     = "4.1.0"
-  constraints = ">= 3.35.0, ~> 4.0"
+  constraints = ">= 4.1.0, ~> 4.1"
   hashes = [
     "h1:WzAkwCBcWqh+dj4iNvhAYC33xdKF06DWEB362ss0pR8=",
     "zh:06a0b45f5a8fac2951acc988f38497387fc9d9ff72c4769f1fff8d098cb401a2",
@@ -26,7 +26,7 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
 
 provider "registry.terraform.io/cyrilgdn/postgresql" {
   version     = "1.18.0"
-  constraints = ">= 1.16.0, ~> 1.16"
+  constraints = ">= 1.18.0, ~> 1.18.0"
   hashes = [
     "h1:9iVeIF2TkrOnjLcMijTMJUXgX6miJIU5V75w+thUDek=",
     "zh:251b609167ce25e974607c0c7dd3f90cfc45980c9068364f896e26c31416d96c",
@@ -88,7 +88,7 @@ provider "registry.terraform.io/hashicorp/helm" {
 
 provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.18.1"
-  constraints = ">= 2.12.1, ~> 2.18"
+  constraints = "~> 2.18, >= 2.18.1"
   hashes = [
     "h1:g3mjnuaPE+vrRM/dClDMyAHrj/GhJj8xEJs9kP7rXJQ=",
     "zh:09d69d244f5e688d9b1582112aa5d151c5336278e43d39c88ae920c26536b753",
@@ -108,7 +108,7 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
 
 provider "registry.terraform.io/hashicorp/random" {
   version     = "3.4.3"
-  constraints = "~> 3.0, >= 3.4.3"
+  constraints = "~> 3.4, >= 3.4.3"
   hashes = [
     "h1:hXUPrH8igYBhatzatkp80RCeeUJGu9lQFDyKemOlsTo=",
     "zh:41c53ba47085d8261590990f8633c8906696fa0a3c4b384ff6a7ecbf84339752",
