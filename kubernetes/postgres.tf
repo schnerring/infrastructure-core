@@ -64,9 +64,9 @@ resource "kubernetes_stateful_set" "postgres" {
 
       spec {
         security_context {
-          run_as_user     = "999"
-          run_as_group    = "999"
-          fs_group        = "999"
+          run_as_user     = "70"
+          run_as_group    = "70"
+          fs_group        = "70"
           run_as_non_root = true
         }
 
