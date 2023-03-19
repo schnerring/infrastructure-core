@@ -83,16 +83,6 @@ variable "plausible_db_password" {
   sensitive = true
 }
 
-variable "plausible_admin_email" {
-  type      = string
-  sensitive = true
-}
-
-variable "plausible_admin_name" {
-  type      = string
-  sensitive = true
-}
-
 variable "plausible_mailer_email" {
   type      = string
   sensitive = true

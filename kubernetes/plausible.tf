@@ -154,10 +154,6 @@ resource "kubernetes_service" "event_data" {
   }
 }
 
-resource "random_password" "plausible_admin" {
-  length = 64
-}
-
 resource "random_password" "plausible_secret_key_base" {
   length = 128
 }
@@ -170,11 +166,6 @@ resource "kubernetes_secret" "plausible" {
 
   # See also: https://plausible.io/docs/self-hosting-configuration
   data = {
-    # Default User Generation
-    "ADMIN_USER_EMAIL" = var.plausible_admin_email
-    "ADMIN_USER_NAME"  = var.plausible_admin_name
-    "ADMIN_USER_PWD"   = random_password.plausible_admin.result
-
     # Server
     "BASE_URL"             = "https://${cloudflare_record.plausible.hostname}"
     "SECRET_KEY_BASE"      = base64encode(random_password.plausible_secret_key_base.result)
@@ -242,7 +233,7 @@ resource "kubernetes_deployment" "plausible" {
 
           args = [
             "-c",
-            "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh db init-admin"
+            "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate"
           ]
 
           env_from {

@@ -127,8 +127,6 @@ module "kubernetes" {
   plausible_db                   = var.plausible_db
   plausible_db_username          = var.plausible_db_username
   plausible_db_password          = random_password.plausible_db.result
-  plausible_admin_email          = var.plausible_admin_email
-  plausible_admin_name           = var.plausible_admin_name
   plausible_mailer_email         = var.plausible_mailer_email
   plausible_google_client_id     = var.plausible_google_client_id
   plausible_google_client_secret = var.plausible_google_client_secret

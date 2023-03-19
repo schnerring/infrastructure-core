@@ -16,12 +16,6 @@ output "postgres_admin_password" {
   sensitive   = true
 }
 
-output "plausible_admin_password" {
-  value       = module.kubernetes.plausible_admin_password
-  description = "Terraform-generated Plausible administrator password."
-  sensitive   = true
-}
-
 output "remark42_admin_password" {
   value       = module.kubernetes.remark42_admin_password
   description = "Terraform-generated Remark42 administrator password."

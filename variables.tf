@@ -114,18 +114,6 @@ variable "plausible_db_username" {
   description = "Plausible Postgres username."
 }
 
-variable "plausible_admin_email" {
-  type        = string
-  description = "Plausible administrator email address."
-  sensitive   = true
-}
-
-variable "plausible_admin_name" {
-  type        = string
-  description = "Plausible administrator username."
-  sensitive   = true
-}
-
 variable "plausible_mailer_email" {
   type        = string
   description = "Email address to use as FROM address of all communications from Plausible."
