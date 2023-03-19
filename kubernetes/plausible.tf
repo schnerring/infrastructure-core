@@ -30,7 +30,7 @@ resource "kubernetes_config_map" "event_data" {
   data = {
     # https://github.com/plausible/hosting/blob/master/clickhouse/clickhouse-config.xml
     "clickhouse-config.xml" = <<-CLICKHOUSE_CONFIG
-      <yandex>
+      <clickhouse>
           <logger>
               <level>warning</level>
               <console>true</console>
@@ -43,19 +43,21 @@ resource "kubernetes_config_map" "event_data" {
           <trace_log remove="remove"/>
           <metric_log remove="remove"/>
           <asynchronous_metric_log remove="remove"/>
-      </yandex>
+          <session_log remove="remove"/>
+          <part_log remove="remove"/>
+      </clickhouse>
     CLICKHOUSE_CONFIG
 
     # https://github.com/plausible/hosting/blob/master/clickhouse/clickhouse-user-config.xml
     "clickhouse-user-config.xml" = <<-CLICKHOUSE_USER_CONFIG
-      <yandex>
+      <clickhouse>
           <profiles>
               <default>
                   <log_queries>0</log_queries>
                   <log_query_threads>0</log_query_threads>
               </default>
           </profiles>
-      </yandex>
+      </clickhouse>
     CLICKHOUSE_USER_CONFIG
   }
 }
@@ -88,7 +90,7 @@ resource "kubernetes_stateful_set" "event_data" {
 
         container {
           name  = "event-data"
-          image = "yandex/clickhouse-server:${var.clickhouse_image_version}"
+          image = "clickhouse/clickhouse-server:${var.clickhouse_image_version}"
 
           port {
             container_port = 8123
