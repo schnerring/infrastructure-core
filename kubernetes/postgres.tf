@@ -94,6 +94,19 @@ resource "kubernetes_stateful_set" "postgres" {
             mount_path = local.postgres_mount_path
             name       = "data-vol"
           }
+
+          readiness_probe {
+            failure_threshold     = 5
+            initial_delay_seconds = 15
+
+            exec {
+              command = [
+                "/bin/sh",
+                "-c",
+                "pg_isready -U postgres"
+              ]
+            }
+          }
         }
 
         volume {

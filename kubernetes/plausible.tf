@@ -114,6 +114,16 @@ resource "kubernetes_stateful_set" "event_data" {
             sub_path   = "clickhouse-user-config.xml"
             read_only  = true
           }
+
+          readiness_probe {
+            failure_threshold     = 5
+            initial_delay_seconds = 15
+
+            http_get {
+              path = "/ping"
+              port = 8123
+            }
+          }
         }
 
         volume {
@@ -262,6 +272,16 @@ resource "kubernetes_deployment" "plausible" {
           env_from {
             secret_ref {
               name = "plausible-secret"
+            }
+          }
+
+          readiness_probe {
+            failure_threshold     = 5
+            initial_delay_seconds = 30
+
+            http_get {
+              path = "/api/health"
+              port = 8000
             }
           }
         }
