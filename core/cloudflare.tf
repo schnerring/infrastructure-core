@@ -101,6 +101,14 @@ resource "cloudflare_record" "gh_pages_www" {
   proxied = true
 }
 
+resource "cloudflare_record" "gh_pages_" {
+  zone_id = cloudflare_zone.schnerring_net.id
+  name    = "commit-and-checkout-actions-workflow"
+  type    = "CNAME"
+  value   = "schnerring.github.io"
+  proxied = false
+}
+
 resource "cloudflare_page_rule" "gh_pages_rule_forward_www_to_apex" {
   zone_id  = cloudflare_zone.schnerring_net.id
   target   = "https://www.schnerring.net/"
