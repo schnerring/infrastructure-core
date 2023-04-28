@@ -158,7 +158,7 @@ resource "cloudflare_record" "vpn1" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "vpn1"
   type    = "A"
-  value   = "193.32.127.220" # Mullvad ch6-wireguard public exit IP
+  value   = "138.199.6.205" # Mullvad mullvad-ch-zrh-wg-401 public exit IP
   proxied = false
 }
 
@@ -166,7 +166,7 @@ resource "cloudflare_record" "vpn2" {
   zone_id = cloudflare_zone.schnerring_net.id
   name    = "vpn2"
   type    = "A"
-  value   = "193.32.127.225" # Mullvad ch7-wireguard public exit IP
+  value   = "146.70.134.122" # Mullvad mullvad-ch-zrh-wg-501 public exit IP
   proxied = false
 }
 
