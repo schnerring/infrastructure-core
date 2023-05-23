@@ -51,7 +51,6 @@ locals {
     "paperless",
     "photoprism",
     "pictures",
-    "scripts",
     "syncthing",
     "tech",
     "test" # TODO can remove?
