@@ -113,14 +113,15 @@ foreach ($vmSize in $vmSizes) {
     -AppliedScopeType Shared `
     -DisplayName "$displayName"
 
-  # BillingCurrencyTotal is a multi-line string, e.g.:
-  #
-  #   CurrencyCode: CHF
-  #   Amount: 1013
-  #
-  # Extract Amout value `1013` with regex
-  $quote.BillingCurrencyTotal -match "Amount: (\d+)" | Out-Null
-  $termPrice = $Matches[1]
+  # BillingCurrencyTotal is a JSON string, e.g.:
+  # {
+  #   "currencyCode": "CHF",
+  #   "amount": 1130
+  # }
+
+  # Extract amount value `1130` from JSON
+  $billingCurrencyTotal = $quote.BillingCurrencyTotal | ConvertFrom-Json
+  $termPrice = $billingCurrencyTotal.amount
 
   @{
     Name = $vmSize.Name;
