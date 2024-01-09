@@ -152,24 +152,6 @@ resource "cloudflare_record" "hugo_theme_gruvbox" {
   proxied = true
 }
 
-# VPN
-
-resource "cloudflare_record" "vpn1" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "vpn1"
-  type    = "A"
-  value   = "138.199.6.205" # Mullvad mullvad-ch-zrh-wg-401 public exit IP
-  proxied = false
-}
-
-resource "cloudflare_record" "vpn2" {
-  zone_id = cloudflare_zone.schnerring_net.id
-  name    = "vpn2"
-  type    = "A"
-  value   = "146.70.134.122" # Mullvad mullvad-ch-zrh-wg-501 public exit IP
-  proxied = false
-}
-
 # Google Search Console
 
 resource "cloudflare_record" "google_search_console_verification" {
