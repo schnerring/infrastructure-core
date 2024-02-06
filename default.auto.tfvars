@@ -8,7 +8,7 @@ tags = {
 }
 
 cert_manager_helm_chart_version = "v1.11.0"
-traefik_helm_chart_version      = "21.2.0"
+traefik_helm_chart_version      = "26.0.0"
 clickhouse_image_version        = "22.6-alpine"
 postgres_image_version          = "14-alpine"
 plausible_image_version         = "v2.0.0"

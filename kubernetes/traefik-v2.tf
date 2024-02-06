@@ -15,7 +15,7 @@ resource "helm_release" "traefik" {
 
   # Permanent HTTP to HTTPS redirect
   set {
-    name  = "ports.web.redirectTo"
+    name  = "ports.web.redirectTo.port"
     value = "websecure"
   }
 
