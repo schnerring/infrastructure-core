@@ -7,7 +7,7 @@ tags = {
   "Project"              = "infrastructure"
 }
 
-cert_manager_helm_chart_version = "v1.11.0"
+cert_manager_helm_chart_version = "v1.14.1"
 traefik_helm_chart_version      = "26.0.0"
 clickhouse_image_version        = "22.6-alpine"
 postgres_image_version          = "14-alpine"
