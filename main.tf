@@ -4,22 +4,22 @@ terraform {
   required_providers {
     azurerm = {
       source  = "azurerm"
-      version = "~> 3.47"
+      version = "~> 3.90"
     }
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.1"
+      version = "~> 4.23"
     }
 
     helm = {
       source  = "helm"
-      version = "~> 2.9"
+      version = "~> 2.12"
     }
 
     kubernetes = {
       source  = "kubernetes"
-      version = "~> 2.18"
+      version = "~> 2.25"
     }
 
     postgresql = {
@@ -29,7 +29,7 @@ terraform {
 
     random = {
       source  = "random"
-      version = "~> 3.4"
+      version = "~> 3.6"
     }
   }
 
