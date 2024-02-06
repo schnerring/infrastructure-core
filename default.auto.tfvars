@@ -12,7 +12,7 @@ traefik_helm_chart_version      = "21.2.0"
 clickhouse_image_version        = "22.6-alpine"
 postgres_image_version          = "14-alpine"
 plausible_image_version         = "v1.5.1"
-remark42_image_version          = "v1.11.3"
+remark42_image_version          = "v1.12.1"
 matrix_synapse_image_version    = "v1.79.0"
 
 plausible_db          = "plausible"
